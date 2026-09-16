@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { initDatabase } from './db'
 
 function createWindow(): void {
   // Create the browser window.
@@ -38,7 +39,14 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Connect and initialize database
+  try {
+    await initDatabase()
+  } catch (error) {
+    console.error('[DB] Failed to connect to database at startup:', error)
+  }
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
