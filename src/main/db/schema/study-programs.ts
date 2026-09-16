@@ -1,21 +1,21 @@
-import { pgTable, serial, text, integer, numeric, boolean } from 'drizzle-orm/pg-core'
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod/v4'
 
-export const studyProgramsTable = pgTable('study_programs', {
-  id: serial('id').primaryKey(),
+export const studyProgramsTable = sqliteTable('study_programs', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
   faculty: text('faculty').notNull(),
   totalEcts: integer('total_ects').notNull().default(180)
 })
 
-export const coursesTable = pgTable('courses', {
-  id: serial('id').primaryKey(),
+export const coursesTable = sqliteTable('courses', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
-  ects: numeric('ects', { precision: 5, scale: 1 }).notNull(),
+  ects: real('ects').notNull(),
   semester: text('semester').notNull(),
   studyProgramId: integer('study_program_id').notNull(),
-  isRequired: boolean('is_required').notNull().default(true)
+  isRequired: integer('is_required', { mode: 'boolean' }).notNull().default(true)
 })
 
 export const insertStudyProgramSchema = createInsertSchema(studyProgramsTable).omit({ id: true })

@@ -1,11 +1,18 @@
-import { pgTable, serial, text, integer, timestamp, pgEnum, uuid } from 'drizzle-orm/pg-core'
+import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod/v4'
 
-export const groupRoleEnum = pgEnum('group_role', ['owner', 'member'])
-export const taskStatusEnum = pgEnum('task_status', ['open', 'done'])
-export const noteTypeEnum = pgEnum('note_type', ['note', 'link'])
-export const groupActivityTypeEnum = pgEnum('group_activity_type', [
+export const groupRoles = ['owner', 'member'] as const
+export type GroupRole = (typeof groupRoles)[number]
+
+export const taskStatuses = ['open', 'done'] as const
+export type TaskStatus = (typeof taskStatuses)[number]
+
+export const noteTypes = ['note', 'link'] as const
+export type NoteType = (typeof noteTypes)[number]
+
+export const groupActivityTypes = [
   'event_created',
   'event_updated',
   'event_deleted',
@@ -15,94 +22,99 @@ export const groupActivityTypeEnum = pgEnum('group_activity_type', [
   'note_created',
   'member_joined',
   'member_left'
-])
-export const commentTargetTypeEnum = pgEnum('comment_target_type', ['event', 'task'])
+] as const
+export type GroupActivityType = (typeof groupActivityTypes)[number]
 
-export const studyGroupsTable = pgTable('study_groups', {
-  id: serial('id').primaryKey(),
+export const commentTargetTypes = ['event', 'task'] as const
+export type CommentTargetType = (typeof commentTargetTypes)[number]
+
+export const studyGroupsTable = sqliteTable('study_groups', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
   description: text('description'),
   createdBy: integer('created_by').notNull(),
-  inviteToken: uuid('invite_token').defaultRandom(),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+  inviteToken: text('invite_token')
+    .notNull()
+    .$defaultFn(() => crypto.randomUUID()),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
 })
 
-export const groupMembersTable = pgTable('group_members', {
-  id: serial('id').primaryKey(),
+export const groupMembersTable = sqliteTable('group_members', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
   userId: integer('user_id').notNull(),
-  role: groupRoleEnum('role').notNull().default('member'),
-  joinedAt: timestamp('joined_at', { withTimezone: true }).notNull().defaultNow()
+  role: text('role', { enum: groupRoles }).notNull().default('member'),
+  joinedAt: integer('joined_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
 })
 
-export const groupEventsTable = pgTable('group_events', {
-  id: serial('id').primaryKey(),
+export const groupEventsTable = sqliteTable('group_events', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
   title: text('title').notNull(),
   description: text('description'),
-  startDate: timestamp('start_date', { withTimezone: true }).notNull(),
-  endDate: timestamp('end_date', { withTimezone: true }).notNull(),
+  startDate: integer('start_date', { mode: 'timestamp' }).notNull(),
+  endDate: integer('end_date', { mode: 'timestamp' }).notNull(),
   type: text('type').notNull().default('other'),
   location: text('location'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
-    .defaultNow()
+    .default(sql`(unixepoch())`)
     .$onUpdate(() => new Date())
 })
 
-export const groupTasksTable = pgTable('group_tasks', {
-  id: serial('id').primaryKey(),
+export const groupTasksTable = sqliteTable('group_tasks', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
   title: text('title').notNull(),
   description: text('description'),
-  dueDate: timestamp('due_date', { withTimezone: true }),
+  dueDate: integer('due_date', { mode: 'timestamp' }),
   assigneeId: integer('assignee_id'),
-  status: taskStatusEnum('status').notNull().default('open'),
+  status: text('status', { enum: taskStatuses }).notNull().default('open'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
-    .defaultNow()
+    .default(sql`(unixepoch())`)
     .$onUpdate(() => new Date())
 })
 
-export const groupNotesTable = pgTable('group_notes', {
-  id: serial('id').primaryKey(),
+export const groupNotesTable = sqliteTable('group_notes', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
   title: text('title').notNull(),
   content: text('content'),
   url: text('url'),
-  type: noteTypeEnum('type').notNull().default('note'),
+  type: text('type', { enum: noteTypes }).notNull().default('note'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
-    .defaultNow()
+    .default(sql`(unixepoch())`)
     .$onUpdate(() => new Date())
 })
 
-export const groupCommentsTable = pgTable('group_comments', {
-  id: serial('id').primaryKey(),
+export const groupCommentsTable = sqliteTable('group_comments', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
-  targetType: commentTargetTypeEnum('target_type').notNull(),
+  targetType: text('target_type', { enum: commentTargetTypes }).notNull(),
   targetId: integer('target_id').notNull(),
   content: text('content').notNull(),
   createdBy: integer('created_by').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
 })
 
-export const groupActivityLogTable = pgTable('group_activity_log', {
-  id: serial('id').primaryKey(),
+export const groupActivityLogTable = sqliteTable('group_activity_log', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   groupId: integer('group_id').notNull(),
-  type: groupActivityTypeEnum('type').notNull(),
+  type: text('type', { enum: groupActivityTypes }).notNull(),
   description: text('description').notNull(),
   actorId: integer('actor_id').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
 })
 
 export const insertStudyGroupSchema = createInsertSchema(studyGroupsTable).omit({

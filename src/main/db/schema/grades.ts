@@ -1,21 +1,22 @@
-import { pgTable, serial, text, integer, numeric, boolean, timestamp } from 'drizzle-orm/pg-core'
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod/v4'
 
-export const gradesTable = pgTable('grades', {
-  id: serial('id').primaryKey(),
+export const gradesTable = sqliteTable('grades', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   courseName: text('course_name').notNull(),
-  grade: numeric('grade', { precision: 3, scale: 1 }),
-  ects: numeric('ects', { precision: 5, scale: 1 }).notNull(),
+  grade: real('grade'),
+  ects: real('ects').notNull(),
   semester: text('semester').notNull(),
-  passed: boolean('passed').notNull().default(false),
+  passed: integer('passed', { mode: 'boolean' }).notNull().default(false),
   notes: text('notes'),
   userId: integer('user_id').notNull(),
   courseId: integer('course_id'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
-    .defaultNow()
+    .default(sql`(unixepoch())`)
     .$onUpdate(() => new Date())
 })
 
