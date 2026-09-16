@@ -1,8 +1,8 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { initDatabase } from './db'
+import { closeDatabase, initDatabase } from './db'
 
 function createWindow(): void {
   // Create the browser window.
@@ -44,7 +44,13 @@ app.whenReady().then(async () => {
   try {
     await initDatabase()
   } catch (error) {
-    console.error('[DB] Failed to connect to database at startup:', error)
+    console.error('[DB] Failed to initialize the database at startup:', error)
+    dialog.showErrorBox(
+      'Database initialization failed',
+      'Studyplan could not prepare its local database. The application will now close.'
+    )
+    app.quit()
+    return
   }
 
   // Set app user model id for windows
@@ -76,6 +82,10 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+app.on('will-quit', () => {
+  closeDatabase()
 })
 
 // In this file you can include the rest of your app's specific main process

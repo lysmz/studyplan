@@ -1,7 +1,6 @@
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
-import { z } from 'zod/v4'
 
 export const groupRoles = ['owner', 'member'] as const
 export type GroupRole = (typeof groupRoles)[number]
