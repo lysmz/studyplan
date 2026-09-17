@@ -21,17 +21,38 @@ import {
   createApiDispatcher,
   definePartialApiHandlers
 } from '../../src/main/ipc/api-dispatcher'
+import {
+  getGetEventQueryOptions,
+  getListEventsQueryKey,
+  getListEventsQueryOptions,
+  getUpdateEventMutationOptions
+} from '../../src/renderer/src/api/generated/react-query.generated'
 
-function operationIdsFromDocument(document: Record<string, unknown>): string[] {
-  const ids: string[] = []
+function pascalCase(value: string): string {
+  return value
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .split(/[^A-Za-z0-9]+/)
+    .filter(Boolean)
+    .map((part) => `${part[0].toUpperCase()}${part.slice(1)}`)
+    .join('')
+}
+
+function operationsFromDocument(
+  document: Record<string, unknown>
+): Array<{ id: string; method: string }> {
+  const operations: Array<{ id: string; method: string }> = []
   const paths = document.paths as Record<string, Record<string, unknown>>
   for (const pathItem of Object.values(paths)) {
     for (const method of ['get', 'post', 'put', 'patch', 'delete', 'options', 'head']) {
       const operation = pathItem[method] as { operationId?: string } | undefined
-      if (operation?.operationId) ids.push(operation.operationId)
+      if (operation?.operationId) operations.push({ id: operation.operationId, method })
     }
   }
-  return ids
+  return operations
+}
+
+function operationIdsFromDocument(document: Record<string, unknown>): string[] {
+  return operationsFromDocument(document).map(({ id }) => id)
 }
 
 test('every OpenAPI operationId is represented exactly once', async () => {
@@ -53,6 +74,83 @@ test('generation is deterministic and checked-in files are current', async () =>
       `${relative(process.cwd(), file.path)} is stale`
     )
   }
+})
+
+test('every operation has its React Query compatibility exports', async () => {
+  const document = parse(await readFile('api/openapi.yaml', 'utf8')) as Record<string, unknown>
+  const source = await readFile('src/renderer/src/api/generated/react-query.generated.ts', 'utf8')
+
+  const operations = operationsFromDocument(document)
+  for (const operation of operations) {
+    const name = pascalCase(operation.id)
+    if (operation.method === 'get') {
+      assert.match(source, new RegExp(`export const get${name}QueryKey\\b`))
+      assert.match(source, new RegExp(`export const get${name}QueryOptions\\b`))
+      assert.match(source, new RegExp(`export function use${name}\\b`))
+    } else {
+      assert.match(source, new RegExp(`export const get${name}MutationOptions\\b`))
+      assert.match(source, new RegExp(`export const use${name}\\b`))
+    }
+  }
+  assert.equal(
+    source.match(/return withQueryKey\(query, queryOptions\.queryKey\)/g)?.length,
+    operations.filter(({ method }) => method === 'get').length
+  )
+})
+
+test('renderer output contains no HTTP transport artifacts', async () => {
+  const source = await readFile('src/renderer/src/api/generated/react-query.generated.ts', 'utf8')
+  assert.doesNotMatch(source, /\b(?:fetch|customFetch|RequestInit)\b|https?:\/\//)
+})
+
+test('React Query adapters normalize query, path, and body inputs', async () => {
+  const calls: Array<{ operation: string; input: unknown }> = []
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: {
+      api: {
+        events: {
+          listEvents: async (input: unknown) => {
+            calls.push({ operation: 'listEvents', input })
+            return []
+          },
+          getEvent: async (input: unknown) => {
+            calls.push({ operation: 'getEvent', input })
+            return {}
+          },
+          updateEvent: async (input: unknown) => {
+            calls.push({ operation: 'updateEvent', input })
+            return {}
+          }
+        }
+      }
+    }
+  })
+
+  const listEventsQueryFn = getListEventsQueryOptions({ month: 9 }).queryFn
+  const getEventQueryFn = getGetEventQueryOptions(42).queryFn
+  assert.equal(typeof listEventsQueryFn, 'function')
+  assert.equal(typeof getEventQueryFn, 'function')
+  if (typeof listEventsQueryFn === 'function') await listEventsQueryFn({} as never)
+  if (typeof getEventQueryFn === 'function') await getEventQueryFn({} as never)
+  await getUpdateEventMutationOptions().mutationFn?.(
+    { id: 42, data: { title: 'Updated' } },
+    {} as never
+  )
+
+  assert.deepEqual(calls, [
+    { operation: 'listEvents', input: { query: { month: 9 } } },
+    { operation: 'getEvent', input: { path: { id: 42 } } },
+    { operation: 'updateEvent', input: { path: { id: 42 }, body: { title: 'Updated' } } }
+  ])
+})
+
+test('IPC query keys are deterministic and use normalized inputs', () => {
+  const first = getListEventsQueryKey({ year: 2026, month: 9 })
+  const second = getListEventsQueryKey({ year: 2026, month: 9 })
+  assert.deepEqual(first, second)
+  assert.deepEqual(first, ['api', 'listEvents', { query: { year: 2026, month: 9 } }])
+  assert.equal(getGetEventQueryOptions(undefined as never).enabled, false)
 })
 
 test('representative path, query, and body inputs validate', () => {

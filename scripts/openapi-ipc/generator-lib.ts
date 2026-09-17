@@ -12,10 +12,21 @@ interface Operation {
   tag: string
   method: string
   path: string
+  kind: 'query' | 'mutation'
+  pathParameters: OperationParameter[]
+  queryParameters: OperationParameter[]
+  requestBody: { schema: JsonObject; required: boolean } | undefined
   inputSchema: JsonObject
   outputSchema: JsonObject | undefined
   errors: Array<{ status: number | 'default'; schema: JsonObject | undefined }>
   inputRequired: boolean
+}
+
+interface OperationParameter {
+  name: string
+  variableName: string
+  required: boolean
+  schema: JsonObject
 }
 
 export interface GeneratedFile {
@@ -213,23 +224,48 @@ function operationInputSchema(
   document: JsonObject,
   pathItem: JsonObject,
   operation: JsonObject
-): { schema: JsonObject; required: boolean } {
-  const parameters = [
+): {
+  schema: JsonObject
+  required: boolean
+  pathParameters: OperationParameter[]
+  queryParameters: OperationParameter[]
+  requestBody: { schema: JsonObject; required: boolean } | undefined
+} {
+  const parametersByLocationAndName = new Map<string, JsonObject>()
+  for (const parameter of [
     ...((pathItem.parameters as unknown[] | undefined) ?? []),
     ...((operation.parameters as unknown[] | undefined) ?? [])
-  ].map((parameter) => dereference(document, parameter))
+  ]) {
+    const resolved = dereference(document, parameter)
+    parametersByLocationAndName.set(`${String(resolved.in)}:${String(resolved.name)}`, resolved)
+  }
+  const parameters = [...parametersByLocationAndName.values()]
+
+  const operationParameters = (location: 'path' | 'query'): OperationParameter[] =>
+    parameters
+      .filter((parameter) => parameter.in === location)
+      .map((parameter) => ({
+        name: String(parameter.name),
+        variableName: identifier(String(parameter.name)),
+        required: parameter.required === true,
+        schema: (parameter.schema as JsonObject | undefined) ?? {}
+      }))
+
+  const pathParameters = operationParameters('path')
+  const queryParameters = operationParameters('query')
 
   const properties: JsonObject = {}
   const requiredGroups: string[] = []
-  for (const location of ['path', 'query'] as const) {
-    const values = parameters.filter((parameter) => parameter.in === location)
+  for (const [location, values] of [
+    ['path', pathParameters],
+    ['query', queryParameters]
+  ] as const) {
     if (values.length === 0) continue
     const groupProperties: JsonObject = {}
     const groupRequired: string[] = []
     for (const parameter of values) {
-      const name = String(parameter.name)
-      groupProperties[name] = (parameter.schema as JsonObject | undefined) ?? {}
-      if (parameter.required === true) groupRequired.push(name)
+      groupProperties[parameter.name] = parameter.schema
+      if (parameter.required) groupRequired.push(parameter.name)
     }
     properties[location] = {
       type: 'object',
@@ -240,11 +276,17 @@ function operationInputSchema(
     if (groupRequired.length > 0) requiredGroups.push(location)
   }
 
-  if (operation.requestBody) {
-    const requestBody = dereference(document, operation.requestBody)
-    properties.body = jsonSchemaFromContent(requestBody) ?? {}
-    if (requestBody.required === true) requiredGroups.push('body')
-  }
+  const requestBodyObject = operation.requestBody
+    ? dereference(document, operation.requestBody)
+    : undefined
+  const requestBody = requestBodyObject
+    ? {
+        schema: jsonSchemaFromContent(requestBodyObject) ?? {},
+        required: requestBodyObject.required === true
+      }
+    : undefined
+  if (requestBody) properties.body = requestBody.schema
+  if (requestBody?.required) requiredGroups.push('body')
 
   return {
     schema: {
@@ -253,7 +295,10 @@ function operationInputSchema(
       required: requiredGroups,
       additionalProperties: false
     },
-    required: requiredGroups.length > 0
+    required: requiredGroups.length > 0,
+    pathParameters,
+    queryParameters,
+    requestBody
   }
 }
 
@@ -299,6 +344,10 @@ function collectOperations(document: JsonObject): Operation[] {
         tag: identifier(tag),
         method: method.toUpperCase(),
         path,
+        kind: method === 'get' ? 'query' : 'mutation',
+        pathParameters: input.pathParameters,
+        queryParameters: input.queryParameters,
+        requestBody: input.requestBody,
         inputSchema: input.schema,
         outputSchema: jsonSchemaFromContent(success.response),
         errors,
@@ -441,6 +490,260 @@ ${implementationTags}
 `
 }
 
+function inputExpression(operation: Operation, source: 'query' | 'mutation'): string {
+  const entries: string[] = []
+
+  if (operation.pathParameters.length > 0) {
+    const fields = operation.pathParameters
+      .map((parameter) => {
+        const value =
+          source === 'query' ? parameter.variableName : `variables.${parameter.variableName}`
+        return `${JSON.stringify(parameter.name)}: ${value}`
+      })
+      .join(', ')
+    entries.push(`path: { ${fields} }`)
+  }
+
+  if (operation.queryParameters.length > 0) {
+    const params = source === 'query' ? 'params' : 'variables.params'
+    const queryRequired = operation.queryParameters.some((parameter) => parameter.required)
+    entries.push(
+      queryRequired
+        ? `query: ${params}`
+        : `...(${params} === undefined ? {} : { query: ${params} })`
+    )
+  }
+
+  if (source === 'mutation' && operation.requestBody) {
+    entries.push(
+      operation.requestBody.required
+        ? 'body: variables.data'
+        : '...(variables.data === undefined ? {} : { body: variables.data })'
+    )
+  }
+
+  return `{ ${entries.join(', ')} } satisfies ApiInput<${JSON.stringify(operation.id)}>`
+}
+
+function queryArguments(operation: Operation): {
+  declarations: string[]
+  names: string[]
+  typeAliases: string[]
+} {
+  const declarations = operation.pathParameters.map(
+    (parameter) =>
+      `${parameter.variableName}${parameter.required ? '' : '?'}: ApiInput<${JSON.stringify(operation.id)}>['path'][${JSON.stringify(parameter.name)}]`
+  )
+  const names = operation.pathParameters.map((parameter) => parameter.variableName)
+  const typeAliases: string[] = []
+
+  if (operation.queryParameters.length > 0) {
+    const paramsType = `${pascalCase(operation.id)}Params`
+    const required = operation.queryParameters.some((parameter) => parameter.required)
+    typeAliases.push(
+      `export type ${paramsType} = NonNullable<ApiInput<${JSON.stringify(operation.id)}>['query']>`
+    )
+    declarations.push(`params${required ? '' : '?'}: ${paramsType}`)
+    names.push('params')
+  }
+
+  return { declarations, names, typeAliases }
+}
+
+function requiredQueryParametersExpression(operation: Operation): string {
+  const checks = [
+    ...operation.pathParameters
+      .filter((parameter) => parameter.required)
+      .map((parameter) => `isDefined(${parameter.variableName})`),
+    ...operation.queryParameters
+      .filter((parameter) => parameter.required)
+      .map((parameter) => `isDefined(params?.[${JSON.stringify(parameter.name)}])`)
+  ]
+  return checks.length > 0 ? checks.join(' && ') : 'true'
+}
+
+function queryOperationSource(operation: Operation): string {
+  const name = pascalCase(operation.id)
+  const args = queryArguments(operation)
+  const keyParameters = args.declarations.join(', ')
+  const optionsParameter = `options?: ${name}QueryHookOptions<TData, TError>`
+  const hookParameters = [...args.declarations, optionsParameter].join(', ')
+  const optionsArguments = [...args.names, 'options'].join(', ')
+  const keyArguments = args.names.join(', ')
+  const requiredParametersPresent = requiredQueryParametersExpression(operation)
+  const input = inputExpression(operation, 'query')
+  const invoke = `getApi()[${JSON.stringify(operation.tag)}][${JSON.stringify(operation.id)}](input)`
+
+  return `${args.typeAliases.join('\n')}
+export type ${name}QueryResult = ApiOutput<${JSON.stringify(operation.id)}>
+export type ${name}QueryError = ApiOperationError<${JSON.stringify(operation.id)}>
+export type ${name}QueryHookOptions<TData, TError> = {
+  query?: Omit<UseQueryOptions<ApiOutput<${JSON.stringify(operation.id)}>, TError, TData>, 'queryKey' | 'queryFn'> & {
+    queryKey?: QueryKey
+  }
+}
+
+export const get${name}QueryKey = (${keyParameters}): readonly ['api', ${JSON.stringify(operation.id)}, ApiInput<${JSON.stringify(operation.id)}>] => {
+  const input = ${input}
+  return ['api', ${JSON.stringify(operation.id)}, input] as const
+}
+
+export const get${name}QueryOptions = <
+  TData = ApiOutput<${JSON.stringify(operation.id)}>,
+  TError = ${name}QueryError
+>(${hookParameters}): UseQueryOptions<ApiOutput<${JSON.stringify(operation.id)}>, TError, TData> & { queryKey: QueryKey } => {
+  const input = ${input}
+  const queryOptions = options?.query
+  const queryKey = queryOptions?.queryKey ?? get${name}QueryKey(${keyArguments})
+  const requiredParametersPresent = ${requiredParametersPresent}
+
+  return {
+    ...queryOptions,
+    queryKey,
+    queryFn: () => ${invoke},
+    enabled: requiredParametersPresent ? queryOptions?.enabled : false
+  } as UseQueryOptions<ApiOutput<${JSON.stringify(operation.id)}>, TError, TData> & { queryKey: QueryKey }
+}
+
+export function use${name}<
+  TData = ApiOutput<${JSON.stringify(operation.id)}>,
+  TError = ${name}QueryError
+>(${hookParameters}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = get${name}QueryOptions(${optionsArguments})
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError>
+  return withQueryKey(query, queryOptions.queryKey)
+}`
+}
+
+function mutationVariablesType(operation: Operation): string {
+  const fields = operation.pathParameters.map(
+    (parameter) =>
+      `${JSON.stringify(parameter.name)}${parameter.required ? '' : '?'}: ApiInput<${JSON.stringify(operation.id)}>['path'][${JSON.stringify(parameter.name)}]`
+  )
+
+  if (operation.queryParameters.length > 0) {
+    const required = operation.queryParameters.some((parameter) => parameter.required)
+    fields.push(
+      `params${required ? '' : '?'}: NonNullable<ApiInput<${JSON.stringify(operation.id)}>['query']>`
+    )
+  }
+  if (operation.requestBody) {
+    fields.push(
+      `data${operation.requestBody.required ? '' : '?'}: NonNullable<ApiInput<${JSON.stringify(operation.id)}>['body']>`
+    )
+  }
+
+  return fields.length > 0 ? `{ ${fields.join('; ')} }` : 'void'
+}
+
+function mutationOperationSource(operation: Operation): string {
+  const name = pascalCase(operation.id)
+  const variablesType = `${name}MutationVariables`
+  const mutationFunctionParameter =
+    mutationVariablesType(operation) === 'void' ? '()' : '(variables)'
+  const input = inputExpression(operation, 'mutation')
+  const invoke = `getApi()[${JSON.stringify(operation.tag)}][${JSON.stringify(operation.id)}](input)`
+  const bodyAlias = operation.requestBody
+    ? `export type ${name}MutationBody = NonNullable<ApiInput<${JSON.stringify(operation.id)}>['body']>`
+    : ''
+
+  return `export type ${variablesType} = ${mutationVariablesType(operation)}
+export type ${name}MutationResult = ApiOutput<${JSON.stringify(operation.id)}>
+${bodyAlias}
+export type ${name}MutationError = ApiOperationError<${JSON.stringify(operation.id)}>
+export type ${name}MutationHookOptions<TError, TContext> = {
+  mutation?: UseMutationOptions<
+    ApiOutput<${JSON.stringify(operation.id)}>,
+    TError,
+    ${variablesType},
+    TContext
+  >
+}
+
+export const get${name}MutationOptions = <
+  TError = ${name}MutationError,
+  TContext = unknown
+>(options?: ${name}MutationHookOptions<TError, TContext>): UseMutationOptions<
+  ApiOutput<${JSON.stringify(operation.id)}>,
+  TError,
+  ${variablesType},
+  TContext
+> => {
+  const mutationOptions = options?.mutation
+  const mutationKey = mutationOptions?.mutationKey ?? ['api', ${JSON.stringify(operation.id)}]
+  const mutationFn: MutationFunction<ApiOutput<${JSON.stringify(operation.id)}>, ${variablesType}> = ${mutationFunctionParameter} => {
+    const input = ${input}
+    return ${invoke}
+  }
+
+  return { mutationKey, mutationFn, ...mutationOptions }
+}
+
+export const use${name} = <TError = ${name}MutationError, TContext = unknown>(
+  options?: ${name}MutationHookOptions<TError, TContext>
+): UseMutationResult<ApiOutput<${JSON.stringify(operation.id)}>, TError, ${variablesType}, TContext> =>
+  useMutation(get${name}MutationOptions(options))`
+}
+
+function rendererReactQuerySource(operations: Operation[]): string {
+  const blocks = operations.map((operation) =>
+    operation.kind === 'query'
+      ? queryOperationSource(operation)
+      : mutationOperationSource(operation)
+  )
+
+  return `${GENERATED_HEADER}
+import {
+  useMutation,
+  useQuery,
+  type MutationFunction,
+  type QueryKey,
+  type UseMutationOptions,
+  type UseMutationResult,
+  type UseQueryOptions,
+  type UseQueryResult
+} from '@tanstack/react-query'
+import type {
+  ApiClientError,
+  ApiClient,
+  ApiDeclaredError,
+  ApiInput,
+  ApiOperationId,
+  ApiOutput
+} from '../../../../shared/api'
+
+export type ApiOperationError<K extends ApiOperationId> = ApiClientError & {
+  readonly details?: ApiDeclaredError<K>
+}
+
+function getApi(): ApiClient {
+  return (window as unknown as { api: ApiClient }).api
+}
+
+function isDefined(value: unknown): boolean {
+  return value !== undefined && value !== null
+}
+
+function withQueryKey<TData, TError>(
+  query: UseQueryResult<TData, TError>,
+  queryKey: QueryKey
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  return Object.assign(query, { queryKey })
+}
+
+${blocks.join('\n\n')}
+`
+}
+
+function rendererIndexSource(componentNames: string[]): string {
+  return `${GENERATED_HEADER}
+export * from './generated/react-query.generated'
+export type {
+  ${componentNames.join(',\n  ')}
+} from '../../../shared/api'
+`
+}
+
 function indexSource(): string {
   return `${GENERATED_HEADER}
 export * from './contract.generated'
@@ -453,13 +756,26 @@ export async function buildGeneratedFiles(rootDirectory = process.cwd()): Promis
   const document = asObject(parse(await readFile(inputPath, 'utf8')), 'OpenAPI document')
   const operations = collectOperations(document)
   const outputDirectory = resolve(rootDirectory, ipcGeneratorConfig.outputDirectory)
+  const rendererOutputDirectory = resolve(rootDirectory, ipcGeneratorConfig.rendererOutputDirectory)
+  const componentNames = orderSchemas(
+    (((document.components as JsonObject | undefined) ?? {}).schemas as JsonObject | undefined) ??
+      {}
+  ).map(identifier)
   const sources = [
     {
       path: resolve(outputDirectory, 'contract.generated.ts'),
       source: contractSource(document, operations)
     },
     { path: resolve(outputDirectory, 'client.generated.ts'), source: clientSource(operations) },
-    { path: resolve(outputDirectory, 'index.ts'), source: indexSource() }
+    { path: resolve(outputDirectory, 'index.ts'), source: indexSource() },
+    {
+      path: resolve(rendererOutputDirectory, 'react-query.generated.ts'),
+      source: rendererReactQuerySource(operations)
+    },
+    {
+      path: resolve(rootDirectory, ipcGeneratorConfig.rendererBarrel),
+      source: rendererIndexSource(componentNames)
+    }
   ]
 
   return Promise.all(
