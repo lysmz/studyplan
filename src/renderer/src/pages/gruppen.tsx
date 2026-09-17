@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useQueryClient } from "@tanstack/react-query";
-import { getListGroupsQueryKey, useCreateGroup, useListGroups } from "@workspace/api-client-react";
+import { getListGroupsQueryKey, useCreateGroup, useListGroups } from "@/api";
 import { ArrowRight, FolderKanban, Plus, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

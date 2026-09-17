@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRegister, useListStudyPrograms } from "@workspace/api-client-react";
+import { useRegister, useListStudyPrograms } from "@/api";
 import { BookOpen, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

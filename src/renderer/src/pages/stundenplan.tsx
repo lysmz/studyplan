@@ -8,15 +8,14 @@ import {
   useGetTimetablePresetEntries,
   getListTimetableEntriesQueryKey,
   getGetTimetablePresetEntriesQueryKey
-} from "@workspace/api-client-react";
+} from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Download, Table as TableIcon, CalendarDays, Clock } from "lucide-react";
+import { Plus, Trash2, Download, Clock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

@@ -3,10 +3,10 @@ import {
   useListStudyPrograms, 
   useListStudyProgramCourses,
   getListStudyProgramCoursesQueryKey
-} from "@workspace/api-client-react";
-import { BookOpen, GraduationCap, Building2, Search, Filter } from "lucide-react";
+} from "@/api";
+import { GraduationCap, Building2, Search } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

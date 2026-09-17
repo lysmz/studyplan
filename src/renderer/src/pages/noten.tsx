@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useListGrades, useCreateGrade, useUpdateGrade, useDeleteGrade, useGetGradeStats, getListGradesQueryKey, getGetGradeStatsQueryKey } from "@workspace/api-client-react";
+import { useListGrades, useCreateGrade, useUpdateGrade, useDeleteGrade, useGetGradeStats, getListGradesQueryKey, getGetGradeStatsQueryKey } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Upload, Trash2, Edit, TrendingUp, BookOpen, GraduationCap, Trophy } from "lucide-react";
 import { useForm } from "react-hook-form";

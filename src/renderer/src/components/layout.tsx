@@ -1,16 +1,14 @@
 import { Link, useLocation } from "wouter";
 import { 
   useGetMe, 
-  useLogout, 
-  getGetMeQueryKey 
-} from "@workspace/api-client-react";
+  useLogout
+} from "@/api";
 import { 
   BookOpen, 
   CalendarDays, 
   GraduationCap, 
   LayoutDashboard, 
-  LogOut, 
-  Menu,
+  LogOut,
   Table as TableIcon,
   Users
 } from "lucide-react";
@@ -25,8 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
-  useSidebar
+  SidebarTrigger
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect } from "react";

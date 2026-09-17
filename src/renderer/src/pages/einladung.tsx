@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation, useRoute } from "wouter";
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetGroupInviteQueryKey, getListGroupsQueryKey, useGetGroupInvite, useJoinGroup } from "@workspace/api-client-react";
+import { getGetGroupInviteQueryKey, getListGroupsQueryKey, useGetGroupInvite, useJoinGroup } from "@/api";
 import { ArrowRight, Check, Loader2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetMe } from "@workspace/api-client-react";
+import { useGetMe } from "@/api";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Einladung() {

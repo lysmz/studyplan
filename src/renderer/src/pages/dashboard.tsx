@@ -1,13 +1,12 @@
-import { useState } from "react";
 import { Link } from "wouter";
-import { format, parseISO, isPast, isToday } from "date-fns";
+import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { 
   useGetDashboardStats, 
   useGetDashboardUpcoming, 
   useGetDashboardActivity 
   ,useGetGroupsActivity
-} from "@workspace/api-client-react";
+} from "@/api";
 import { 
   Plus, 
   GraduationCap, 
@@ -21,7 +20,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -111,7 +110,7 @@ export default function Dashboard() {
               ) : upcoming && upcoming.length > 0 ? (
                 <div className="space-y-3">
                   {upcoming.map((event) => {
-                    const date = parseISO(event.startDate);
+                    const date = event.startDate;
                     return (
                       <div key={event.id} className="flex gap-4 p-4 rounded-xl border bg-card hover:border-primary/20 transition-colors group">
                         <div className="flex flex-col items-center justify-center min-w-14 rounded-lg bg-primary/5 text-primary p-2">
@@ -169,13 +168,13 @@ export default function Dashboard() {
                 </div>
               ) : activity && activity.length > 0 ? (
                 <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
-                  {activity.map((item, i) => (
+                  {activity.map((item) => (
                     <div key={item.id} className="relative flex items-center gap-4 py-2">
                       <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full border-2 border-background bg-primary/20 -translate-x-1.5 md:-translate-x-2 z-10" />
                       <div className="flex flex-col min-w-0 flex-1 pl-6 md:pl-0">
                         <p className="text-sm text-foreground">{item.description}</p>
                         <span className="text-xs text-muted-foreground mt-0.5">
-                          {format(parseISO(item.createdAt), 'dd.MM.yyyy HH:mm')}
+                          {format(item.createdAt, 'dd.MM.yyyy HH:mm')}
                         </span>
                       </div>
                     </div>

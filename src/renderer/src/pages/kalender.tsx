@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, addMonths, subMonths, parseISO, isSameDay } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, addMonths, subMonths, isSameDay } from "date-fns";
 import { de } from "date-fns/locale";
-import { useListEvents, useCreateEvent, useDeleteEvent, getListEventsQueryKey, useListAllGroupEvents, getListAllGroupEventsQueryKey } from "@workspace/api-client-react";
+import { useListEvents, useCreateEvent, useDeleteEvent, getListEventsQueryKey, useListAllGroupEvents, getListAllGroupEventsQueryKey } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarIcon, ChevronLeft, ChevronRight, List, LayoutGrid, Plus, Upload, Trash2, Clock, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, List, LayoutGrid, Plus, Upload, Trash2, Clock, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,11 +11,10 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 
@@ -34,7 +33,6 @@ type EventFormValues = z.infer<typeof eventSchema>;
 export default function Kalender() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"grid" | "list">("grid");
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   
@@ -44,8 +42,8 @@ export default function Kalender() {
   const monthParams = { month: currentDate.getMonth() + 1, year: currentDate.getFullYear() };
   const { data: events = [] } = useListEvents(monthParams);
   const groupWindow = useMemo(() => ({
-    from: startOfMonth(currentDate).toISOString(),
-    to: endOfMonth(currentDate).toISOString(),
+    from: startOfMonth(currentDate),
+    to: endOfMonth(currentDate),
   }), [currentDate]);
   const { data: groupEvents = [] } = useListAllGroupEvents(groupWindow);
   const createEvent = useCreateEvent();
@@ -71,7 +69,13 @@ export default function Kalender() {
   });
 
   const onSubmit = (values: EventFormValues) => {
-    createEvent.mutate({ data: values }, {
+    createEvent.mutate({
+      data: {
+        ...values,
+        startDate: new Date(values.startDate),
+        endDate: new Date(values.endDate),
+      },
+    }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
         queryClient.invalidateQueries({ queryKey: getListAllGroupEventsQueryKey(groupWindow) });
@@ -133,8 +137,8 @@ export default function Kalender() {
 
   const eventsForDay = (date: Date) => {
     return calendarEvents.filter((e: any) => {
-      const start = parseISO(e.startDate);
-      const end = parseISO(e.endDate);
+      const start = new Date(e.startDate);
+      const end = new Date(e.endDate);
       const isMulti = e.isMultiDay;
       if (isMulti) {
         return date >= new Date(start.setHours(0,0,0,0)) && date <= new Date(end.setHours(23,59,59,999));
@@ -144,12 +148,12 @@ export default function Kalender() {
   };
 
   const calendarEvents = useMemo(() => [
-    ...events.map((event) => ({ ...event, isGroupEvent: false })),
+    ...events.map((event) => ({ ...event, isGroupEvent: false as const })),
     ...groupEvents.map((event) => ({
       ...event,
       id: -event.id,
       groupEventId: event.id,
-      isGroupEvent: true,
+      isGroupEvent: true as const,
       importance: "medium" as const,
       isMultiDay: false,
     })),
@@ -308,7 +312,7 @@ export default function Kalender() {
                                    {e.isGroupEvent && <Badge variant="secondary">Gruppe · {e.groupId}</Badge>}
                                 </div>
                                 <div className="text-sm text-muted-foreground mt-1 flex flex-col gap-1">
-                                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(parseISO(e.startDate), 'HH:mm')} - {format(parseISO(e.endDate), 'HH:mm')}</span>
+                                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(e.startDate, 'HH:mm')} - {format(e.endDate, 'HH:mm')}</span>
                                   {e.location && <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {e.location}</span>}
                                 </div>
                               </div>
@@ -330,12 +334,12 @@ export default function Kalender() {
              {calendarEvents.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">Keine Termine in diesem Monat.</div>
             ) : (
-               [...calendarEvents].sort((a,b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime()).map((e: any) => (
+               [...calendarEvents].sort((a,b) => a.startDate.getTime() - b.startDate.getTime()).map((e) => (
                 <div key={e.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border p-4 rounded-xl bg-card hover:border-primary/20 transition-colors">
                   <div className="flex items-start gap-4">
                     <div className="flex flex-col items-center min-w-16 p-2 rounded-lg bg-primary/5 text-primary">
-                      <span className="text-xs uppercase font-medium">{format(parseISO(e.startDate), 'MMM', { locale: de })}</span>
-                      <span className="text-xl font-bold">{format(parseISO(e.startDate), 'dd')}</span>
+                      <span className="text-xs uppercase font-medium">{format(e.startDate, 'MMM', { locale: de })}</span>
+                      <span className="text-xl font-bold">{format(e.startDate, 'dd')}</span>
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
@@ -346,7 +350,7 @@ export default function Kalender() {
                         </Badge>
                       </div>
                       <div className="flex flex-wrap items-center text-sm text-muted-foreground mt-1 gap-x-4 gap-y-1">
-                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(parseISO(e.startDate), 'HH:mm')}</span>
+                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(e.startDate, 'HH:mm')}</span>
                         {e.location && <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {e.location}</span>}
                       </div>
                       {e.description && <p className="text-sm mt-2 text-foreground/80">{e.description}</p>}
