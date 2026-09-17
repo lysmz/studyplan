@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 45 30% 97%; /* Warm ivory */
+  --foreground: 160 40% 15%; /* Deep pine black */
+
+  --card: 0 0% 100%;
+  --card-foreground: 160 40% 15%;
+  --card-border: 160 20% 90%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 160 40% 15%;
+  --popover-border: 160 20% 90%;
+
+  --primary: 160 50% 25%; /* Rich pine green */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 160 30% 92%; /* Soft pale green */
+  --secondary-foreground: 160 50% 25%;
+
+  --muted: 45 20% 92%; /* Warm gray */
+  --muted-foreground: 160 10% 40%; /* Medium green-gray */
+
+  --accent: 35 80% 50%; /* Warm ochre */
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 70% 45%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 160 20% 90%;
+  --input: 160 20% 90%;
+  --ring: 160 50% 25%;
+
+  --chart-1: 160 50% 25%; /* Pine */
+  --chart-2: 35 80% 50%; /* Ochre */
+  --chart-3: 0 70% 50%; /* Red */
+  --chart-4: 210 60% 50%; /* Blue */
+  --chart-5: 280 60% 50%; /* Purple */
+
+  --sidebar: 45 30% 97%;
+  --sidebar-foreground: 160 40% 15%;
+  --sidebar-border: 160 20% 90%;
+  --sidebar-primary: 160 50% 25%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 160 30% 92%;
+  --sidebar-accent-foreground: 160 50% 25%;
+  --sidebar-ring: 160 50% 25%;
+
+  --radius: 0.75rem;
+  --app-font-sans: 'Plus Jakarta Sans', sans-serif;
+  --app-font-serif: 'Fraunces', serif;
+  --app-font-mono: 'Menlo', monospace;
+}
+
+.dark {
+  --background: 160 40% 10%;
+  --foreground: 45 30% 95%;
+
+  --card: 160 40% 12%;
+  --card-foreground: 45 30% 95%;
+  --card-border: 160 40% 20%;
+
+  --popover: 160 40% 12%;
+  --popover-foreground: 45 30% 95%;
+  --popover-border: 160 40% 20%;
+
+  --primary: 160 50% 40%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 160 40% 20%;
+  --secondary-foreground: 45 30% 95%;
+
+  --muted: 160 40% 15%;
+  --muted-foreground: 160 10% 60%;
+
+  --accent: 35 80% 50%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 160 40% 20%;
+  --input: 160 40% 20%;
+  --ring: 160 50% 40%;
+
+  --chart-1: 160 50% 40%;
+  --chart-2: 35 80% 50%;
+  --chart-3: 0 60% 50%;
+  --chart-4: 210 60% 60%;
+  --chart-5: 280 60% 60%;
+
+  --sidebar: 160 40% 10%;
+  --sidebar-foreground: 45 30% 95%;
+  --sidebar-border: 160 40% 20%;
+  --sidebar-primary: 160 50% 40%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 160 40% 20%;
+  --sidebar-accent-foreground: 45 30% 95%;
+  --sidebar-ring: 160 50% 40%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}

@@ -1,28 +1,84 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { AppLayout } from '@/components/layout';
 
-function App(): React.JSX.Element {
+// Pages
+import NotFound from '@/pages/not-found';
+import Login from '@/pages/login';
+import Register from '@/pages/register';
+import Dashboard from '@/pages/dashboard';
+import Kalender from '@/pages/kalender';
+import Noten from '@/pages/noten';
+import Stundenplan from '@/pages/stundenplan';
+import Studie from '@/pages/studie';
+import Gruppen from '@/pages/gruppen';
+import GruppenDetail from '@/pages/gruppen-detail';
+import Einladung from '@/pages/einladung';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+function Router() {
   return (
-    <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-      </div>
-      <Versions></Versions>
-    </>
-  )
+    <Switch>
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      
+      <Route path="/kalender">
+        <AppLayout>
+          <Kalender />
+        </AppLayout>
+      </Route>
+      <Route path="/noten">
+        <AppLayout>
+          <Noten />
+        </AppLayout>
+      </Route>
+      <Route path="/stundenplan">
+        <AppLayout>
+          <Stundenplan />
+        </AppLayout>
+      </Route>
+      <Route path="/studie">
+        <AppLayout>
+          <Studie />
+        </AppLayout>
+      </Route>
+      <Route path="/gruppen">
+        <AppLayout><Gruppen /></AppLayout>
+      </Route>
+      <Route path="/gruppen/:id">
+        <AppLayout><GruppenDetail /></AppLayout>
+      </Route>
+      <Route path="/einladung/:token" component={Einladung} />
+      <Route path="/">
+        <AppLayout><Dashboard /></AppLayout>
+      </Route>
+
+      <Route component={NotFound} />
+    </Switch>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
