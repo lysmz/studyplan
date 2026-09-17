@@ -1,0 +1,1901 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Studienplaner API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: auth
+  - name: dashboard
+  - name: events
+  - name: grades
+  - name: timetable
+  - name: studyPrograms
+  - name: groups
+  - name: invite
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ── Auth ──────────────────────────────────────────────────────────────────
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      responses:
+        "204":
+          description: Logged out
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ── Dashboard ─────────────────────────────────────────────────────────────
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/upcoming:
+    get:
+      operationId: getDashboardUpcoming
+      tags: [dashboard]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /dashboard/activity:
+    get:
+      operationId: getDashboardActivity
+      tags: [dashboard]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  # ── Events ────────────────────────────────────────────────────────────────
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      parameters:
+        - name: month
+          in: query
+          schema:
+            type: integer
+        - name: year
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            $ref: "#/components/schemas/EventType"
+        - name: importance
+          in: query
+          schema:
+            $ref: "#/components/schemas/Importance"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags: [events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateEvent
+      tags: [events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteEvent
+      tags: [events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ── Grades ────────────────────────────────────────────────────────────────
+  /grades:
+    get:
+      operationId: listGrades
+      tags: [grades]
+      parameters:
+        - name: semester
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Grade"
+    post:
+      operationId: createGrade
+      tags: [grades]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GradeInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Grade"
+
+  /grades/stats:
+    get:
+      operationId: getGradeStats
+      tags: [grades]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GradeStats"
+
+  /grades/{id}:
+    patch:
+      operationId: updateGrade
+      tags: [grades]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GradeUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Grade"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteGrade
+      tags: [grades]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ── Timetable ─────────────────────────────────────────────────────────────
+  /timetable:
+    get:
+      operationId: listTimetableEntries
+      tags: [timetable]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimetableEntry"
+    post:
+      operationId: addTimetableEntry
+      tags: [timetable]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TimetableEntryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimetableEntry"
+
+  /timetable/{id}:
+    delete:
+      operationId: removeTimetableEntry
+      tags: [timetable]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /timetable/clear:
+    delete:
+      operationId: clearTimetable
+      tags: [timetable]
+      responses:
+        "204":
+          description: Cleared
+
+  /timetable/presets:
+    get:
+      operationId: listTimetablePresets
+      tags: [timetable]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimetablePreset"
+
+  /timetable/presets/{presetId}/entries:
+    get:
+      operationId: getTimetablePresetEntries
+      tags: [timetable]
+      parameters:
+        - name: presetId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PresetEntry"
+
+  # ── Study Programs ─────────────────────────────────────────────────────────
+  /study-programs:
+    get:
+      operationId: listStudyPrograms
+      tags: [studyPrograms]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyProgram"
+
+  /study-programs/{id}/courses:
+    get:
+      operationId: listStudyProgramCourses
+      tags: [studyPrograms]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+
+  # ── Study Groups ──────────────────────────────────────────────────────────
+  /groups:
+    get:
+      operationId: listGroups
+      tags: [groups]
+      summary: List all groups I am a member of
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyGroup"
+    post:
+      operationId: createGroup
+      tags: [groups]
+      summary: Create a new study group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyGroupInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyGroup"
+
+  /groups/activity:
+    get:
+      operationId: getGroupsActivity
+      tags: [groups]
+      summary: Recent activity across all my groups
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupActivityItem"
+
+  /groups/events:
+    get:
+      operationId: listAllGroupEvents
+      tags: [groups]
+      summary: All group events across all my groups (for calendar view)
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupEvent"
+
+  /groups/{id}:
+    get:
+      operationId: getGroup
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyGroup"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateGroup
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyGroupUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyGroup"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteGroup
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{id}/invite:
+    post:
+      operationId: createGroupInvite
+      tags: [groups]
+      summary: Generate a new invite link for the group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupInviteLink"
+
+  /groups/{id}/leave:
+    post:
+      operationId: leaveGroup
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Left group
+
+  /groups/{id}/members:
+    get:
+      operationId: listGroupMembers
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupMember"
+
+  /groups/{id}/members/{userId}:
+    delete:
+      operationId: removeGroupMember
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Removed
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{id}/events:
+    get:
+      operationId: listGroupEvents
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupEvent"
+    post:
+      operationId: createGroupEvent
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupEventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupEvent"
+
+  /groups/{id}/events/{eventId}:
+    patch:
+      operationId: updateGroupEvent
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupEventUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupEvent"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteGroupEvent
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{id}/events/{eventId}/comments:
+    get:
+      operationId: listEventComments
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: addEventComment
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
+  /groups/{id}/tasks:
+    get:
+      operationId: listGroupTasks
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupTask"
+    post:
+      operationId: createGroupTask
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupTaskInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupTask"
+
+  /groups/{id}/tasks/{taskId}:
+    patch:
+      operationId: updateGroupTask
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupTaskUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupTask"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteGroupTask
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{id}/tasks/{taskId}/comments:
+    get:
+      operationId: listTaskComments
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: addTaskComment
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
+  /groups/{id}/notes:
+    get:
+      operationId: listGroupNotes
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupNote"
+    post:
+      operationId: createGroupNote
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupNoteInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupNote"
+
+  /groups/{id}/notes/{noteId}:
+    patch:
+      operationId: updateGroupNote
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: noteId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupNoteUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupNote"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteGroupNote
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: noteId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /comments/{id}:
+    delete:
+      operationId: deleteComment
+      tags: [groups]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ── Invite ────────────────────────────────────────────────────────────────
+  /invite/{token}:
+    get:
+      operationId: getGroupInvite
+      tags: [invite]
+      summary: Get group info for an invite token (public)
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupInviteInfo"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /invite/{token}/join:
+    post:
+      operationId: joinGroup
+      tags: [invite]
+      summary: Join a group via invite token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyGroup"
+        "400":
+          description: Already a member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    # ── Auth ──────────────────────────────────────────────────────────────────
+    RegisterInput:
+      type: object
+      required: [username, password, displayName]
+      properties:
+        username:
+          type: string
+          minLength: 3
+        password:
+          type: string
+          minLength: 6
+        displayName:
+          type: string
+          minLength: 1
+        studyProgramId:
+          type: ["integer", "null"]
+
+    LoginInput:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthUser:
+      type: object
+      required: [id, username, displayName]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        displayName:
+          type: string
+        studyProgramId:
+          type: ["integer", "null"]
+
+    # ── Dashboard ─────────────────────────────────────────────────────────────
+    DashboardStats:
+      type: object
+      required: [gpa, totalEcts, upcomingDeadlinesCount, gradesCount]
+      properties:
+        gpa:
+          type: ["number", "null"]
+        totalEcts:
+          type: number
+        upcomingDeadlinesCount:
+          type: integer
+        gradesCount:
+          type: integer
+
+    ActivityItem:
+      type: object
+      required: [id, type, description, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [grade_added, grade_updated, event_added, event_deleted]
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── Events ────────────────────────────────────────────────────────────────
+    EventType:
+      type: string
+      enum: [exam, deadline, registration, lecture, other]
+
+    Importance:
+      type: string
+      enum: [high, medium, low]
+
+    Event:
+      type: object
+      required: [id, title, startDate, endDate, type, importance, isMultiDay, userId]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        importance:
+          $ref: "#/components/schemas/Importance"
+        isMultiDay:
+          type: boolean
+        location:
+          type: ["string", "null"]
+        userId:
+          type: integer
+
+    EventInput:
+      type: object
+      required: [title, startDate, endDate, type, importance]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        importance:
+          $ref: "#/components/schemas/Importance"
+        location:
+          type: string
+
+    EventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        importance:
+          $ref: "#/components/schemas/Importance"
+        location:
+          type: string
+
+    # ── Grades ────────────────────────────────────────────────────────────────
+    Grade:
+      type: object
+      required: [id, courseName, ects, semester, passed, userId]
+      properties:
+        id:
+          type: integer
+        courseName:
+          type: string
+        grade:
+          type: ["number", "null"]
+        ects:
+          type: number
+        semester:
+          type: string
+        passed:
+          type: boolean
+        notes:
+          type: ["string", "null"]
+        userId:
+          type: integer
+        courseId:
+          type: ["integer", "null"]
+
+    GradeInput:
+      type: object
+      required: [courseName, ects, semester, passed]
+      properties:
+        courseName:
+          type: string
+          minLength: 1
+        grade:
+          type: number
+          minimum: 1
+          maximum: 5
+        ects:
+          type: number
+          minimum: 0
+        semester:
+          type: string
+          minLength: 1
+        passed:
+          type: boolean
+        notes:
+          type: string
+        courseId:
+          type: integer
+
+    GradeUpdate:
+      type: object
+      properties:
+        courseName:
+          type: string
+          minLength: 1
+        grade:
+          type: ["number", "null"]
+        ects:
+          type: number
+          minimum: 0
+        semester:
+          type: string
+        passed:
+          type: boolean
+        notes:
+          type: ["string", "null"]
+        courseId:
+          type: ["integer", "null"]
+
+    GradeStats:
+      type: object
+      required: [overallGpa, totalEcts, bySemester]
+      properties:
+        overallGpa:
+          type: ["number", "null"]
+        totalEcts:
+          type: number
+        bySemester:
+          type: array
+          items:
+            $ref: "#/components/schemas/SemesterStats"
+
+    SemesterStats:
+      type: object
+      required: [semester, gpa, ects, count]
+      properties:
+        semester:
+          type: string
+        gpa:
+          type: ["number", "null"]
+        ects:
+          type: number
+        count:
+          type: integer
+
+    # ── Timetable ─────────────────────────────────────────────────────────────
+    WeekDay:
+      type: string
+      enum: [monday, tuesday, wednesday, thursday, friday]
+
+    TimeSlot:
+      type: string
+      enum: [slot1, slot2, slot3, slot4, slot5, slot6]
+
+    TimetableEntry:
+      type: object
+      required: [id, courseName, weekDay, timeSlot, isCustom, userId]
+      properties:
+        id:
+          type: integer
+        courseName:
+          type: string
+        weekDay:
+          $ref: "#/components/schemas/WeekDay"
+        timeSlot:
+          $ref: "#/components/schemas/TimeSlot"
+        room:
+          type: ["string", "null"]
+        professor:
+          type: ["string", "null"]
+        isCustom:
+          type: boolean
+        color:
+          type: ["string", "null"]
+        userId:
+          type: integer
+
+    TimetableEntryInput:
+      type: object
+      required: [courseName, weekDay, timeSlot, isCustom]
+      properties:
+        courseName:
+          type: string
+          minLength: 1
+        weekDay:
+          $ref: "#/components/schemas/WeekDay"
+        timeSlot:
+          $ref: "#/components/schemas/TimeSlot"
+        room:
+          type: string
+        professor:
+          type: string
+        isCustom:
+          type: boolean
+        color:
+          type: string
+
+    TimetablePreset:
+      type: object
+      required: [id, name, description, faculty]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        faculty:
+          type: string
+
+    PresetEntry:
+      type: object
+      required: [id, presetId, courseName, weekDay, timeSlot]
+      properties:
+        id:
+          type: integer
+        presetId:
+          type: integer
+        courseName:
+          type: string
+        weekDay:
+          $ref: "#/components/schemas/WeekDay"
+        timeSlot:
+          $ref: "#/components/schemas/TimeSlot"
+        room:
+          type: ["string", "null"]
+        professor:
+          type: ["string", "null"]
+
+    # ── Study Programs ─────────────────────────────────────────────────────────
+    StudyProgram:
+      type: object
+      required: [id, name, faculty, totalEcts]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        faculty:
+          type: string
+        totalEcts:
+          type: integer
+
+    Course:
+      type: object
+      required: [id, name, ects, semester, studyProgramId]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        ects:
+          type: number
+        semester:
+          type: string
+        studyProgramId:
+          type: integer
+        isRequired:
+          type: boolean
+
+    # ── Study Groups ──────────────────────────────────────────────────────────
+    GroupRole:
+      type: string
+      enum: [owner, member]
+
+    StudyGroup:
+      type: object
+      required: [id, name, createdBy, createdAt, myRole, memberCount]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        createdBy:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        myRole:
+          $ref: "#/components/schemas/GroupRole"
+        memberCount:
+          type: integer
+        inviteToken:
+          type: ["string", "null"]
+
+    StudyGroupInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+
+    StudyGroupUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: ["string", "null"]
+
+    GroupMember:
+      type: object
+      required: [userId, username, displayName, role, joinedAt]
+      properties:
+        userId:
+          type: integer
+        username:
+          type: string
+        displayName:
+          type: string
+        role:
+          $ref: "#/components/schemas/GroupRole"
+        joinedAt:
+          type: string
+          format: date-time
+
+    GroupInviteLink:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+
+    GroupInviteInfo:
+      type: object
+      required: [groupId, groupName, memberCount]
+      properties:
+        groupId:
+          type: integer
+        groupName:
+          type: string
+        memberCount:
+          type: integer
+        description:
+          type: ["string", "null"]
+
+    GroupActivityItem:
+      type: object
+      required: [id, groupId, groupName, type, description, actorName, createdAt]
+      properties:
+        id:
+          type: integer
+        groupId:
+          type: integer
+        groupName:
+          type: string
+        type:
+          type: string
+          enum: [event_created, event_updated, event_deleted, task_created, task_updated, task_completed, note_created, member_joined, member_left]
+        description:
+          type: string
+        actorName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    GroupEvent:
+      type: object
+      required: [id, groupId, title, startDate, endDate, type, createdBy, createdByName, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        groupId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        location:
+          type: ["string", "null"]
+        createdBy:
+          type: integer
+        createdByName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GroupEventInput:
+      type: object
+      required: [title, startDate, endDate, type]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        location:
+          type: string
+
+    GroupEventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: ["string", "null"]
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        type:
+          $ref: "#/components/schemas/EventType"
+        location:
+          type: ["string", "null"]
+
+    TaskStatus:
+      type: string
+      enum: [open, done]
+
+    GroupTask:
+      type: object
+      required: [id, groupId, title, status, createdBy, createdByName, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        groupId:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        dueDate:
+          type: ["string", "null"]
+          format: date-time
+        assigneeId:
+          type: ["integer", "null"]
+        assigneeName:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/TaskStatus"
+        createdBy:
+          type: integer
+        createdByName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GroupTaskInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        assigneeId:
+          type: integer
+
+    GroupTaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: ["string", "null"]
+        dueDate:
+          type: ["string", "null"]
+          format: date-time
+        assigneeId:
+          type: ["integer", "null"]
+        status:
+          $ref: "#/components/schemas/TaskStatus"
+
+    NoteType:
+      type: string
+      enum: [note, link]
+
+    GroupNote:
+      type: object
+      required: [id, groupId, title, type, createdBy, createdByName, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        groupId:
+          type: integer
+        title:
+          type: string
+        content:
+          type: ["string", "null"]
+        url:
+          type: ["string", "null"]
+        type:
+          $ref: "#/components/schemas/NoteType"
+        createdBy:
+          type: integer
+        createdByName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    GroupNoteInput:
+      type: object
+      required: [title, type]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+        url:
+          type: string
+        type:
+          $ref: "#/components/schemas/NoteType"
+
+    GroupNoteUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: ["string", "null"]
+        url:
+          type: ["string", "null"]
+        type:
+          $ref: "#/components/schemas/NoteType"
+
+    Comment:
+      type: object
+      required: [id, targetType, targetId, content, createdBy, createdByName, createdAt]
+      properties:
+        id:
+          type: integer
+        targetType:
+          type: string
+          enum: [event, task]
+        targetId:
+          type: integer
+        content:
+          type: string
+        createdBy:
+          type: integer
+        createdByName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    CommentInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 1

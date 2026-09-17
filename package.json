@@ -10,12 +10,15 @@
     "lint": "eslint --cache .",
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
+    "api:generate": "tsx scripts/openapi-ipc/generate.ts",
+    "api:check": "tsx scripts/openapi-ipc/generate.ts --check",
+    "api:test": "tsx --test scripts/openapi-ipc/generator.test.ts",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
+    "build": "npm run api:check && npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
@@ -28,7 +31,8 @@
     "@libsql/client": "^0.18.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
-    "drizzle-zod": "^0.8.3"
+    "drizzle-zod": "^0.8.3",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
@@ -51,6 +55,7 @@
     "react-dom": "^19.2.1",
     "tsx": "^4.23.13",
     "typescript": "^5.9.3",
-    "vite": "^7.2.6"
+    "vite": "^7.2.6",
+    "yaml": "^2.9.1"
   }
 }

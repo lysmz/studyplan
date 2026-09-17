@@ -1,8 +1,25 @@
-import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, dialog } from 'electron'
 import { join } from 'path'
+import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase } from './db'
+import {
+  createWindowSenderPolicy,
+  definePartialApiHandlers,
+  registerApiDispatcher
+} from './ipc/api-dispatcher'
+
+const senderPolicy = createWindowSenderPolicy()
+const apiHandlers = definePartialApiHandlers({})
+
+function isSafeExternalUrl(value: string): boolean {
+  try {
+    return new URL(value).protocol === 'https:'
+  } catch {
+    return false
+  }
+}
 
 function createWindow(): void {
   // Create the browser window.
@@ -18,22 +35,40 @@ function createWindow(): void {
     }
   })
 
+  const rendererUrl =
+    is.dev && process.env['ELECTRON_RENDERER_URL']
+      ? process.env['ELECTRON_RENDERER_URL']
+      : pathToFileURL(join(__dirname, '../renderer/index.html')).href
+  const expectedRendererUrl = new URL(rendererUrl)
+  const isRendererUrlAllowed = (value: string): boolean => {
+    try {
+      const candidate = new URL(value)
+      if (expectedRendererUrl.protocol === 'file:') {
+        return candidate.protocol === 'file:' && candidate.pathname === expectedRendererUrl.pathname
+      }
+      return candidate.origin === expectedRendererUrl.origin
+    } catch {
+      return false
+    }
+  }
+
+  senderPolicy.allow(mainWindow.webContents, isRendererUrlAllowed)
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (!isRendererUrlAllowed(url)) event.preventDefault()
+  })
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
+    if (isSafeExternalUrl(details.url)) void shell.openExternal(details.url)
     return { action: 'deny' }
   })
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-  }
+  mainWindow.loadURL(rendererUrl)
 }
 
 // This method will be called when Electron has finished
@@ -63,8 +98,11 @@ app.whenReady().then(async () => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  registerApiDispatcher({
+    handlers: apiHandlers,
+    isSenderAllowed: senderPolicy.isAllowed,
+    onError: (error, context) => console.error('[API]', context, error)
+  })
 
   createWindow()
 

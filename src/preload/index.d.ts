@@ -1,8 +1,14 @@
-import { ElectronAPI } from '@electron-toolkit/preload'
+import type { ApiClient } from '../shared/api'
 
 declare global {
   interface Window {
-    electron: ElectronAPI
-    api: unknown
+    api: ApiClient
+    appInfo: {
+      versions: {
+        electron: string
+        chrome: string
+        node: string
+      }
+    }
   }
 }
