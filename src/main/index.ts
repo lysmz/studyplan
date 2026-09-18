@@ -5,9 +5,12 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
 import { SessionService } from './auth/session.service'
+import { StudyProgramsRepository } from './repositories/study-programs.repository'
 import { UsersRepository } from './repositories/users.repository'
 import { AuthService } from './services/auth.service'
+import { StudyProgramsService } from './services/study-programs.service'
 import { createAuthHandlers } from './ipc/handlers/auth.handlers'
+import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import {
   createWindowSenderPolicy,
   definePartialApiHandlers,
@@ -103,10 +106,13 @@ app.whenReady().then(async () => {
   })
 
   const usersRepository = new UsersRepository(database)
+  const studyProgramsRepository = new StudyProgramsRepository(database)
   const sessionService = new SessionService()
   const authService = new AuthService(usersRepository, sessionService)
+  const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const apiHandlers = definePartialApiHandlers({
-    ...createAuthHandlers(authService)
+    ...createAuthHandlers(authService),
+    ...createStudyProgramsHandlers(studyProgramsService, sessionService)
   })
 
   registerApiDispatcher({

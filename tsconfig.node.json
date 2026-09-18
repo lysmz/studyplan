@@ -7,6 +7,7 @@
     "src/main/**/*",
     "src/preload/**/*"
   ],
+  "exclude": ["src/main/routes/**/*"],
   "compilerOptions": {
     "composite": true,
     "types": ["electron-vite/node"]
