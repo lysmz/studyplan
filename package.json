@@ -15,6 +15,7 @@
     "api:test": "tsx --test scripts/openapi-ipc/generator.test.ts",
     "auth:test": "tsx --test scripts/auth/auth.test.ts",
     "study-programs:test": "tsx --test scripts/study-programs/study-programs.test.ts",
+    "timetable:test": "tsx --test scripts/timetable/timetable.test.ts",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",

@@ -6,11 +6,14 @@ import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
 import { SessionService } from './auth/session.service'
 import { StudyProgramsRepository } from './repositories/study-programs.repository'
+import { TimetableRepository } from './repositories/timetable.repository'
 import { UsersRepository } from './repositories/users.repository'
 import { AuthService } from './services/auth.service'
 import { StudyProgramsService } from './services/study-programs.service'
+import { TimetableService } from './services/timetable.service'
 import { createAuthHandlers } from './ipc/handlers/auth.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
+import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
 import {
   createWindowSenderPolicy,
   definePartialApiHandlers,
@@ -107,12 +110,15 @@ app.whenReady().then(async () => {
 
   const usersRepository = new UsersRepository(database)
   const studyProgramsRepository = new StudyProgramsRepository(database)
+  const timetableRepository = new TimetableRepository(database)
   const sessionService = new SessionService()
   const authService = new AuthService(usersRepository, sessionService)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
+  const timetableService = new TimetableService(timetableRepository)
   const apiHandlers = definePartialApiHandlers({
     ...createAuthHandlers(authService),
-    ...createStudyProgramsHandlers(studyProgramsService, sessionService)
+    ...createStudyProgramsHandlers(studyProgramsService, sessionService),
+    ...createTimetableHandlers(timetableService, sessionService)
   })
 
   registerApiDispatcher({
