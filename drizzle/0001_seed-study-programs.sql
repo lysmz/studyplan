@@ -1,0 +1,51 @@
+INSERT INTO `study_programs` (`id`, `name`, `faculty`, `total_ects`) VALUES
+	(1, 'Informatik (B.Sc.)', 'Fakultät für Informatik', 180),
+	(2, 'Wirtschaftsinformatik (B.Sc.)', 'Fakultät für Wirtschaft', 180),
+	(3, 'Mathematik (B.Sc.)', 'Fakultät für Mathematik', 180),
+	(4, 'Betriebswirtschaftslehre (B.Sc.)', 'Fakultät für Wirtschaft', 180),
+	(5, 'Maschinenbau (B.Sc.)', 'Fakultät für Ingenieurwesen', 180)
+ON CONFLICT (`id`) DO UPDATE SET
+	`name` = excluded.`name`,
+	`faculty` = excluded.`faculty`,
+	`total_ects` = excluded.`total_ects`;
+--> statement-breakpoint
+INSERT INTO `courses` (`id`, `name`, `ects`, `semester`, `study_program_id`, `is_required`) VALUES
+	(1, 'Mathematik I', 9.0, '1. Semester', 1, 1),
+	(2, 'Programmierung I', 9.0, '1. Semester', 1, 1),
+	(3, 'Technische Grundlagen', 6.0, '1. Semester', 1, 1),
+	(4, 'Mathematik II', 9.0, '2. Semester', 1, 1),
+	(5, 'Programmierung II', 9.0, '2. Semester', 1, 1),
+	(6, 'Algorithmen & Datenstrukturen', 9.0, '3. Semester', 1, 1),
+	(7, 'Rechnernetze', 6.0, '3. Semester', 1, 1),
+	(8, 'Betriebssysteme', 6.0, '3. Semester', 1, 1),
+	(9, 'Datenbanksysteme', 9.0, '4. Semester', 1, 1),
+	(10, 'Softwareengineering', 9.0, '4. Semester', 1, 1),
+	(11, 'Compilerbau', 6.0, '5. Semester', 1, 0),
+	(12, 'Maschinelles Lernen', 6.0, '5. Semester', 1, 0),
+	(13, 'Verteilte Systeme', 6.0, '6. Semester', 1, 0),
+	(14, 'Bachelorarbeit', 12.0, '6. Semester', 1, 1),
+	(15, 'Grundlagen BWL', 6.0, '1. Semester', 2, 1),
+	(16, 'Mathematik für WI', 9.0, '1. Semester', 2, 1),
+	(17, 'Programmierung', 9.0, '1. Semester', 2, 1),
+	(18, 'Buchführung', 6.0, '2. Semester', 2, 1),
+	(19, 'Statistik', 6.0, '2. Semester', 2, 1),
+	(20, 'ERP-Systeme', 6.0, '3. Semester', 2, 1),
+	(21, 'Informationssysteme', 9.0, '3. Semester', 2, 1),
+	(22, 'Projektmanagement', 6.0, '4. Semester', 2, 1),
+	(23, 'E-Commerce', 6.0, '4. Semester', 2, 0),
+	(24, 'IT-Sicherheit', 6.0, '5. Semester', 2, 1),
+	(25, 'Bachelorarbeit', 12.0, '6. Semester', 2, 1),
+	(26, 'Analysis I', 9.0, '1. Semester', 3, 1),
+	(27, 'Lineare Algebra I', 9.0, '1. Semester', 3, 1),
+	(28, 'Analysis II', 9.0, '2. Semester', 3, 1),
+	(29, 'Lineare Algebra II', 9.0, '2. Semester', 3, 1),
+	(30, 'Wahrscheinlichkeitstheorie', 9.0, '3. Semester', 3, 1),
+	(31, 'Numerik', 9.0, '4. Semester', 3, 1),
+	(32, 'Stochastik', 9.0, '5. Semester', 3, 0),
+	(33, 'Bachelorarbeit', 12.0, '6. Semester', 3, 1)
+ON CONFLICT (`id`) DO UPDATE SET
+	`name` = excluded.`name`,
+	`ects` = excluded.`ects`,
+	`semester` = excluded.`semester`,
+	`study_program_id` = excluded.`study_program_id`,
+	`is_required` = excluded.`is_required`;
