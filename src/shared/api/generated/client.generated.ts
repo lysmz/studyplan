@@ -27,6 +27,8 @@ import type {
   OperationListEventsOutput,
   OperationCreateEventInput,
   OperationCreateEventOutput,
+  OperationImportEventsIcalInput,
+  OperationImportEventsIcalOutput,
   OperationGetEventInput,
   OperationGetEventOutput,
   OperationUpdateEventInput,
@@ -148,6 +150,9 @@ export interface ApiClient {
   events: {
     listEvents(input?: OperationListEventsInput): Promise<OperationListEventsOutput>
     createEvent(input: OperationCreateEventInput): Promise<OperationCreateEventOutput>
+    importEventsIcal(
+      input?: OperationImportEventsIcalInput
+    ): Promise<OperationImportEventsIcalOutput>
     getEvent(input: OperationGetEventInput): Promise<OperationGetEventOutput>
     updateEvent(input: OperationUpdateEventInput): Promise<OperationUpdateEventOutput>
     deleteEvent(input: OperationDeleteEventInput): Promise<OperationDeleteEventOutput>
@@ -273,6 +278,8 @@ export function createApiClient(transport: ApiTransport): ApiClient {
     events: {
       listEvents: (input = {}) => invoke('listEvents', input as OperationListEventsInput),
       createEvent: (input) => invoke('createEvent', input as OperationCreateEventInput),
+      importEventsIcal: (input = {}) =>
+        invoke('importEventsIcal', input as OperationImportEventsIcalInput),
       getEvent: (input) => invoke('getEvent', input as OperationGetEventInput),
       updateEvent: (input) => invoke('updateEvent', input as OperationUpdateEventInput),
       deleteEvent: (input) => invoke('deleteEvent', input as OperationDeleteEventInput)

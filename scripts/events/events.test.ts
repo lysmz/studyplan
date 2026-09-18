@@ -13,20 +13,36 @@ import {
 } from '../../src/shared/api'
 import * as schema from '../../src/main/db/schema'
 import { SessionService } from '../../src/main/auth/session.service'
+import type { IcalFilePicker, IcalFileSelection } from '../../src/main/files/ical-file-picker'
 import { createApiDispatcher } from '../../src/main/ipc/api-dispatcher'
 import { createEventsHandlers } from '../../src/main/ipc/handlers/events.handlers'
 import { ActivityLogRepository } from '../../src/main/repositories/activity-log.repository'
 import { EventsRepository } from '../../src/main/repositories/events.repository'
+import { InvalidEventsIcalError, parseEventsIcal } from '../../src/main/services/events-ical.parser'
 import { EventsService } from '../../src/main/services/events.service'
+
+class StubIcalFilePicker implements IcalFilePicker {
+  calls = 0
+
+  constructor(public selection: IcalFileSelection = { status: 'cancelled' }) {}
+
+  async selectIcalFile(): Promise<IcalFileSelection> {
+    this.calls += 1
+    return this.selection
+  }
+}
 
 interface TestContext {
   client: Client
   session: SessionService
   api: ReturnType<typeof createApiClient>
   dispatch: ReturnType<typeof createApiDispatcher>
+  icalFilePicker: IcalFilePicker
 }
 
-async function createTestContext(): Promise<TestContext> {
+async function createTestContext(
+  icalFilePicker: IcalFilePicker = new StubIcalFilePicker()
+): Promise<TestContext> {
   const client = createClient({ url: 'file::memory:' })
   await client.batch(
     [
@@ -62,7 +78,7 @@ async function createTestContext(): Promise<TestContext> {
   )
   const session = new SessionService()
   const dispatch = createApiDispatcher({
-    handlers: createEventsHandlers(service, session),
+    handlers: createEventsHandlers(service, session, icalFilePicker),
     isSenderAllowed: () => true
   })
   const transport: ApiTransport = async <K extends ApiOperationId>(
@@ -75,7 +91,7 @@ async function createTestContext(): Promise<TestContext> {
       requestId: `test-${operationId}`
     })) as ApiResult<ApiOutput<K>>
 
-  return { client, session, api: createApiClient(transport), dispatch }
+  return { client, session, api: createApiClient(transport), dispatch, icalFilePicker }
 }
 
 async function insertEvent(
@@ -123,6 +139,7 @@ test('protects every personal event operation with the current session', async (
           }
         }
       ],
+      ['importEventsIcal', {}],
       ['getEvent', { path: { id: 1 } }],
       ['updateEvent', { path: { id: 1 }, body: { title: 'Updated' } }],
       ['deleteEvent', { path: { id: 1 } }]
@@ -137,6 +154,127 @@ test('protects every personal event operation with the current session', async (
       assert.equal(result.ok, false)
       if (!result.ok) assert.equal(result.error.code, 'UNAUTHENTICATED')
     }
+  } finally {
+    context.client.close()
+  }
+})
+
+test('parses importable VEVENT fields and applies legacy defaults and inference', () => {
+  const parsed = parseEventsIcal(
+    [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Studyplan//Tests//EN',
+      'BEGIN:VEVENT',
+      'UID:exam-1',
+      'DTSTAMP:20260901T080000Z',
+      'DTSTART:20260920T090000Z',
+      'SUMMARY:Klausur Datenbanken',
+      'DESCRIPTION:Schriftliche Prüfung',
+      'LOCATION:Raum A1',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n')
+  )
+
+  assert.equal(parsed.skippedCount, 0)
+  assert.equal(parsed.events.length, 1)
+  assert.deepEqual(parsed.events[0], {
+    title: 'Klausur Datenbanken',
+    description: 'Schriftliche Prüfung',
+    startDate: new Date('2026-09-20T09:00:00.000Z'),
+    endDate: new Date('2026-09-20T10:00:00.000Z'),
+    type: 'exam',
+    importance: 'medium',
+    isMultiDay: false,
+    location: 'Raum A1'
+  })
+})
+
+test('rejects content that is not an iCalendar document', () => {
+  assert.throws(() => parseEventsIcal('not a calendar'), InvalidEventsIcalError)
+})
+
+test('imports a native-selected ICS for the current user and records one activity', async () => {
+  const picker = new StubIcalFilePicker({
+    status: 'selected',
+    contents: [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Studyplan//Tests//EN',
+      'BEGIN:VEVENT',
+      'UID:lecture-1',
+      'DTSTAMP:20260901T080000Z',
+      'DTSTART:20260921T080000Z',
+      'DTEND:20260922T080000Z',
+      'SUMMARY:Vorlesung Informatik',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n')
+  })
+  const context = await createTestContext(picker)
+  try {
+    context.session.start(7)
+    assert.deepEqual(await context.api.events.importEventsIcal(), {
+      status: 'imported',
+      importedCount: 1,
+      skippedCount: 0
+    })
+
+    const imported = (await context.api.events.listEvents()).find(
+      ({ title }) => title === 'Vorlesung Informatik'
+    )
+    assert.ok(imported)
+    assert.equal(imported.userId, 7)
+    assert.equal(imported.type, 'lecture')
+    assert.equal(imported.importance, 'medium')
+    assert.equal(imported.isMultiDay, true)
+
+    const activity = await context.client.execute(
+      "SELECT type, description, user_id FROM activity_log WHERE description LIKE '%ICS%'"
+    )
+    assert.deepEqual(activity.rows, [
+      { type: 'event_added', description: '1 Termine aus ICS importiert', user_id: 7 }
+    ])
+  } finally {
+    context.client.close()
+  }
+})
+
+test('treats native picker cancellation as a successful no-op', async () => {
+  const picker = new StubIcalFilePicker()
+  const context = await createTestContext(picker)
+  try {
+    context.session.start(7)
+    assert.deepEqual(await context.api.events.importEventsIcal(), {
+      status: 'cancelled',
+      importedCount: 0,
+      skippedCount: 0
+    })
+    assert.equal(picker.calls, 1)
+  } finally {
+    context.client.close()
+  }
+})
+
+test('maps invalid selected ICS content to the declared validation error', async () => {
+  const context = await createTestContext(
+    new StubIcalFilePicker({ status: 'selected', contents: 'invalid' })
+  )
+  try {
+    context.session.start(7)
+    await assert.rejects(
+      () => context.api.events.importEventsIcal(),
+      (error: unknown) => {
+        assert.ok(error instanceof ApiClientError)
+        assert.equal(error.code, 'VALIDATION_ERROR')
+        assert.deepEqual(error.details, {
+          status: 400,
+          body: { error: 'Die ICS-Datei ist ungültig.' }
+        })
+        return true
+      }
+    )
   } finally {
     context.client.close()
   }

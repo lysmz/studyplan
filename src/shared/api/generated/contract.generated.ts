@@ -115,6 +115,15 @@ export const EventUpdateSchema = z
   .passthrough()
 export type EventUpdate = z.infer<typeof EventUpdateSchema>
 
+export const EventIcalImportResultSchema = z
+  .object({
+    status: z.enum(['imported', 'cancelled']),
+    importedCount: z.number().int().min(0),
+    skippedCount: z.number().int().min(0)
+  })
+  .passthrough()
+export type EventIcalImportResult = z.infer<typeof EventIcalImportResultSchema>
+
 export const GradeSchema = z
   .object({
     id: z.number().int(),
@@ -606,6 +615,16 @@ export const OperationCreateEventOutputSchema = EventSchema
 export type OperationCreateEventOutput = z.infer<typeof OperationCreateEventOutputSchema>
 export const OperationCreateEventErrorSchema = z.never()
 export type OperationCreateEventError = z.infer<typeof OperationCreateEventErrorSchema>
+
+export const OperationImportEventsIcalInputSchema = z.object({}).strict()
+export type OperationImportEventsIcalInput = z.infer<typeof OperationImportEventsIcalInputSchema>
+export const OperationImportEventsIcalOutputSchema = EventIcalImportResultSchema
+export type OperationImportEventsIcalOutput = z.infer<typeof OperationImportEventsIcalOutputSchema>
+export const OperationImportEventsIcalErrorSchema = z.object({
+  status: z.literal(400),
+  body: ErrorResponseSchema
+})
+export type OperationImportEventsIcalError = z.infer<typeof OperationImportEventsIcalErrorSchema>
 
 export const OperationGetEventInputSchema = z
   .object({
@@ -1420,6 +1439,11 @@ export interface ApiOperations {
     output: OperationCreateEventOutput
     error: OperationCreateEventError
   }
+  importEventsIcal: {
+    input: OperationImportEventsIcalInput
+    output: OperationImportEventsIcalOutput
+    error: OperationImportEventsIcalError
+  }
   getEvent: {
     input: OperationGetEventInput
     output: OperationGetEventOutput
@@ -1742,6 +1766,14 @@ export const operationContracts = {
     input: OperationCreateEventInputSchema,
     output: OperationCreateEventOutputSchema,
     error: OperationCreateEventErrorSchema
+  },
+  importEventsIcal: {
+    method: 'POST',
+    path: '/events/import-ical',
+    tag: 'events',
+    input: OperationImportEventsIcalInputSchema,
+    output: OperationImportEventsIcalOutputSchema,
+    error: OperationImportEventsIcalErrorSchema
   },
   getEvent: {
     method: 'GET',

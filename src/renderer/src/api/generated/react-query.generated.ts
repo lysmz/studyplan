@@ -445,6 +445,52 @@ export const useCreateEvent = <TError = CreateEventMutationError, TContext = unk
 ): UseMutationResult<ApiOutput<'createEvent'>, TError, CreateEventMutationVariables, TContext> =>
   useMutation(getCreateEventMutationOptions(options))
 
+export type ImportEventsIcalMutationVariables = void
+export type ImportEventsIcalMutationResult = ApiOutput<'importEventsIcal'>
+
+export type ImportEventsIcalMutationError = ApiOperationError<'importEventsIcal'>
+export type ImportEventsIcalMutationHookOptions<TError, TContext> = {
+  mutation?: UseMutationOptions<
+    ApiOutput<'importEventsIcal'>,
+    TError,
+    ImportEventsIcalMutationVariables,
+    TContext
+  >
+}
+
+export const getImportEventsIcalMutationOptions = <
+  TError = ImportEventsIcalMutationError,
+  TContext = unknown
+>(
+  options?: ImportEventsIcalMutationHookOptions<TError, TContext>
+): UseMutationOptions<
+  ApiOutput<'importEventsIcal'>,
+  TError,
+  ImportEventsIcalMutationVariables,
+  TContext
+> => {
+  const mutationOptions = options?.mutation
+  const mutationKey = mutationOptions?.mutationKey ?? ['api', 'importEventsIcal']
+  const mutationFn: MutationFunction<
+    ApiOutput<'importEventsIcal'>,
+    ImportEventsIcalMutationVariables
+  > = () => {
+    const input = {} satisfies ApiInput<'importEventsIcal'>
+    return getApi()['events']['importEventsIcal'](input)
+  }
+
+  return { mutationKey, mutationFn, ...mutationOptions }
+}
+
+export const useImportEventsIcal = <TError = ImportEventsIcalMutationError, TContext = unknown>(
+  options?: ImportEventsIcalMutationHookOptions<TError, TContext>
+): UseMutationResult<
+  ApiOutput<'importEventsIcal'>,
+  TError,
+  ImportEventsIcalMutationVariables,
+  TContext
+> => useMutation(getImportEventsIcalMutationOptions(options))
+
 export type GetEventQueryResult = ApiOutput<'getEvent'>
 export type GetEventQueryError = ApiOperationError<'getEvent'>
 export type GetEventQueryHookOptions<TData, TError> = {

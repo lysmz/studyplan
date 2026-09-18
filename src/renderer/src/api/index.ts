@@ -17,6 +17,7 @@ export type {
   Event,
   EventInput,
   EventUpdate,
+  EventIcalImportResult,
   Grade,
   GradeInput,
   GradeUpdate,

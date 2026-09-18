@@ -1,4 +1,4 @@
-import type { ApiInput, EventInput, EventUpdate } from '../../shared/api'
+import type { ApiInput, EventIcalImportResult, EventInput, EventUpdate } from '../../shared/api'
 import type { Event } from '../db/schema'
 import { ActivityLogRepository } from '../repositories/activity-log.repository'
 import {
@@ -6,8 +6,8 @@ import {
   type EventChanges,
   type EventFilters
 } from '../repositories/events.repository'
+import { calculateIsMultiDay, parseEventsIcal } from './events-ical.parser'
 
-const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000
 type ListEventsQuery = NonNullable<ApiInput<'listEvents'>['query']>
 
 export class EventNotFoundError extends Error {
@@ -15,10 +15,6 @@ export class EventNotFoundError extends Error {
     super('Event not found.')
     this.name = 'EventNotFoundError'
   }
-}
-
-function isMultiDay(startDate: Date, endDate: Date): boolean {
-  return endDate.getTime() - startDate.getTime() >= DAY_IN_MILLISECONDS
 }
 
 export class EventsService {
@@ -49,7 +45,7 @@ export class EventsService {
       endDate: input.endDate,
       type: input.type,
       importance: input.importance,
-      isMultiDay: isMultiDay(input.startDate, input.endDate),
+      isMultiDay: calculateIsMultiDay(input.startDate, input.endDate),
       location: input.location ?? null,
       userId
     })
@@ -61,6 +57,21 @@ export class EventsService {
     })
 
     return event
+  }
+
+  async importEventsIcal(userId: number, icalText: string): Promise<EventIcalImportResult> {
+    const { events, skippedCount } = parseEventsIcal(icalText)
+    const imported = await this.events.createManyEvents(
+      events.map((event) => ({ ...event, userId }))
+    )
+
+    await this.activityLog.createActivity({
+      type: 'event_added',
+      description: `${imported.length} Termine aus ICS importiert`,
+      userId
+    })
+
+    return { status: 'imported', importedCount: imported.length, skippedCount }
   }
 
   async getEvent(userId: number, eventId: number): Promise<Event> {
@@ -83,7 +94,7 @@ export class EventsService {
     if (input.location !== undefined) changes.location = input.location
 
     if (input.startDate !== undefined || input.endDate !== undefined) {
-      changes.isMultiDay = isMultiDay(
+      changes.isMultiDay = calculateIsMultiDay(
         input.startDate ?? existing.startDate,
         input.endDate ?? existing.endDate
       )

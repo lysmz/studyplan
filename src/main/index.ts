@@ -22,6 +22,7 @@ import { createGradesHandlers } from './ipc/handlers/grades.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
 import { NativeCsvFilePicker } from './files/native-csv-file-picker'
+import { NativeIcalFilePicker } from './files/native-ical-file-picker'
 import {
   createWindowSenderPolicy,
   definePartialApiHandlers,
@@ -129,9 +130,10 @@ app.whenReady().then(async () => {
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const timetableService = new TimetableService(timetableRepository)
   const csvFilePicker = new NativeCsvFilePicker()
+  const icalFilePicker = new NativeIcalFilePicker()
   const apiHandlers = definePartialApiHandlers({
     ...createAuthHandlers(authService),
-    ...createEventsHandlers(eventsService, sessionService),
+    ...createEventsHandlers(eventsService, sessionService, icalFilePicker),
     ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
     ...createTimetableHandlers(timetableService, sessionService)

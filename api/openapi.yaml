@@ -202,6 +202,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/Event"
 
+  /events/import-ical:
+    post:
+      operationId: importEventsIcal
+      tags: [events]
+      responses:
+        "200":
+          description: Import completed or the native file picker was cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventIcalImportResult"
+        "400":
+          description: Invalid iCalendar file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /events/{id}:
     get:
       operationId: getEvent
@@ -1379,6 +1397,20 @@ components:
           $ref: "#/components/schemas/Importance"
         location:
           type: string
+
+    EventIcalImportResult:
+      type: object
+      required: [status, importedCount, skippedCount]
+      properties:
+        status:
+          type: string
+          enum: [imported, cancelled]
+        importedCount:
+          type: integer
+          minimum: 0
+        skippedCount:
+          type: integer
+          minimum: 0
 
     # ── Grades ────────────────────────────────────────────────────────────────
     Grade:

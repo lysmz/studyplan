@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, addMonths, subMonths, isSameDay } from "date-fns";
 import { de } from "date-fns/locale";
-import { useListEvents, useCreateEvent, useDeleteEvent, getListEventsQueryKey, useListAllGroupEvents, getListAllGroupEventsQueryKey } from "@/api";
+import { useListEvents, useCreateEvent, useDeleteEvent, useImportEventsIcal, getListEventsQueryKey, useListAllGroupEvents, getListAllGroupEventsQueryKey } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, List, LayoutGrid, Plus, Upload, Trash2, Clock, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,6 @@ export default function Kalender() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"grid" | "list">("grid");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -48,6 +47,23 @@ export default function Kalender() {
   const { data: groupEvents = [] } = useListAllGroupEvents(groupWindow);
   const createEvent = useCreateEvent();
   const deleteEvent = useDeleteEvent();
+  const importEventsIcal = useImportEventsIcal({
+    mutation: {
+      onSuccess: (result) => {
+        if (result.status === "cancelled") return;
+        queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
+        toast({
+          title: `${result.importedCount} Termine importiert`,
+          description: result.skippedCount > 0
+            ? `${result.skippedCount} Einträge wurden übersprungen.`
+            : undefined,
+        });
+      },
+      onError: () => {
+        toast({ title: "Fehler beim Import", variant: "destructive" });
+      },
+    },
+  });
 
   const daysInMonth = useMemo(() => {
     const start = startOfMonth(currentDate);
@@ -93,33 +109,6 @@ export default function Kalender() {
         toast({ title: "Event gelöscht" });
       }
     });
-  };
-
-  const handleICSImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch('/api/events/import-ical', {
-        method: 'POST',
-        body: formData,
-      });
-      if (res.ok) {
-        queryClient.invalidateQueries({ queryKey: getListEventsQueryKey() });
-        toast({ title: "Kalender importiert" });
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      toast({ title: "Fehler beim Import", variant: "destructive" });
-    } finally {
-      setIsUploading(false);
-      if (e.target) e.target.value = '';
-    }
   };
 
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
@@ -176,19 +165,16 @@ export default function Kalender() {
             </Button>
           </div>
           
-          <div className="relative">
-            <Button variant="outline" size="sm" className="gap-2" disabled={isUploading}>
-              <Upload className="w-4 h-4" />
-              ICS Upload
-            </Button>
-            <input 
-              type="file" 
-              accept=".ics" 
-              className="absolute inset-0 opacity-0 cursor-pointer" 
-              onChange={handleICSImport}
-              disabled={isUploading}
-            />
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={importEventsIcal.isPending}
+            onClick={() => importEventsIcal.mutate()}
+          >
+            <Upload className="w-4 h-4" />
+            {importEventsIcal.isPending ? "Importiere …" : "ICS Upload"}
+          </Button>
 
           <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
             <DialogTrigger asChild>

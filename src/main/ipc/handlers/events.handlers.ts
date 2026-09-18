@@ -1,4 +1,6 @@
 import { SessionService } from '../../auth/session.service'
+import { InvalidIcalFileError, type IcalFilePicker } from '../../files/ical-file-picker'
+import { InvalidEventsIcalError } from '../../services/events-ical.parser'
 import { EventNotFoundError, EventsService } from '../../services/events.service'
 import {
   ApiDeclaredResponseError,
@@ -22,7 +24,8 @@ function notFound(
 
 export function createEventsHandlers(
   eventsService: EventsService,
-  sessionService: SessionService
+  sessionService: SessionService,
+  icalFilePicker: IcalFilePicker
 ): PartialApiHandlerRegistry {
   return definePartialApiHandlers({
     listEvents: authenticated<'listEvents'>(sessionService, ({ query }, userId) =>
@@ -31,6 +34,29 @@ export function createEventsHandlers(
 
     createEvent: authenticated<'createEvent'>(sessionService, ({ body }, userId) =>
       eventsService.createEvent(userId, body)
+    ),
+
+    importEventsIcal: authenticated<'importEventsIcal'>(
+      sessionService,
+      async (_input, userId, context) => {
+        try {
+          const selection = await icalFilePicker.selectIcalFile(context.event)
+          if (selection.status === 'cancelled') {
+            return { status: 'cancelled', importedCount: 0, skippedCount: 0 }
+          }
+          return await eventsService.importEventsIcal(userId, selection.contents)
+        } catch (error) {
+          if (error instanceof InvalidIcalFileError || error instanceof InvalidEventsIcalError) {
+            throw new ApiDeclaredResponseError(
+              'importEventsIcal',
+              { status: 400, body: { error: error.message } },
+              'VALIDATION_ERROR',
+              error.message
+            )
+          }
+          throw error
+        }
+      }
     ),
 
     getEvent: authenticated<'getEvent'>(sessionService, async ({ path }, userId) => {

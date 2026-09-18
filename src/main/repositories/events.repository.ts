@@ -42,6 +42,11 @@ export class EventsRepository {
     return event
   }
 
+  async createManyEvents(values: InsertEvent[]): Promise<Event[]> {
+    if (values.length === 0) return []
+    return this.database.insert(eventsTable).values(values).returning()
+  }
+
   async findByIdAndUserId(eventId: number, userId: number): Promise<Event | undefined> {
     const [event] = await this.database
       .select()
