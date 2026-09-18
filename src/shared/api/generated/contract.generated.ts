@@ -1068,7 +1068,10 @@ export const OperationListGroupEventsInputSchema = z
 export type OperationListGroupEventsInput = z.infer<typeof OperationListGroupEventsInputSchema>
 export const OperationListGroupEventsOutputSchema = z.array(GroupEventSchema)
 export type OperationListGroupEventsOutput = z.infer<typeof OperationListGroupEventsOutputSchema>
-export const OperationListGroupEventsErrorSchema = z.never()
+export const OperationListGroupEventsErrorSchema = z.object({
+  status: z.literal(403),
+  body: ErrorResponseSchema
+})
 export type OperationListGroupEventsError = z.infer<typeof OperationListGroupEventsErrorSchema>
 
 export const OperationCreateGroupEventInputSchema = z
@@ -1084,7 +1087,10 @@ export const OperationCreateGroupEventInputSchema = z
 export type OperationCreateGroupEventInput = z.infer<typeof OperationCreateGroupEventInputSchema>
 export const OperationCreateGroupEventOutputSchema = GroupEventSchema
 export type OperationCreateGroupEventOutput = z.infer<typeof OperationCreateGroupEventOutputSchema>
-export const OperationCreateGroupEventErrorSchema = z.never()
+export const OperationCreateGroupEventErrorSchema = z.object({
+  status: z.literal(403),
+  body: ErrorResponseSchema
+})
 export type OperationCreateGroupEventError = z.infer<typeof OperationCreateGroupEventErrorSchema>
 
 export const OperationUpdateGroupEventInputSchema = z
@@ -1101,10 +1107,10 @@ export const OperationUpdateGroupEventInputSchema = z
 export type OperationUpdateGroupEventInput = z.infer<typeof OperationUpdateGroupEventInputSchema>
 export const OperationUpdateGroupEventOutputSchema = GroupEventSchema
 export type OperationUpdateGroupEventOutput = z.infer<typeof OperationUpdateGroupEventOutputSchema>
-export const OperationUpdateGroupEventErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationUpdateGroupEventErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationUpdateGroupEventError = z.infer<typeof OperationUpdateGroupEventErrorSchema>
 
 export const OperationDeleteGroupEventInputSchema = z
@@ -1120,10 +1126,10 @@ export const OperationDeleteGroupEventInputSchema = z
 export type OperationDeleteGroupEventInput = z.infer<typeof OperationDeleteGroupEventInputSchema>
 export const OperationDeleteGroupEventOutputSchema = z.undefined()
 export type OperationDeleteGroupEventOutput = z.infer<typeof OperationDeleteGroupEventOutputSchema>
-export const OperationDeleteGroupEventErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationDeleteGroupEventErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationDeleteGroupEventError = z.infer<typeof OperationDeleteGroupEventErrorSchema>
 
 export const OperationListEventCommentsInputSchema = z
@@ -1141,7 +1147,10 @@ export const OperationListEventCommentsOutputSchema = z.array(CommentSchema)
 export type OperationListEventCommentsOutput = z.infer<
   typeof OperationListEventCommentsOutputSchema
 >
-export const OperationListEventCommentsErrorSchema = z.never()
+export const OperationListEventCommentsErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationListEventCommentsError = z.infer<typeof OperationListEventCommentsErrorSchema>
 
 export const OperationAddEventCommentInputSchema = z
@@ -1158,7 +1167,10 @@ export const OperationAddEventCommentInputSchema = z
 export type OperationAddEventCommentInput = z.infer<typeof OperationAddEventCommentInputSchema>
 export const OperationAddEventCommentOutputSchema = CommentSchema
 export type OperationAddEventCommentOutput = z.infer<typeof OperationAddEventCommentOutputSchema>
-export const OperationAddEventCommentErrorSchema = z.never()
+export const OperationAddEventCommentErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationAddEventCommentError = z.infer<typeof OperationAddEventCommentErrorSchema>
 
 export const OperationListGroupTasksInputSchema = z
@@ -1173,7 +1185,10 @@ export const OperationListGroupTasksInputSchema = z
 export type OperationListGroupTasksInput = z.infer<typeof OperationListGroupTasksInputSchema>
 export const OperationListGroupTasksOutputSchema = z.array(GroupTaskSchema)
 export type OperationListGroupTasksOutput = z.infer<typeof OperationListGroupTasksOutputSchema>
-export const OperationListGroupTasksErrorSchema = z.never()
+export const OperationListGroupTasksErrorSchema = z.object({
+  status: z.literal(403),
+  body: ErrorResponseSchema
+})
 export type OperationListGroupTasksError = z.infer<typeof OperationListGroupTasksErrorSchema>
 
 export const OperationCreateGroupTaskInputSchema = z
@@ -1189,7 +1204,10 @@ export const OperationCreateGroupTaskInputSchema = z
 export type OperationCreateGroupTaskInput = z.infer<typeof OperationCreateGroupTaskInputSchema>
 export const OperationCreateGroupTaskOutputSchema = GroupTaskSchema
 export type OperationCreateGroupTaskOutput = z.infer<typeof OperationCreateGroupTaskOutputSchema>
-export const OperationCreateGroupTaskErrorSchema = z.never()
+export const OperationCreateGroupTaskErrorSchema = z.union([
+  z.object({ status: z.literal(400), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(403), body: ErrorResponseSchema })
+])
 export type OperationCreateGroupTaskError = z.infer<typeof OperationCreateGroupTaskErrorSchema>
 
 export const OperationUpdateGroupTaskInputSchema = z
@@ -1206,10 +1224,11 @@ export const OperationUpdateGroupTaskInputSchema = z
 export type OperationUpdateGroupTaskInput = z.infer<typeof OperationUpdateGroupTaskInputSchema>
 export const OperationUpdateGroupTaskOutputSchema = GroupTaskSchema
 export type OperationUpdateGroupTaskOutput = z.infer<typeof OperationUpdateGroupTaskOutputSchema>
-export const OperationUpdateGroupTaskErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationUpdateGroupTaskErrorSchema = z.union([
+  z.object({ status: z.literal(400), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationUpdateGroupTaskError = z.infer<typeof OperationUpdateGroupTaskErrorSchema>
 
 export const OperationDeleteGroupTaskInputSchema = z
@@ -1225,10 +1244,10 @@ export const OperationDeleteGroupTaskInputSchema = z
 export type OperationDeleteGroupTaskInput = z.infer<typeof OperationDeleteGroupTaskInputSchema>
 export const OperationDeleteGroupTaskOutputSchema = z.undefined()
 export type OperationDeleteGroupTaskOutput = z.infer<typeof OperationDeleteGroupTaskOutputSchema>
-export const OperationDeleteGroupTaskErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationDeleteGroupTaskErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationDeleteGroupTaskError = z.infer<typeof OperationDeleteGroupTaskErrorSchema>
 
 export const OperationListTaskCommentsInputSchema = z
@@ -1244,7 +1263,10 @@ export const OperationListTaskCommentsInputSchema = z
 export type OperationListTaskCommentsInput = z.infer<typeof OperationListTaskCommentsInputSchema>
 export const OperationListTaskCommentsOutputSchema = z.array(CommentSchema)
 export type OperationListTaskCommentsOutput = z.infer<typeof OperationListTaskCommentsOutputSchema>
-export const OperationListTaskCommentsErrorSchema = z.never()
+export const OperationListTaskCommentsErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationListTaskCommentsError = z.infer<typeof OperationListTaskCommentsErrorSchema>
 
 export const OperationAddTaskCommentInputSchema = z
@@ -1261,7 +1283,10 @@ export const OperationAddTaskCommentInputSchema = z
 export type OperationAddTaskCommentInput = z.infer<typeof OperationAddTaskCommentInputSchema>
 export const OperationAddTaskCommentOutputSchema = CommentSchema
 export type OperationAddTaskCommentOutput = z.infer<typeof OperationAddTaskCommentOutputSchema>
-export const OperationAddTaskCommentErrorSchema = z.never()
+export const OperationAddTaskCommentErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationAddTaskCommentError = z.infer<typeof OperationAddTaskCommentErrorSchema>
 
 export const OperationListGroupNotesInputSchema = z
@@ -1276,7 +1301,10 @@ export const OperationListGroupNotesInputSchema = z
 export type OperationListGroupNotesInput = z.infer<typeof OperationListGroupNotesInputSchema>
 export const OperationListGroupNotesOutputSchema = z.array(GroupNoteSchema)
 export type OperationListGroupNotesOutput = z.infer<typeof OperationListGroupNotesOutputSchema>
-export const OperationListGroupNotesErrorSchema = z.never()
+export const OperationListGroupNotesErrorSchema = z.object({
+  status: z.literal(403),
+  body: ErrorResponseSchema
+})
 export type OperationListGroupNotesError = z.infer<typeof OperationListGroupNotesErrorSchema>
 
 export const OperationCreateGroupNoteInputSchema = z
@@ -1292,7 +1320,10 @@ export const OperationCreateGroupNoteInputSchema = z
 export type OperationCreateGroupNoteInput = z.infer<typeof OperationCreateGroupNoteInputSchema>
 export const OperationCreateGroupNoteOutputSchema = GroupNoteSchema
 export type OperationCreateGroupNoteOutput = z.infer<typeof OperationCreateGroupNoteOutputSchema>
-export const OperationCreateGroupNoteErrorSchema = z.never()
+export const OperationCreateGroupNoteErrorSchema = z.object({
+  status: z.literal(403),
+  body: ErrorResponseSchema
+})
 export type OperationCreateGroupNoteError = z.infer<typeof OperationCreateGroupNoteErrorSchema>
 
 export const OperationUpdateGroupNoteInputSchema = z
@@ -1309,10 +1340,10 @@ export const OperationUpdateGroupNoteInputSchema = z
 export type OperationUpdateGroupNoteInput = z.infer<typeof OperationUpdateGroupNoteInputSchema>
 export const OperationUpdateGroupNoteOutputSchema = GroupNoteSchema
 export type OperationUpdateGroupNoteOutput = z.infer<typeof OperationUpdateGroupNoteOutputSchema>
-export const OperationUpdateGroupNoteErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationUpdateGroupNoteErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationUpdateGroupNoteError = z.infer<typeof OperationUpdateGroupNoteErrorSchema>
 
 export const OperationDeleteGroupNoteInputSchema = z
@@ -1328,10 +1359,10 @@ export const OperationDeleteGroupNoteInputSchema = z
 export type OperationDeleteGroupNoteInput = z.infer<typeof OperationDeleteGroupNoteInputSchema>
 export const OperationDeleteGroupNoteOutputSchema = z.undefined()
 export type OperationDeleteGroupNoteOutput = z.infer<typeof OperationDeleteGroupNoteOutputSchema>
-export const OperationDeleteGroupNoteErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationDeleteGroupNoteErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationDeleteGroupNoteError = z.infer<typeof OperationDeleteGroupNoteErrorSchema>
 
 export const OperationDeleteCommentInputSchema = z
@@ -1346,10 +1377,10 @@ export const OperationDeleteCommentInputSchema = z
 export type OperationDeleteCommentInput = z.infer<typeof OperationDeleteCommentInputSchema>
 export const OperationDeleteCommentOutputSchema = z.undefined()
 export type OperationDeleteCommentOutput = z.infer<typeof OperationDeleteCommentOutputSchema>
-export const OperationDeleteCommentErrorSchema = z.object({
-  status: z.literal(403),
-  body: ErrorResponseSchema
-})
+export const OperationDeleteCommentErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationDeleteCommentError = z.infer<typeof OperationDeleteCommentErrorSchema>
 
 export const OperationGetGroupInviteInputSchema = z

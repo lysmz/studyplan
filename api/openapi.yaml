@@ -779,6 +779,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupEvent"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createGroupEvent
       tags: [groups]
@@ -801,6 +807,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupEvent"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /groups/{id}/events/{eventId}:
     patch:
@@ -836,6 +848,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteGroupEvent
       tags: [groups]
@@ -855,6 +873,12 @@ paths:
           description: Deleted
         "404":
           description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -884,6 +908,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Comment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: addEventComment
       tags: [groups]
@@ -911,6 +947,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Comment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Event not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /groups/{id}/tasks:
     get:
@@ -931,6 +979,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupTask"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createGroupTask
       tags: [groups]
@@ -953,6 +1007,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupTask"
+        "400":
+          description: Invalid assignee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /groups/{id}/tasks/{taskId}:
     patch:
@@ -988,6 +1054,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "400":
+          description: Invalid assignee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteGroupTask
       tags: [groups]
@@ -1007,6 +1085,12 @@ paths:
           description: Deleted
         "404":
           description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -1036,6 +1120,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Comment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: addTaskComment
       tags: [groups]
@@ -1063,6 +1159,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Comment"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /groups/{id}/notes:
     get:
@@ -1083,6 +1191,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupNote"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     post:
       operationId: createGroupNote
       tags: [groups]
@@ -1105,6 +1219,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupNote"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /groups/{id}/notes/{noteId}:
     patch:
@@ -1140,6 +1260,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       operationId: deleteGroupNote
       tags: [groups]
@@ -1163,6 +1289,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /comments/{id}:
     delete:
@@ -1179,6 +1311,12 @@ paths:
           description: Deleted
         "403":
           description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
           content:
             application/json:
               schema:

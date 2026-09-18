@@ -8,6 +8,12 @@ import { SessionService } from './auth/session.service'
 import { ActivityLogRepository } from './repositories/activity-log.repository'
 import { EventsRepository } from './repositories/events.repository'
 import { GradesRepository } from './repositories/grades.repository'
+import { GroupActivityRepository } from './repositories/group-activity.repository'
+import { GroupCommentsRepository } from './repositories/group-comments.repository'
+import { GroupEventsRepository } from './repositories/group-events.repository'
+import { GroupNotesRepository } from './repositories/group-notes.repository'
+import { GroupTasksRepository } from './repositories/group-tasks.repository'
+import { GroupUnitOfWork } from './repositories/group-transaction'
 import { GroupsRepository } from './repositories/groups.repository'
 import { StudyProgramsRepository } from './repositories/study-programs.repository'
 import { TimetableRepository } from './repositories/timetable.repository'
@@ -16,6 +22,11 @@ import { AuthService } from './services/auth.service'
 import { DashboardService } from './services/dashboard.service'
 import { EventsService } from './services/events.service'
 import { GradesService } from './services/grades.service'
+import { GroupAccessService } from './services/group-access.service'
+import { GroupCommentsService } from './services/group-comments.service'
+import { GroupEventsService } from './services/group-events.service'
+import { GroupNotesService } from './services/group-notes.service'
+import { GroupTasksService } from './services/group-tasks.service'
 import { GroupsService } from './services/groups.service'
 import { StudyProgramsService } from './services/study-programs.service'
 import { TimetableService } from './services/timetable.service'
@@ -23,6 +34,10 @@ import { createAuthHandlers } from './ipc/handlers/auth.handlers'
 import { createDashboardHandlers } from './ipc/handlers/dashboard.handlers'
 import { createEventsHandlers } from './ipc/handlers/events.handlers'
 import { createGradesHandlers } from './ipc/handlers/grades.handlers'
+import { createGroupCommentsHandlers } from './ipc/handlers/group-comments.handlers'
+import { createGroupEventsHandlers } from './ipc/handlers/group-events.handlers'
+import { createGroupNotesHandlers } from './ipc/handlers/group-notes.handlers'
+import { createGroupTasksHandlers } from './ipc/handlers/group-tasks.handlers'
 import { createGroupHandlers } from './ipc/handlers/groups.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
@@ -126,6 +141,12 @@ app.whenReady().then(async () => {
   const activityLogRepository = new ActivityLogRepository(database)
   const eventsRepository = new EventsRepository(database)
   const gradesRepository = new GradesRepository(database)
+  const groupActivityRepository = new GroupActivityRepository(database)
+  const groupCommentsRepository = new GroupCommentsRepository(database)
+  const groupEventsRepository = new GroupEventsRepository(database)
+  const groupNotesRepository = new GroupNotesRepository(database)
+  const groupTasksRepository = new GroupTasksRepository(database)
+  const groupUnitOfWork = new GroupUnitOfWork(database)
   const groupsRepository = new GroupsRepository(database)
   const studyProgramsRepository = new StudyProgramsRepository(database)
   const timetableRepository = new TimetableRepository(database)
@@ -138,6 +159,31 @@ app.whenReady().then(async () => {
   )
   const eventsService = new EventsService(eventsRepository, activityLogRepository)
   const gradesService = new GradesService(gradesRepository, activityLogRepository)
+  const groupAccessService = new GroupAccessService(groupsRepository)
+  const groupEventsService = new GroupEventsService(
+    groupAccessService,
+    groupEventsRepository,
+    groupActivityRepository,
+    groupUnitOfWork
+  )
+  const groupNotesService = new GroupNotesService(
+    groupAccessService,
+    groupNotesRepository,
+    groupActivityRepository,
+    groupUnitOfWork
+  )
+  const groupTasksService = new GroupTasksService(
+    groupAccessService,
+    groupTasksRepository,
+    groupActivityRepository,
+    groupUnitOfWork
+  )
+  const groupCommentsService = new GroupCommentsService(
+    groupAccessService,
+    groupEventsRepository,
+    groupTasksRepository,
+    groupCommentsRepository
+  )
   const groupsService = new GroupsService(groupsRepository)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const timetableService = new TimetableService(timetableRepository)
@@ -148,6 +194,10 @@ app.whenReady().then(async () => {
     ...createDashboardHandlers(dashboardService, sessionService),
     ...createEventsHandlers(eventsService, sessionService, icalFilePicker),
     ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
+    ...createGroupEventsHandlers(groupEventsService, groupCommentsService, sessionService),
+    ...createGroupNotesHandlers(groupNotesService, sessionService),
+    ...createGroupTasksHandlers(groupTasksService, groupCommentsService, sessionService),
+    ...createGroupCommentsHandlers(groupCommentsService, sessionService),
     ...createGroupHandlers(groupsService, sessionService),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
     ...createTimetableHandlers(timetableService, sessionService)

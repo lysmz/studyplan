@@ -1,6 +1,7 @@
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
+import { eventTypes } from './events'
 
 export const groupRoles = ['owner', 'member'] as const
 export type GroupRole = (typeof groupRoles)[number]
@@ -35,7 +36,9 @@ export const studyGroupsTable = sqliteTable('study_groups', {
   inviteToken: text('invite_token')
     .notNull()
     .$defaultFn(() => crypto.randomUUID()),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const groupMembersTable = sqliteTable('group_members', {
@@ -43,7 +46,9 @@ export const groupMembersTable = sqliteTable('group_members', {
   groupId: integer('group_id').notNull(),
   userId: integer('user_id').notNull(),
   role: text('role', { enum: groupRoles }).notNull().default('member'),
-  joinedAt: integer('joined_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  joinedAt: integer('joined_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const groupEventsTable = sqliteTable('group_events', {
@@ -53,11 +58,13 @@ export const groupEventsTable = sqliteTable('group_events', {
   description: text('description'),
   startDate: integer('start_date', { mode: 'timestamp' }).notNull(),
   endDate: integer('end_date', { mode: 'timestamp' }).notNull(),
-  type: text('type').notNull().default('other'),
+  type: text('type', { enum: eventTypes }).notNull().default('other'),
   location: text('location'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`)
@@ -74,7 +81,9 @@ export const groupTasksTable = sqliteTable('group_tasks', {
   status: text('status', { enum: taskStatuses }).notNull().default('open'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`)
@@ -90,7 +99,9 @@ export const groupNotesTable = sqliteTable('group_notes', {
   type: text('type', { enum: noteTypes }).notNull().default('note'),
   createdBy: integer('created_by').notNull(),
   updatedBy: integer('updated_by'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`)
@@ -104,7 +115,9 @@ export const groupCommentsTable = sqliteTable('group_comments', {
   targetId: integer('target_id').notNull(),
   content: text('content').notNull(),
   createdBy: integer('created_by').notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const groupActivityLogTable = sqliteTable('group_activity_log', {
@@ -113,7 +126,9 @@ export const groupActivityLogTable = sqliteTable('group_activity_log', {
   type: text('type', { enum: groupActivityTypes }).notNull(),
   description: text('description').notNull(),
   actorId: integer('actor_id').notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const insertStudyGroupSchema = createInsertSchema(studyGroupsTable).omit({
