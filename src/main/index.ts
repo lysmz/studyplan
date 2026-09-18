@@ -6,15 +6,18 @@ import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
 import { SessionService } from './auth/session.service'
 import { ActivityLogRepository } from './repositories/activity-log.repository'
+import { EventsRepository } from './repositories/events.repository'
 import { GradesRepository } from './repositories/grades.repository'
 import { StudyProgramsRepository } from './repositories/study-programs.repository'
 import { TimetableRepository } from './repositories/timetable.repository'
 import { UsersRepository } from './repositories/users.repository'
 import { AuthService } from './services/auth.service'
+import { EventsService } from './services/events.service'
 import { GradesService } from './services/grades.service'
 import { StudyProgramsService } from './services/study-programs.service'
 import { TimetableService } from './services/timetable.service'
 import { createAuthHandlers } from './ipc/handlers/auth.handlers'
+import { createEventsHandlers } from './ipc/handlers/events.handlers'
 import { createGradesHandlers } from './ipc/handlers/grades.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
@@ -115,17 +118,20 @@ app.whenReady().then(async () => {
 
   const usersRepository = new UsersRepository(database)
   const activityLogRepository = new ActivityLogRepository(database)
+  const eventsRepository = new EventsRepository(database)
   const gradesRepository = new GradesRepository(database)
   const studyProgramsRepository = new StudyProgramsRepository(database)
   const timetableRepository = new TimetableRepository(database)
   const sessionService = new SessionService()
   const authService = new AuthService(usersRepository, sessionService)
+  const eventsService = new EventsService(eventsRepository, activityLogRepository)
   const gradesService = new GradesService(gradesRepository, activityLogRepository)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const timetableService = new TimetableService(timetableRepository)
   const csvFilePicker = new NativeCsvFilePicker()
   const apiHandlers = definePartialApiHandlers({
     ...createAuthHandlers(authService),
+    ...createEventsHandlers(eventsService, sessionService),
     ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
     ...createTimetableHandlers(timetableService, sessionService)
