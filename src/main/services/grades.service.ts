@@ -2,6 +2,7 @@ import type { GradeCsvImportResult, GradeInput, GradeStats, GradeUpdate } from '
 import type { Grade } from '../db/schema'
 import { ActivityLogRepository } from '../repositories/activity-log.repository'
 import { GradesRepository, type GradeChanges } from '../repositories/grades.repository'
+import { computeGpa, computePassedEcts } from './grade-statistics'
 import { parseGradesCsv } from './grades-csv.parser'
 
 export { InvalidGradesCsvError } from './grades-csv.parser'
@@ -11,19 +12,6 @@ export class GradeNotFoundError extends Error {
     super('Grade not found.')
     this.name = 'GradeNotFoundError'
   }
-}
-
-function computeGpa(grades: Grade[]): number | null {
-  const gradedCourses = grades.filter(
-    (grade): grade is Grade & { grade: number } => grade.grade !== null
-  )
-  if (gradedCourses.length === 0) return null
-
-  const totalEcts = gradedCourses.reduce((sum, grade) => sum + grade.ects, 0)
-  if (totalEcts === 0) return null
-
-  const weightedSum = gradedCourses.reduce((sum, grade) => sum + grade.grade * grade.ects, 0)
-  return Math.round((weightedSum / totalEcts) * 100) / 100
 }
 
 export class GradesService {
@@ -117,13 +105,11 @@ export class GradesService {
 
     return {
       overallGpa: computeGpa(grades),
-      totalEcts: grades.filter((grade) => grade.passed).reduce((sum, grade) => sum + grade.ects, 0),
+      totalEcts: computePassedEcts(grades),
       bySemester: Array.from(semesters, ([semester, semesterGrades]) => ({
         semester,
         gpa: computeGpa(semesterGrades),
-        ects: semesterGrades
-          .filter((grade) => grade.passed)
-          .reduce((sum, grade) => sum + grade.ects, 0),
+        ects: computePassedEcts(semesterGrades),
         count: semesterGrades.length
       }))
     }

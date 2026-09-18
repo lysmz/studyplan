@@ -1,4 +1,4 @@
-import { and, eq, gte, lt } from 'drizzle-orm'
+import { and, eq, gte, lt, lte } from 'drizzle-orm'
 import type { AppDatabase } from '../db'
 import {
   eventsTable,
@@ -11,6 +11,7 @@ import {
 export interface EventFilters {
   startsAtOrAfter?: Date
   startsBefore?: Date
+  startsAtOrBefore?: Date
   type?: EventType
   importance?: Importance
 }
@@ -29,6 +30,9 @@ export class EventsRepository {
           eq(eventsTable.userId, userId),
           filters.startsAtOrAfter ? gte(eventsTable.startDate, filters.startsAtOrAfter) : undefined,
           filters.startsBefore ? lt(eventsTable.startDate, filters.startsBefore) : undefined,
+          filters.startsAtOrBefore
+            ? lte(eventsTable.startDate, filters.startsAtOrBefore)
+            : undefined,
           filters.type ? eq(eventsTable.type, filters.type) : undefined,
           filters.importance ? eq(eventsTable.importance, filters.importance) : undefined
         )

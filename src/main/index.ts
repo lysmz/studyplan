@@ -12,11 +12,13 @@ import { StudyProgramsRepository } from './repositories/study-programs.repositor
 import { TimetableRepository } from './repositories/timetable.repository'
 import { UsersRepository } from './repositories/users.repository'
 import { AuthService } from './services/auth.service'
+import { DashboardService } from './services/dashboard.service'
 import { EventsService } from './services/events.service'
 import { GradesService } from './services/grades.service'
 import { StudyProgramsService } from './services/study-programs.service'
 import { TimetableService } from './services/timetable.service'
 import { createAuthHandlers } from './ipc/handlers/auth.handlers'
+import { createDashboardHandlers } from './ipc/handlers/dashboard.handlers'
 import { createEventsHandlers } from './ipc/handlers/events.handlers'
 import { createGradesHandlers } from './ipc/handlers/grades.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
@@ -125,6 +127,11 @@ app.whenReady().then(async () => {
   const timetableRepository = new TimetableRepository(database)
   const sessionService = new SessionService()
   const authService = new AuthService(usersRepository, sessionService)
+  const dashboardService = new DashboardService(
+    gradesRepository,
+    eventsRepository,
+    activityLogRepository
+  )
   const eventsService = new EventsService(eventsRepository, activityLogRepository)
   const gradesService = new GradesService(gradesRepository, activityLogRepository)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
@@ -133,6 +140,7 @@ app.whenReady().then(async () => {
   const icalFilePicker = new NativeIcalFilePicker()
   const apiHandlers = definePartialApiHandlers({
     ...createAuthHandlers(authService),
+    ...createDashboardHandlers(dashboardService, sessionService),
     ...createEventsHandlers(eventsService, sessionService, icalFilePicker),
     ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
