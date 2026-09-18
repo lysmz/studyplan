@@ -2,7 +2,8 @@ import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRegister, useListStudyPrograms } from "@/api";
+import { getGetMeQueryKey, useRegister, useListStudyPrograms } from "@/api";
+import { useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ export default function Register() {
   const [, setLocation] = useLocation();
   const registerMutation = useRegister();
   const { data: studyPrograms } = useListStudyPrograms();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const form = useForm<RegisterFormValues>({
@@ -60,7 +62,9 @@ export default function Register() {
     registerMutation.mutate(
       { data: payload },
       {
-        onSuccess: () => {
+        onSuccess: (authenticatedUser) => {
+          queryClient.clear();
+          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser);
           toast({
             title: "Willkommen beim Studienplaner!",
             description: "Dein Konto wurde erfolgreich erstellt.",

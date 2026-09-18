@@ -6,8 +6,10 @@ import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import * as schema from './schema'
 
+export type AppDatabase = LibSQLDatabase<typeof schema>
+
 export let client: Client
-export let db: LibSQLDatabase<typeof schema>
+export let db: AppDatabase
 
 function getDatabasePath(): string {
   const filename = app.isPackaged ? 'studyplan.db' : 'studyplan-dev.db'

@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useLogin, useGetMe } from "@/api";
+import { getGetMeQueryKey, useLogin, useGetMe } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Loader2 } from "lucide-react";
 
@@ -40,10 +41,11 @@ export default function Login() {
     },
   });
 
-  if (user) {
-    setLocation("/");
-    return null;
-  }
+  useEffect(() => {
+    if (user) setLocation("/");
+  }, [setLocation, user]);
+
+  if (user) return null;
 
   if (isLoading) {
     return null;
@@ -53,8 +55,9 @@ export default function Login() {
     loginMutation.mutate(
       { data: values },
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries();
+        onSuccess: (authenticatedUser) => {
+          queryClient.clear();
+          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser);
           setLocation("/");
         },
         onError: () => {

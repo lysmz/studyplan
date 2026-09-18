@@ -108,19 +108,13 @@ test('React Query adapters normalize query, path, and body inputs', async () => 
   Object.defineProperty(globalThis, 'window', {
     configurable: true,
     value: {
-      api: {
-        events: {
-          listEvents: async (input: unknown) => {
-            calls.push({ operation: 'listEvents', input })
-            return []
-          },
-          getEvent: async (input: unknown) => {
-            calls.push({ operation: 'getEvent', input })
-            return {}
-          },
-          updateEvent: async (input: unknown) => {
-            calls.push({ operation: 'updateEvent', input })
-            return {}
+      apiTransport: {
+        invoke: async (operationId: string, input: unknown) => {
+          calls.push({ operation: operationId, input })
+          return {
+            ok: true,
+            data: operationId === 'listEvents' ? [] : {},
+            requestId: `test-${operationId}`
           }
         }
       }

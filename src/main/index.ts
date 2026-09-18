@@ -3,7 +3,11 @@ import { join } from 'path'
 import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { closeDatabase, initDatabase } from './db'
+import { closeDatabase, initDatabase, type AppDatabase } from './db'
+import { SessionService } from './auth/session.service'
+import { UsersRepository } from './repositories/users.repository'
+import { AuthService } from './services/auth.service'
+import { createAuthHandlers } from './ipc/handlers/auth.handlers'
 import {
   createWindowSenderPolicy,
   definePartialApiHandlers,
@@ -11,7 +15,6 @@ import {
 } from './ipc/api-dispatcher'
 
 const senderPolicy = createWindowSenderPolicy()
-const apiHandlers = definePartialApiHandlers({})
 
 function isSafeExternalUrl(value: string): boolean {
   try {
@@ -76,8 +79,9 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   // Connect and initialize database
+  let database: AppDatabase
   try {
-    await initDatabase()
+    database = await initDatabase()
   } catch (error) {
     console.error('[DB] Failed to initialize the database at startup:', error)
     dialog.showErrorBox(
@@ -96,6 +100,13 @@ app.whenReady().then(async () => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
+  })
+
+  const usersRepository = new UsersRepository(database)
+  const sessionService = new SessionService()
+  const authService = new AuthService(usersRepository, sessionService)
+  const apiHandlers = definePartialApiHandlers({
+    ...createAuthHandlers(authService)
   })
 
   registerApiDispatcher({

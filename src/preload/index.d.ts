@@ -1,8 +1,10 @@
-import type { ApiClient } from '../shared/api'
+import type { ApiTransport } from '../shared/api'
 
 declare global {
   interface Window {
-    api: ApiClient
+    apiTransport: {
+      invoke: ApiTransport
+    }
     appInfo: {
       versions: {
         electron: string

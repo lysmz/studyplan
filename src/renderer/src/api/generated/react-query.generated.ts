@@ -13,21 +13,29 @@ import {
   type UseQueryOptions,
   type UseQueryResult
 } from '@tanstack/react-query'
+import { createApiClient } from '../../../../shared/api'
 import type {
   ApiClientError,
   ApiClient,
   ApiDeclaredError,
   ApiInput,
   ApiOperationId,
-  ApiOutput
+  ApiOutput,
+  ApiTransport
 } from '../../../../shared/api'
 
 export type ApiOperationError<K extends ApiOperationId> = ApiClientError & {
   readonly details?: ApiDeclaredError<K>
 }
 
+function getTransport(): ApiTransport {
+  return (window as unknown as { apiTransport: { invoke: ApiTransport } }).apiTransport.invoke
+}
+
+const api = createApiClient((operationId, input) => getTransport()(operationId, input))
+
 function getApi(): ApiClient {
-  return (window as unknown as { api: ApiClient }).api
+  return api
 }
 
 function isDefined(value: unknown): boolean {

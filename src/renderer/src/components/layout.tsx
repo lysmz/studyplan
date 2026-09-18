@@ -3,6 +3,7 @@ import {
   useGetMe, 
   useLogout
 } from "@/api";
+import type { AuthUser } from "@/api";
 import { 
   BookOpen, 
   CalendarDays, 
@@ -29,28 +30,32 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect } from "react";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const { data: user, isLoading, isError } = useGetMe();
+  const { data: user, isLoading, error, refetch } = useGetMe();
   const [, setLocation] = useLocation();
   const logout = useLogout();
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (isError) {
-      setLocation("/login");
+    if (error?.code === "UNAUTHENTICATED") {
+      setLocation("/login", { replace: true });
     }
-  }, [isError, setLocation]);
+  }, [error?.code, setLocation]);
 
   const handleLogout = () => {
     logout.mutate(undefined, {
       onSuccess: () => {
         queryClient.clear();
-        setLocation("/login");
+        setLocation("/login", { replace: true });
       }
     });
   };
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center bg-background"><div className="animate-pulse flex items-center gap-2"><BookOpen className="h-6 w-6 text-primary" /><span className="text-xl font-serif text-primary">Studienplaner</span></div></div>;
+  }
+
+  if (error && error.code !== "UNAUTHENTICATED") {
+    return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background p-6 text-center"><div><h1 className="font-serif text-2xl font-semibold">Die Anwendung konnte deine Daten nicht laden.</h1><p className="mt-2 text-muted-foreground">Bitte versuche es erneut. Falls der Fehler bestehen bleibt, starte die Anwendung neu.</p></div><Button onClick={() => void refetch()}>Erneut versuchen</Button></div>;
   }
 
   if (!user) return null;
@@ -75,7 +80,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function AppSidebar({ user, onLogout }: { user: any, onLogout: () => void }) {
+function AppSidebar({ user, onLogout }: { user: AuthUser, onLogout: () => void }) {
   const [location] = useLocation();
 
   const navigation = [
