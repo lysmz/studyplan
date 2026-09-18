@@ -964,10 +964,10 @@ export const OperationUpdateGroupInputSchema = z
 export type OperationUpdateGroupInput = z.infer<typeof OperationUpdateGroupInputSchema>
 export const OperationUpdateGroupOutputSchema = StudyGroupSchema
 export type OperationUpdateGroupOutput = z.infer<typeof OperationUpdateGroupOutputSchema>
-export const OperationUpdateGroupErrorSchema = z.object({
-  status: z.literal(404),
-  body: ErrorResponseSchema
-})
+export const OperationUpdateGroupErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationUpdateGroupError = z.infer<typeof OperationUpdateGroupErrorSchema>
 
 export const OperationDeleteGroupInputSchema = z

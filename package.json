@@ -17,6 +17,7 @@
     "dashboard:test": "tsx --test scripts/dashboard/dashboard.test.ts",
     "events:test": "tsx --test scripts/events/events.test.ts",
     "grades:test": "tsx --test scripts/grades/grades.test.ts",
+    "groups:test": "tsx --test scripts/groups/groups.test.ts",
     "study-programs:test": "tsx --test scripts/study-programs/study-programs.test.ts",
     "timetable:test": "tsx --test scripts/timetable/timetable.test.ts",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",

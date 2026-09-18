@@ -8,6 +8,7 @@ import { SessionService } from './auth/session.service'
 import { ActivityLogRepository } from './repositories/activity-log.repository'
 import { EventsRepository } from './repositories/events.repository'
 import { GradesRepository } from './repositories/grades.repository'
+import { GroupsRepository } from './repositories/groups.repository'
 import { StudyProgramsRepository } from './repositories/study-programs.repository'
 import { TimetableRepository } from './repositories/timetable.repository'
 import { UsersRepository } from './repositories/users.repository'
@@ -15,12 +16,14 @@ import { AuthService } from './services/auth.service'
 import { DashboardService } from './services/dashboard.service'
 import { EventsService } from './services/events.service'
 import { GradesService } from './services/grades.service'
+import { GroupsService } from './services/groups.service'
 import { StudyProgramsService } from './services/study-programs.service'
 import { TimetableService } from './services/timetable.service'
 import { createAuthHandlers } from './ipc/handlers/auth.handlers'
 import { createDashboardHandlers } from './ipc/handlers/dashboard.handlers'
 import { createEventsHandlers } from './ipc/handlers/events.handlers'
 import { createGradesHandlers } from './ipc/handlers/grades.handlers'
+import { createGroupHandlers } from './ipc/handlers/groups.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
 import { NativeCsvFilePicker } from './files/native-csv-file-picker'
@@ -123,6 +126,7 @@ app.whenReady().then(async () => {
   const activityLogRepository = new ActivityLogRepository(database)
   const eventsRepository = new EventsRepository(database)
   const gradesRepository = new GradesRepository(database)
+  const groupsRepository = new GroupsRepository(database)
   const studyProgramsRepository = new StudyProgramsRepository(database)
   const timetableRepository = new TimetableRepository(database)
   const sessionService = new SessionService()
@@ -134,6 +138,7 @@ app.whenReady().then(async () => {
   )
   const eventsService = new EventsService(eventsRepository, activityLogRepository)
   const gradesService = new GradesService(gradesRepository, activityLogRepository)
+  const groupsService = new GroupsService(groupsRepository)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const timetableService = new TimetableService(timetableRepository)
   const csvFilePicker = new NativeCsvFilePicker()
@@ -143,6 +148,7 @@ app.whenReady().then(async () => {
     ...createDashboardHandlers(dashboardService, sessionService),
     ...createEventsHandlers(eventsService, sessionService, icalFilePicker),
     ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
+    ...createGroupHandlers(groupsService, sessionService),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
     ...createTimetableHandlers(timetableService, sessionService)
   })
