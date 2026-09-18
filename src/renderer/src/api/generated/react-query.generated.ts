@@ -649,6 +649,52 @@ export const useCreateGrade = <TError = CreateGradeMutationError, TContext = unk
 ): UseMutationResult<ApiOutput<'createGrade'>, TError, CreateGradeMutationVariables, TContext> =>
   useMutation(getCreateGradeMutationOptions(options))
 
+export type ImportGradesCsvMutationVariables = void
+export type ImportGradesCsvMutationResult = ApiOutput<'importGradesCsv'>
+
+export type ImportGradesCsvMutationError = ApiOperationError<'importGradesCsv'>
+export type ImportGradesCsvMutationHookOptions<TError, TContext> = {
+  mutation?: UseMutationOptions<
+    ApiOutput<'importGradesCsv'>,
+    TError,
+    ImportGradesCsvMutationVariables,
+    TContext
+  >
+}
+
+export const getImportGradesCsvMutationOptions = <
+  TError = ImportGradesCsvMutationError,
+  TContext = unknown
+>(
+  options?: ImportGradesCsvMutationHookOptions<TError, TContext>
+): UseMutationOptions<
+  ApiOutput<'importGradesCsv'>,
+  TError,
+  ImportGradesCsvMutationVariables,
+  TContext
+> => {
+  const mutationOptions = options?.mutation
+  const mutationKey = mutationOptions?.mutationKey ?? ['api', 'importGradesCsv']
+  const mutationFn: MutationFunction<
+    ApiOutput<'importGradesCsv'>,
+    ImportGradesCsvMutationVariables
+  > = () => {
+    const input = {} satisfies ApiInput<'importGradesCsv'>
+    return getApi()['grades']['importGradesCsv'](input)
+  }
+
+  return { mutationKey, mutationFn, ...mutationOptions }
+}
+
+export const useImportGradesCsv = <TError = ImportGradesCsvMutationError, TContext = unknown>(
+  options?: ImportGradesCsvMutationHookOptions<TError, TContext>
+): UseMutationResult<
+  ApiOutput<'importGradesCsv'>,
+  TError,
+  ImportGradesCsvMutationVariables,
+  TContext
+> => useMutation(getImportGradesCsvMutationOptions(options))
+
 export type GetGradeStatsQueryResult = ApiOutput<'getGradeStats'>
 export type GetGradeStatsQueryError = ApiOperationError<'getGradeStats'>
 export type GetGradeStatsQueryHookOptions<TData, TError> = {

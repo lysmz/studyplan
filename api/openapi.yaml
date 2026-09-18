@@ -308,6 +308,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/Grade"
 
+  /grades/import-csv:
+    post:
+      operationId: importGradesCsv
+      tags: [grades]
+      responses:
+        "200":
+          description: Import completed or the native file picker was cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GradeCsvImportResult"
+        "400":
+          description: Invalid CSV file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /grades/stats:
     get:
       operationId: getGradeStats
@@ -1442,6 +1460,20 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SemesterStats"
+
+    GradeCsvImportResult:
+      type: object
+      required: [status, importedCount, skippedCount]
+      properties:
+        status:
+          type: string
+          enum: [imported, cancelled]
+        importedCount:
+          type: integer
+          minimum: 0
+        skippedCount:
+          type: integer
+          minimum: 0
 
     SemesterStats:
       type: object

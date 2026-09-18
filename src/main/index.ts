@@ -18,6 +18,7 @@ import { createAuthHandlers } from './ipc/handlers/auth.handlers'
 import { createGradesHandlers } from './ipc/handlers/grades.handlers'
 import { createStudyProgramsHandlers } from './ipc/handlers/study-programs.handlers'
 import { createTimetableHandlers } from './ipc/handlers/timetable.handlers'
+import { NativeCsvFilePicker } from './files/native-csv-file-picker'
 import {
   createWindowSenderPolicy,
   definePartialApiHandlers,
@@ -122,9 +123,10 @@ app.whenReady().then(async () => {
   const gradesService = new GradesService(gradesRepository, activityLogRepository)
   const studyProgramsService = new StudyProgramsService(studyProgramsRepository)
   const timetableService = new TimetableService(timetableRepository)
+  const csvFilePicker = new NativeCsvFilePicker()
   const apiHandlers = definePartialApiHandlers({
     ...createAuthHandlers(authService),
-    ...createGradesHandlers(gradesService, sessionService),
+    ...createGradesHandlers(gradesService, sessionService, csvFilePicker),
     ...createStudyProgramsHandlers(studyProgramsService, sessionService),
     ...createTimetableHandlers(timetableService, sessionService)
   })

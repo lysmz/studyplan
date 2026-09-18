@@ -22,6 +22,7 @@ export type {
   GradeUpdate,
   SemesterStats,
   GradeStats,
+  GradeCsvImportResult,
   WeekDay,
   TimeSlot,
   TimetableEntry,

@@ -37,6 +37,8 @@ import type {
   OperationListGradesOutput,
   OperationCreateGradeInput,
   OperationCreateGradeOutput,
+  OperationImportGradesCsvInput,
+  OperationImportGradesCsvOutput,
   OperationGetGradeStatsInput,
   OperationGetGradeStatsOutput,
   OperationUpdateGradeInput,
@@ -153,6 +155,7 @@ export interface ApiClient {
   grades: {
     listGrades(input?: OperationListGradesInput): Promise<OperationListGradesOutput>
     createGrade(input: OperationCreateGradeInput): Promise<OperationCreateGradeOutput>
+    importGradesCsv(input?: OperationImportGradesCsvInput): Promise<OperationImportGradesCsvOutput>
     getGradeStats(input?: OperationGetGradeStatsInput): Promise<OperationGetGradeStatsOutput>
     updateGrade(input: OperationUpdateGradeInput): Promise<OperationUpdateGradeOutput>
     deleteGrade(input: OperationDeleteGradeInput): Promise<OperationDeleteGradeOutput>
@@ -277,6 +280,8 @@ export function createApiClient(transport: ApiTransport): ApiClient {
     grades: {
       listGrades: (input = {}) => invoke('listGrades', input as OperationListGradesInput),
       createGrade: (input) => invoke('createGrade', input as OperationCreateGradeInput),
+      importGradesCsv: (input = {}) =>
+        invoke('importGradesCsv', input as OperationImportGradesCsvInput),
       getGradeStats: (input = {}) => invoke('getGradeStats', input as OperationGetGradeStatsInput),
       updateGrade: (input) => invoke('updateGrade', input as OperationUpdateGradeInput),
       deleteGrade: (input) => invoke('deleteGrade', input as OperationDeleteGradeInput)

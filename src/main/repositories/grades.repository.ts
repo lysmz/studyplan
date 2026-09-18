@@ -29,6 +29,11 @@ export class GradesRepository {
     return grade
   }
 
+  async createManyGrades(values: InsertGrade[]): Promise<Grade[]> {
+    if (values.length === 0) return []
+    return this.database.insert(gradesTable).values(values).returning()
+  }
+
   async findByIdAndUserId(gradeId: number, userId: number): Promise<Grade | undefined> {
     const [grade] = await this.database
       .select()

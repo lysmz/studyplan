@@ -1,5 +1,10 @@
 import { SessionService } from '../../auth/session.service'
-import { GradeNotFoundError, GradesService } from '../../services/grades.service'
+import { InvalidCsvFileError, type CsvFilePicker } from '../../files/csv-file-picker'
+import {
+  GradeNotFoundError,
+  GradesService,
+  InvalidGradesCsvError
+} from '../../services/grades.service'
 import {
   ApiDeclaredResponseError,
   definePartialApiHandlers,
@@ -20,7 +25,8 @@ function notFound(
 
 export function createGradesHandlers(
   gradesService: GradesService,
-  sessionService: SessionService
+  sessionService: SessionService,
+  csvFilePicker: CsvFilePicker
 ): PartialApiHandlerRegistry {
   return definePartialApiHandlers({
     listGrades: authenticated<'listGrades'>(sessionService, ({ query }, userId) =>
@@ -29,6 +35,29 @@ export function createGradesHandlers(
 
     createGrade: authenticated<'createGrade'>(sessionService, ({ body }, userId) =>
       gradesService.createGrade(userId, body)
+    ),
+
+    importGradesCsv: authenticated<'importGradesCsv'>(
+      sessionService,
+      async (_input, userId, context) => {
+        try {
+          const selection = await csvFilePicker.selectCsvFile(context.event)
+          if (selection.status === 'cancelled') {
+            return { status: 'cancelled', importedCount: 0, skippedCount: 0 }
+          }
+          return await gradesService.importGradesCsv(userId, selection.contents)
+        } catch (error) {
+          if (error instanceof InvalidCsvFileError || error instanceof InvalidGradesCsvError) {
+            throw new ApiDeclaredResponseError(
+              'importGradesCsv',
+              { status: 400, body: { error: error.message } },
+              'VALIDATION_ERROR',
+              error.message
+            )
+          }
+          throw error
+        }
+      }
     ),
 
     getGradeStats: authenticated<'getGradeStats'>(sessionService, (_input, userId) =>

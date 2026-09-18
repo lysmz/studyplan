@@ -1,7 +1,10 @@
-import type { GradeInput, GradeStats, GradeUpdate } from '../../shared/api'
+import type { GradeCsvImportResult, GradeInput, GradeStats, GradeUpdate } from '../../shared/api'
 import type { Grade } from '../db/schema'
 import { ActivityLogRepository } from '../repositories/activity-log.repository'
 import { GradesRepository, type GradeChanges } from '../repositories/grades.repository'
+import { parseGradesCsv } from './grades-csv.parser'
+
+export { InvalidGradesCsvError } from './grades-csv.parser'
 
 export class GradeNotFoundError extends Error {
   constructor() {
@@ -52,6 +55,26 @@ export class GradesService {
     })
 
     return grade
+  }
+
+  async importGradesCsv(userId: number, csvText: string): Promise<GradeCsvImportResult> {
+    const { rows, skippedCount } = parseGradesCsv(csvText)
+    const grades = await this.grades.createManyGrades(
+      rows.map((row) => ({
+        ...row,
+        notes: null,
+        userId,
+        courseId: null
+      }))
+    )
+
+    await this.activityLog.createActivity({
+      type: 'grade_added',
+      description: `${grades.length} Noten aus CSV importiert`,
+      userId
+    })
+
+    return { status: 'imported', importedCount: grades.length, skippedCount }
   }
 
   async updateGrade(userId: number, gradeId: number, input: GradeUpdate): Promise<Grade> {

@@ -13,20 +13,34 @@ import {
 } from '../../src/shared/api'
 import * as schema from '../../src/main/db/schema'
 import { SessionService } from '../../src/main/auth/session.service'
+import type { CsvFilePicker, CsvFileSelection } from '../../src/main/files/csv-file-picker'
 import { createApiDispatcher } from '../../src/main/ipc/api-dispatcher'
 import { createGradesHandlers } from '../../src/main/ipc/handlers/grades.handlers'
 import { ActivityLogRepository } from '../../src/main/repositories/activity-log.repository'
 import { GradesRepository } from '../../src/main/repositories/grades.repository'
 import { GradesService } from '../../src/main/services/grades.service'
+import { parseGradesCsv } from '../../src/main/services/grades-csv.parser'
+
+class StubCsvFilePicker implements CsvFilePicker {
+  calls = 0
+
+  constructor(public selection: CsvFileSelection = { status: 'cancelled' }) {}
+
+  async selectCsvFile(): Promise<CsvFileSelection> {
+    this.calls += 1
+    return this.selection
+  }
+}
 
 interface TestContext {
   client: Client
   session: SessionService
   api: ReturnType<typeof createApiClient>
   dispatch: ReturnType<typeof createApiDispatcher>
+  csvFilePicker: StubCsvFilePicker
 }
 
-async function createTestContext(): Promise<TestContext> {
+async function createTestContext(csvFilePicker = new StubCsvFilePicker()): Promise<TestContext> {
   const client = createClient({ url: 'file::memory:' })
   await client.batch(
     [
@@ -67,7 +81,7 @@ async function createTestContext(): Promise<TestContext> {
   )
   const session = new SessionService()
   const dispatch = createApiDispatcher({
-    handlers: createGradesHandlers(service, session),
+    handlers: createGradesHandlers(service, session, csvFilePicker),
     isSenderAllowed: () => true
   })
   const transport: ApiTransport = async <K extends ApiOperationId>(
@@ -80,7 +94,7 @@ async function createTestContext(): Promise<TestContext> {
       requestId: `test-${operationId}`
     })) as ApiResult<ApiOutput<K>>
 
-  return { client, session, api: createApiClient(transport), dispatch }
+  return { client, session, api: createApiClient(transport), dispatch, csvFilePicker }
 }
 
 test('protects every grade operation with the current session', async () => {
@@ -100,6 +114,7 @@ test('protects every grade operation with the current session', async () => {
         }
       ],
       ['getGradeStats', {}],
+      ['importGradesCsv', {}],
       ['updateGrade', { path: { id: 1 }, body: { grade: 2 } }],
       ['deleteGrade', { path: { id: 1 } }]
     ]
@@ -113,6 +128,81 @@ test('protects every grade operation with the current session', async () => {
       assert.equal(result.ok, false)
       if (!result.ok) assert.equal(result.error.code, 'UNAUTHENTICATED')
     }
+    assert.equal(context.csvFilePicker.calls, 0)
+  } finally {
+    context.client.close()
+  }
+})
+
+test('parses semicolon-delimited German CSV values, quotes, decimal commas and BOM', () => {
+  assert.deepEqual(
+    parseGradesCsv(
+      '\uFEFFModul;Note;ECTS;Semester\r\n"Mathematik, Grundlagen";1,7;5,5;WS 2026\r\nOhne Note;;;'
+    ),
+    {
+      rows: [
+        {
+          courseName: 'Mathematik, Grundlagen',
+          grade: 1.7,
+          ects: 5.5,
+          semester: 'WS 2026',
+          passed: true
+        },
+        {
+          courseName: 'Ohne Note',
+          grade: null,
+          ects: 3,
+          semester: 'Unbekannt',
+          passed: true
+        }
+      ],
+      skippedCount: 0
+    }
+  )
+})
+
+test('imports a native-selected CSV for the current user and records one activity', async () => {
+  const picker = new StubCsvFilePicker({
+    status: 'selected',
+    contents: 'Course,Grade,ECTS,Semester\nNetworks,1.3,5,SS 2026\n,2.0,4,SS 2026'
+  })
+  const context = await createTestContext(picker)
+  try {
+    context.session.start(7)
+    assert.deepEqual(await context.api.grades.importGradesCsv(), {
+      status: 'imported',
+      importedCount: 1,
+      skippedCount: 1
+    })
+
+    const grades = await context.api.grades.listGrades()
+    const imported = grades.find(({ courseName }) => courseName === 'Networks')
+    assert.ok(imported)
+    assert.equal(imported.userId, 7)
+    assert.equal(imported.grade, 1.3)
+    assert.equal(imported.ects, 5)
+
+    const activity = await context.client.execute(
+      "SELECT type, description, user_id FROM activity_log WHERE description LIKE '%CSV%'"
+    )
+    assert.deepEqual(activity.rows, [
+      { type: 'grade_added', description: '1 Noten aus CSV importiert', user_id: 7 }
+    ])
+  } finally {
+    context.client.close()
+  }
+})
+
+test('treats native picker cancellation as a successful no-op', async () => {
+  const context = await createTestContext()
+  try {
+    context.session.start(7)
+    assert.deepEqual(await context.api.grades.importGradesCsv(), {
+      status: 'cancelled',
+      importedCount: 0,
+      skippedCount: 0
+    })
+    assert.equal(context.csvFilePicker.calls, 1)
   } finally {
     context.client.close()
   }

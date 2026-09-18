@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useListGrades, useCreateGrade, useUpdateGrade, useDeleteGrade, useGetGradeStats, getListGradesQueryKey, getGetGradeStatsQueryKey } from "@/api";
+import { useListGrades, useCreateGrade, useUpdateGrade, useDeleteGrade, useGetGradeStats, useImportGradesCsv, getListGradesQueryKey, getGetGradeStatsQueryKey } from "@/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Upload, Trash2, Edit, TrendingUp, BookOpen, GraduationCap, Trophy } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,6 @@ type GradeFormValues = z.infer<typeof gradeSchema>;
 export default function Noten() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -42,6 +41,28 @@ export default function Noten() {
   const createGrade = useCreateGrade();
   const updateGrade = useUpdateGrade();
   const deleteGrade = useDeleteGrade();
+  const importGradesCsv = useImportGradesCsv({
+    mutation: {
+      onSuccess: (result) => {
+        if (result.status === "cancelled") return;
+        queryClient.invalidateQueries({ queryKey: getListGradesQueryKey() });
+        queryClient.invalidateQueries({ queryKey: getGetGradeStatsQueryKey() });
+        toast({
+          title: `${result.importedCount} Noten importiert`,
+          description: result.skippedCount > 0
+            ? `${result.skippedCount} ungültige Zeilen wurden übersprungen.`
+            : undefined,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Fehler beim Import",
+          description: error instanceof Error ? error.message : undefined,
+          variant: "destructive",
+        });
+      },
+    },
+  });
 
   const form = useForm<GradeFormValues>({
     resolver: zodResolver(gradeSchema),
@@ -98,34 +119,6 @@ export default function Noten() {
     });
   };
 
-  const handleCSVImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await fetch('/api/grades/import-csv', {
-        method: 'POST',
-        body: formData,
-      });
-      if (res.ok) {
-        queryClient.invalidateQueries({ queryKey: getListGradesQueryKey() });
-        queryClient.invalidateQueries({ queryKey: getGetGradeStatsQueryKey() });
-        toast({ title: "Noten importiert" });
-      } else {
-        throw new Error();
-      }
-    } catch (err) {
-      toast({ title: "Fehler beim Import", variant: "destructive" });
-    } finally {
-      setIsUploading(false);
-      if (e.target) e.target.value = '';
-    }
-  };
-
   const groupedGrades = useMemo(() => {
     const groups: Record<string, typeof grades> = {};
     grades.forEach(g => {
@@ -152,19 +145,16 @@ export default function Noten() {
           <p className="text-muted-foreground mt-1">Verwalte deine Leistungen und behalte den Schnitt im Blick.</p>
         </div>
         <div className="flex gap-2">
-          <div className="relative">
-            <Button variant="outline" size="sm" className="gap-2" disabled={isUploading}>
-              <Upload className="w-4 h-4" />
-              CSV Upload
-            </Button>
-            <input 
-              type="file" 
-              accept=".csv" 
-              className="absolute inset-0 opacity-0 cursor-pointer" 
-              onChange={handleCSVImport}
-              disabled={isUploading}
-            />
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={importGradesCsv.isPending}
+            onClick={() => importGradesCsv.mutate()}
+          >
+            <Upload className="w-4 h-4" />
+            {importGradesCsv.isPending ? "Importiere …" : "CSV Upload"}
+          </Button>
 
           <Dialog open={isAddOpen} onOpenChange={(v) => { setIsAddOpen(v); if(!v) { setEditId(null); form.reset(); } }}>
             <DialogTrigger asChild>

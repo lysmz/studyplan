@@ -175,6 +175,15 @@ export const GradeStatsSchema = z
   .passthrough()
 export type GradeStats = z.infer<typeof GradeStatsSchema>
 
+export const GradeCsvImportResultSchema = z
+  .object({
+    status: z.enum(['imported', 'cancelled']),
+    importedCount: z.number().int().min(0),
+    skippedCount: z.number().int().min(0)
+  })
+  .passthrough()
+export type GradeCsvImportResult = z.infer<typeof GradeCsvImportResultSchema>
+
 export const WeekDaySchema = z.enum(['monday', 'tuesday', 'wednesday', 'thursday', 'friday'])
 export type WeekDay = z.infer<typeof WeekDaySchema>
 
@@ -679,6 +688,16 @@ export const OperationCreateGradeOutputSchema = GradeSchema
 export type OperationCreateGradeOutput = z.infer<typeof OperationCreateGradeOutputSchema>
 export const OperationCreateGradeErrorSchema = z.never()
 export type OperationCreateGradeError = z.infer<typeof OperationCreateGradeErrorSchema>
+
+export const OperationImportGradesCsvInputSchema = z.object({}).strict()
+export type OperationImportGradesCsvInput = z.infer<typeof OperationImportGradesCsvInputSchema>
+export const OperationImportGradesCsvOutputSchema = GradeCsvImportResultSchema
+export type OperationImportGradesCsvOutput = z.infer<typeof OperationImportGradesCsvOutputSchema>
+export const OperationImportGradesCsvErrorSchema = z.object({
+  status: z.literal(400),
+  body: ErrorResponseSchema
+})
+export type OperationImportGradesCsvError = z.infer<typeof OperationImportGradesCsvErrorSchema>
 
 export const OperationGetGradeStatsInputSchema = z.object({}).strict()
 export type OperationGetGradeStatsInput = z.infer<typeof OperationGetGradeStatsInputSchema>
@@ -1426,6 +1445,11 @@ export interface ApiOperations {
     output: OperationCreateGradeOutput
     error: OperationCreateGradeError
   }
+  importGradesCsv: {
+    input: OperationImportGradesCsvInput
+    output: OperationImportGradesCsvOutput
+    error: OperationImportGradesCsvError
+  }
   getGradeStats: {
     input: OperationGetGradeStatsInput
     output: OperationGetGradeStatsOutput
@@ -1758,6 +1782,14 @@ export const operationContracts = {
     input: OperationCreateGradeInputSchema,
     output: OperationCreateGradeOutputSchema,
     error: OperationCreateGradeErrorSchema
+  },
+  importGradesCsv: {
+    method: 'POST',
+    path: '/grades/import-csv',
+    tag: 'grades',
+    input: OperationImportGradesCsvInputSchema,
+    output: OperationImportGradesCsvOutputSchema,
+    error: OperationImportGradesCsvErrorSchema
   },
   getGradeStats: {
     method: 'GET',
