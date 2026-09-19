@@ -1,4 +1,4 @@
-import type { ApiTransport } from '../shared/api'
+import type { ApiTransport } from '../shared/api/ipc'
 
 declare global {
   interface Window {

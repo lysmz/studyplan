@@ -1,12 +1,11 @@
-import { randomUUID } from 'node:crypto'
 import { contextBridge, ipcRenderer } from 'electron'
-import { API_INVOKE_CHANNEL, type ApiTransport } from '../shared/api'
+import { API_INVOKE_CHANNEL, type ApiTransport } from '../shared/api/ipc'
 
 const transport: ApiTransport = async (operationId, input) =>
   ipcRenderer.invoke(API_INVOKE_CHANNEL, {
     operationId,
     input,
-    requestId: randomUUID()
+    requestId: globalThis.crypto.randomUUID()
   })
 
 const apiTransport = { invoke: transport }
@@ -18,16 +17,9 @@ const appInfo = {
   }
 }
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('apiTransport', apiTransport)
-    contextBridge.exposeInMainWorld('appInfo', appInfo)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  Object.assign(window, { apiTransport, appInfo })
+try {
+  contextBridge.exposeInMainWorld('apiTransport', apiTransport)
+  contextBridge.exposeInMainWorld('appInfo', appInfo)
+} catch (error) {
+  console.error(error)
 }

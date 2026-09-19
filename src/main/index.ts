@@ -69,7 +69,9 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
     }
   })
 
@@ -89,6 +91,23 @@ function createWindow(): void {
       return false
     }
   }
+
+  const isPermissionAllowed = (
+    webContents: Electron.WebContents | null,
+    permission: string
+  ): boolean =>
+    webContents === mainWindow.webContents &&
+    permission === 'clipboard-sanitized-write' &&
+    isRendererUrlAllowed(webContents.getURL())
+
+  mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission) =>
+    isPermissionAllowed(webContents, permission)
+  )
+  mainWindow.webContents.session.setPermissionRequestHandler(
+    (webContents, permission, callback) => {
+      callback(isPermissionAllowed(webContents, permission))
+    }
+  )
 
   senderPolicy.allow(mainWindow.webContents, isRendererUrlAllowed)
   mainWindow.webContents.on('will-navigate', (event, url) => {
