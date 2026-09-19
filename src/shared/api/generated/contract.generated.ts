@@ -982,10 +982,10 @@ export const OperationDeleteGroupInputSchema = z
 export type OperationDeleteGroupInput = z.infer<typeof OperationDeleteGroupInputSchema>
 export const OperationDeleteGroupOutputSchema = z.undefined()
 export type OperationDeleteGroupOutput = z.infer<typeof OperationDeleteGroupOutputSchema>
-export const OperationDeleteGroupErrorSchema = z.object({
-  status: z.literal(403),
-  body: ErrorResponseSchema
-})
+export const OperationDeleteGroupErrorSchema = z.union([
+  z.object({ status: z.literal(403), body: ErrorResponseSchema }),
+  z.object({ status: z.literal(404), body: ErrorResponseSchema })
+])
 export type OperationDeleteGroupError = z.infer<typeof OperationDeleteGroupErrorSchema>
 
 export const OperationCreateGroupInviteInputSchema = z

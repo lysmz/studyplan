@@ -53,4 +53,10 @@ export class GroupsService {
     if (!updated) throw new GroupNotFoundError()
     return { ...existing, ...updated }
   }
+
+  async deleteGroup(userId: number, groupId: number): Promise<void> {
+    const result = await this.groups.deleteAggregateForMember(groupId, userId)
+    if (result === 'not-found') throw new GroupNotFoundError()
+    if (result === 'owner-required') throw new GroupOwnerRequiredError()
+  }
 }

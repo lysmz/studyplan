@@ -37,7 +37,16 @@ export default function GruppenDetail() {
   const { data: tasks = [], isLoading: tasksLoading } = useListGroupTasks(id, { query: { enabled: Number.isFinite(id), queryKey: getListGroupTasksQueryKey(id) } });
   const { data: notes = [], isLoading: notesLoading } = useListGroupNotes(id, { query: { enabled: Number.isFinite(id), queryKey: getListGroupNotesQueryKey(id) } });
   const updateGroup = useUpdateGroup(); const deleteGroup = useDeleteGroup(); const leaveGroup = useLeaveGroup(); const invite = useCreateGroupInvite(); const removeMember = useRemoveGroupMember();
-  const invalidate = () => { queryClient.invalidateQueries({ queryKey: getGetGroupQueryKey(id) }); queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() }); queryClient.invalidateQueries({ queryKey: getGetGroupsActivityQueryKey() }); queryClient.invalidateQueries({ queryKey: getListAllGroupEventsQueryKey() }); };
+  const invalidate = (): void => {
+    queryClient.invalidateQueries({ queryKey: getGetGroupQueryKey(id) });
+    queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() });
+    queryClient.invalidateQueries({ queryKey: getListGroupMembersQueryKey(id) });
+    queryClient.invalidateQueries({ queryKey: getListGroupEventsQueryKey(id) });
+    queryClient.invalidateQueries({ queryKey: getListGroupTasksQueryKey(id) });
+    queryClient.invalidateQueries({ queryKey: getListGroupNotesQueryKey(id) });
+    queryClient.invalidateQueries({ queryKey: getGetGroupsActivityQueryKey() });
+    queryClient.invalidateQueries({ queryKey: getListAllGroupEventsQueryKey() });
+  };
   const [editOpen, setEditOpen] = useState(false); const [groupName, setGroupName] = useState(""); const [groupDescription, setGroupDescription] = useState("");
   const [inviteUrl, setInviteUrl] = useState(""); const [deleteOpen, setDeleteOpen] = useState(false);
   if (isLoading) return <DetailSkeleton />;
@@ -47,7 +56,7 @@ export default function GruppenDetail() {
   const saveGroup = (e: React.FormEvent) => { e.preventDefault(); updateGroup.mutate({ id, data: { name: groupName.trim(), description: groupDescription.trim() || null } }, { onSuccess: () => { invalidate(); setEditOpen(false); toast({ title: "Gruppe aktualisiert" }); } }); };
   const makeInvite = () => invite.mutate({ id }, { onSuccess: ({ token }) => { const url = `${window.location.origin}/einladung/${token}`; setInviteUrl(url); navigator.clipboard?.writeText(url); toast({ title: "Einladungslink kopiert" }); } });
   const removeSelf = () => leaveGroup.mutate({ id }, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() }); toast({ title: "Gruppe verlassen" }); setLocation("/gruppen"); } });
-  const removeGroup = () => deleteGroup.mutate({ id }, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListGroupsQueryKey() }); toast({ title: "Gruppe gelöscht" }); setLocation("/gruppen"); } });
+  const removeGroup = () => deleteGroup.mutate({ id }, { onSuccess: () => { invalidate(); toast({ title: "Gruppe gelöscht" }); setLocation("/gruppen"); } });
 
   return <div className="space-y-6 pb-12 animate-in fade-in duration-500">
     <div className="flex items-center gap-3"><Button data-testid="button-back-groups" variant="ghost" size="icon" onClick={() => setLocation("/gruppen")}><ArrowLeft className="h-5 w-5" /></Button><span className="text-sm text-muted-foreground">Studiengruppen</span></div>
