@@ -9,17 +9,9 @@ const transport: ApiTransport = async (operationId, input) =>
   })
 
 const apiTransport = { invoke: transport }
-const appInfo = {
-  versions: {
-    electron: process.versions.electron ?? 'unknown',
-    chrome: process.versions.chrome ?? 'unknown',
-    node: process.versions.node
-  }
-}
 
 try {
   contextBridge.exposeInMainWorld('apiTransport', apiTransport)
-  contextBridge.exposeInMainWorld('appInfo', appInfo)
 } catch (error) {
   console.error(error)
 }

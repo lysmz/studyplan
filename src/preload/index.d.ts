@@ -5,12 +5,5 @@ declare global {
     apiTransport: {
       invoke: ApiTransport
     }
-    appInfo: {
-      versions: {
-        electron: string
-        chrome: string
-        node: string
-      }
-    }
   }
 }
