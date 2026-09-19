@@ -167,11 +167,11 @@ export default function Dashboard() {
                   {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-12 w-full" />)}
                 </div>
               ) : activity && activity.length > 0 ? (
-                <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
+                <div className="relative space-y-4 before:absolute before:inset-y-0 before:right-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-border before:to-transparent">
                   {activity.map((item) => (
                     <div key={item.id} className="relative flex items-center gap-4 py-2">
-                      <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full border-2 border-background bg-primary/20 -translate-x-1.5 md:-translate-x-2 z-10" />
-                      <div className="flex flex-col min-w-0 flex-1 pl-6 md:pl-0">
+                      <div className="absolute right-0 z-10 h-4 w-4 translate-x-1/2 rounded-full border-2 border-background bg-primary/20" />
+                      <div className="flex min-w-0 flex-1 flex-col pr-6">
                         <p className="text-sm text-foreground">{item.description}</p>
                         <span className="text-xs text-muted-foreground mt-0.5">
                           {format(item.createdAt, 'dd.MM.yyyy HH:mm')}
