@@ -1,85 +1,85 @@
-import { Link, useLocation } from "wouter";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { getGetMeQueryKey, useRegister, useListStudyPrograms } from "@/api";
-import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Loader2 } from "lucide-react";
+import { Link, useLocation } from 'wouter'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { getGetMeQueryKey, useRegister, useListStudyPrograms } from '@/api'
+import { useQueryClient } from '@tanstack/react-query'
+import { BookOpen, Loader2 } from 'lucide-react'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+  SelectValue
+} from '@/components/ui/select'
+import { useToast } from '@/hooks/use-toast'
 
 const registerSchema = z.object({
-  username: z.string().min(3, "Mindestens 3 Zeichen erforderlich"),
-  password: z.string().min(6, "Mindestens 6 Zeichen erforderlich"),
-  displayName: z.string().min(1, "Anzeigename ist erforderlich"),
-  studyProgramId: z.string().optional(),
-});
+  username: z.string().min(3, 'Mindestens 3 Zeichen erforderlich'),
+  password: z.string().min(6, 'Mindestens 6 Zeichen erforderlich'),
+  displayName: z.string().min(1, 'Anzeigename ist erforderlich'),
+  studyProgramId: z.string().optional()
+})
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>
 
 export default function Register() {
-  const [, setLocation] = useLocation();
-  const registerMutation = useRegister();
-  const { data: studyPrograms } = useListStudyPrograms();
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const [, setLocation] = useLocation()
+  const registerMutation = useRegister()
+  const { data: studyPrograms } = useListStudyPrograms()
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: "",
-      password: "",
-      displayName: "",
-      studyProgramId: "",
-    },
-  });
+      username: '',
+      password: '',
+      displayName: '',
+      studyProgramId: ''
+    }
+  })
 
   function onSubmit(values: RegisterFormValues) {
     const payload = {
       username: values.username,
       password: values.password,
       displayName: values.displayName,
-      studyProgramId: values.studyProgramId ? Number(values.studyProgramId) : undefined,
-    };
+      studyProgramId: values.studyProgramId ? Number(values.studyProgramId) : undefined
+    }
 
     registerMutation.mutate(
       { data: payload },
       {
         onSuccess: (authenticatedUser) => {
-          queryClient.clear();
-          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser);
+          queryClient.clear()
+          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser)
           toast({
-            title: "Willkommen beim Studienplaner!",
-            description: "Dein Konto wurde erfolgreich erstellt.",
-          });
-          setLocation("/");
+            title: 'Willkommen beim Studienplaner!',
+            description: 'Dein Konto wurde erfolgreich erstellt.'
+          })
+          setLocation('/')
         },
         onError: () => {
           toast({
-            title: "Registrierung fehlgeschlagen",
-            description: "Bitte überprüfe deine Eingaben und versuche es erneut.",
-            variant: "destructive",
-          });
-        },
+            title: 'Registrierung fehlgeschlagen',
+            description: 'Bitte überprüfe deine Eingaben und versuche es erneut.',
+            variant: 'destructive'
+          })
+        }
       }
-    );
+    )
   }
 
   return (
@@ -141,7 +141,7 @@ export default function Register() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="studyProgramId"
@@ -167,9 +167,9 @@ export default function Register() {
                 )}
               />
 
-              <Button 
-                type="submit" 
-                className="w-full font-medium mt-2" 
+              <Button
+                type="submit"
+                className="w-full font-medium mt-2"
                 disabled={registerMutation.isPending}
               >
                 {registerMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -179,7 +179,7 @@ export default function Register() {
           </Form>
 
           <p className="text-center text-sm text-muted-foreground">
-            Bereits ein Konto?{" "}
+            Bereits ein Konto?{' '}
             <Link href="/login" className="text-primary font-medium hover:underline">
               Anmelden
             </Link>
@@ -191,13 +191,16 @@ export default function Register() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
         <div className="relative z-10 flex-1 flex flex-col justify-center max-w-lg">
           <h2 className="text-4xl lg:text-5xl font-serif font-light leading-tight mb-6">
-            Ein Partner,<br />der mitdenkt.
+            Ein Partner,
+            <br />
+            der mitdenkt.
           </h2>
           <p className="text-accent-foreground/90 text-lg leading-relaxed">
-            Mehr Zeit für das Lernen, weniger Zeit für die Planung. Behalte den Überblick über Fristen, Prüfungen und deinen Schnitt.
+            Mehr Zeit für das Lernen, weniger Zeit für die Planung. Behalte den Überblick über
+            Fristen, Prüfungen und deinen Schnitt.
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }

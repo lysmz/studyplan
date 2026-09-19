@@ -278,12 +278,16 @@ test('lets an owner delete the complete group aggregate without affecting other 
       'group_comments',
       'group_activity_log'
     ]) {
-      const deleted = await context.client.execute(`SELECT COUNT(*) AS count FROM ${table} WHERE ${
-        table === 'study_groups' ? 'id' : 'group_id'
-      } = 1`)
-      const retained = await context.client.execute(`SELECT COUNT(*) AS count FROM ${table} WHERE ${
-        table === 'study_groups' ? 'id' : 'group_id'
-      } = 2`)
+      const deleted = await context.client.execute(
+        `SELECT COUNT(*) AS count FROM ${table} WHERE ${
+          table === 'study_groups' ? 'id' : 'group_id'
+        } = 1`
+      )
+      const retained = await context.client.execute(
+        `SELECT COUNT(*) AS count FROM ${table} WHERE ${
+          table === 'study_groups' ? 'id' : 'group_id'
+        } = 2`
+      )
       assert.equal(Number(deleted.rows[0].count), 0, `${table} retained deleted group data`)
       assert.ok(Number(retained.rows[0].count) > 0, `${table} removed another group's data`)
     }
@@ -355,9 +359,11 @@ test('rolls back every aggregate deletion when a child delete fails', async () =
       'group_comments',
       'group_activity_log'
     ]) {
-      const result = await context.client.execute(`SELECT COUNT(*) AS count FROM ${table} WHERE ${
-        table === 'study_groups' ? 'id' : 'group_id'
-      } = 1`)
+      const result = await context.client.execute(
+        `SELECT COUNT(*) AS count FROM ${table} WHERE ${
+          table === 'study_groups' ? 'id' : 'group_id'
+        } = 1`
+      )
       assert.ok(Number(result.rows[0].count) > 0, `${table} was not rolled back`)
     }
   } finally {

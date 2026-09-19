@@ -16,7 +16,9 @@ export const activityLogTable = sqliteTable('activity_log', {
   type: text('type', { enum: activityTypes }).notNull(),
   description: text('description').notNull(),
   userId: integer('user_id').notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const insertActivityLogSchema = createInsertSchema(activityLogTable).omit({

@@ -2,23 +2,10 @@ import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod/v4'
 
-export const weekDays = [
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday'
-] as const
+export const weekDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as const
 export type WeekDay = (typeof weekDays)[number]
 
-export const timeSlots = [
-  'slot1',
-  'slot2',
-  'slot3',
-  'slot4',
-  'slot5',
-  'slot6'
-] as const
+export const timeSlots = ['slot1', 'slot2', 'slot3', 'slot4', 'slot5', 'slot6'] as const
 export type TimeSlot = (typeof timeSlots)[number]
 
 export const timetableEntriesTable = sqliteTable('timetable_entries', {

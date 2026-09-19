@@ -9,7 +9,9 @@ export const usersTable = sqliteTable('users', {
   passwordHash: text('password_hash').notNull(),
   displayName: text('display_name').notNull(),
   studyProgramId: integer('study_program_id'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`)
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`)
 })
 
 export const insertUserSchema = createInsertSchema(usersTable).omit({ id: true, createdAt: true })

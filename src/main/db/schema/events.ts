@@ -20,7 +20,9 @@ export const eventsTable = sqliteTable('events', {
   isMultiDay: integer('is_multi_day', { mode: 'boolean' }).notNull().default(false),
   location: text('location'),
   userId: integer('user_id').notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`)

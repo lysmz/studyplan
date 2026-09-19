@@ -1,54 +1,54 @@
-import { useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { getGetMeQueryKey, useLogin, useGetMe } from "@/api";
-import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Loader2 } from "lucide-react";
+import { useEffect } from 'react'
+import { Link, useLocation } from 'wouter'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { getGetMeQueryKey, useLogin, useGetMe } from '@/api'
+import { useQueryClient } from '@tanstack/react-query'
+import { BookOpen, Loader2 } from 'lucide-react'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useToast } from '@/hooks/use-toast'
 
 const loginSchema = z.object({
-  username: z.string().min(1, "Benutzername ist erforderlich"),
-  password: z.string().min(1, "Passwort ist erforderlich"),
-});
+  username: z.string().min(1, 'Benutzername ist erforderlich'),
+  password: z.string().min(1, 'Passwort ist erforderlich')
+})
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function Login() {
-  const [, setLocation] = useLocation();
-  const loginMutation = useLogin();
-  const { data: user, isLoading } = useGetMe();
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const [, setLocation] = useLocation()
+  const loginMutation = useLogin()
+  const { data: user, isLoading } = useGetMe()
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
+      username: '',
+      password: ''
+    }
+  })
 
   useEffect(() => {
-    if (user) setLocation("/");
-  }, [setLocation, user]);
+    if (user) setLocation('/')
+  }, [setLocation, user])
 
-  if (user) return null;
+  if (user) return null
 
   if (isLoading) {
-    return null;
+    return null
   }
 
   function onSubmit(values: LoginFormValues) {
@@ -56,19 +56,19 @@ export default function Login() {
       { data: values },
       {
         onSuccess: (authenticatedUser) => {
-          queryClient.clear();
-          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser);
-          setLocation("/");
+          queryClient.clear()
+          queryClient.setQueryData(getGetMeQueryKey(), authenticatedUser)
+          setLocation('/')
         },
         onError: () => {
           toast({
-            title: "Fehler beim Anmelden",
-            description: "Benutzername oder Passwort ist falsch.",
-            variant: "destructive",
-          });
-        },
+            title: 'Fehler beim Anmelden',
+            description: 'Benutzername oder Passwort ist falsch.',
+            variant: 'destructive'
+          })
+        }
       }
-    );
+    )
   }
 
   return (
@@ -117,9 +117,9 @@ export default function Login() {
                   </FormItem>
                 )}
               />
-              <Button 
-                type="submit" 
-                className="w-full font-medium" 
+              <Button
+                type="submit"
+                className="w-full font-medium"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -129,7 +129,7 @@ export default function Login() {
           </Form>
 
           <p className="text-center text-sm text-muted-foreground">
-            Noch kein Konto?{" "}
+            Noch kein Konto?{' '}
             <Link href="/register" className="text-primary font-medium hover:underline">
               Jetzt registrieren
             </Link>
@@ -141,13 +141,16 @@ export default function Login() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
         <div className="relative z-10 flex-1 flex flex-col justify-center max-w-lg">
           <h2 className="text-4xl lg:text-5xl font-serif font-light leading-tight mb-6">
-            Klarheit für<br />dein Studium.
+            Klarheit für
+            <br />
+            dein Studium.
           </h2>
           <p className="text-primary-foreground/80 text-lg leading-relaxed">
-            Dein Cockpit für Vorlesungen, Prüfungen und Noten. Ein Ort, der mitdenkt, damit du dich aufs Wesentliche konzentrieren kannst.
+            Dein Cockpit für Vorlesungen, Prüfungen und Noten. Ein Ort, der mitdenkt, damit du dich
+            aufs Wesentliche konzentrieren kannst.
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -13,7 +13,9 @@ export const gradesTable = sqliteTable('grades', {
   notes: text('notes'),
   userId: integer('user_id').notNull(),
   courseId: integer('course_id'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(unixepoch())`)

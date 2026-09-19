@@ -25,12 +25,12 @@ paths:
       tags: [health]
       summary: Health check
       responses:
-        "200":
+        '200':
           description: Healthy
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthStatus"
+                $ref: '#/components/schemas/HealthStatus'
 
   # ── Auth ──────────────────────────────────────────────────────────────────
   /auth/register:
@@ -42,26 +42,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisterInput"
+              $ref: '#/components/schemas/RegisterInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuthUser"
-        "400":
+                $ref: '#/components/schemas/AuthUser'
+        '400':
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "409":
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
           description: Conflict
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/login:
     post:
@@ -72,27 +72,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginInput"
+              $ref: '#/components/schemas/LoginInput'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuthUser"
-        "401":
+                $ref: '#/components/schemas/AuthUser'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /auth/logout:
     post:
       operationId: logout
       tags: [auth]
       responses:
-        "204":
+        '204':
           description: Logged out
 
   /auth/me:
@@ -100,18 +100,18 @@ paths:
       operationId: getMe
       tags: [auth]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuthUser"
-        "401":
+                $ref: '#/components/schemas/AuthUser'
+        '401':
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   # ── Dashboard ─────────────────────────────────────────────────────────────
   /dashboard/stats:
@@ -119,40 +119,40 @@ paths:
       operationId: getDashboardStats
       tags: [dashboard]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DashboardStats"
+                $ref: '#/components/schemas/DashboardStats'
 
   /dashboard/upcoming:
     get:
       operationId: getDashboardUpcoming
       tags: [dashboard]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Event"
+                  $ref: '#/components/schemas/Event'
 
   /dashboard/activity:
     get:
       operationId: getDashboardActivity
       tags: [dashboard]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ActivityItem"
+                  $ref: '#/components/schemas/ActivityItem'
 
   # ── Events ────────────────────────────────────────────────────────────────
   /events:
@@ -171,20 +171,20 @@ paths:
         - name: type
           in: query
           schema:
-            $ref: "#/components/schemas/EventType"
+            $ref: '#/components/schemas/EventType'
         - name: importance
           in: query
           schema:
-            $ref: "#/components/schemas/Importance"
+            $ref: '#/components/schemas/Importance'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Event"
+                  $ref: '#/components/schemas/Event'
     post:
       operationId: createEvent
       tags: [events]
@@ -193,32 +193,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventInput"
+              $ref: '#/components/schemas/EventInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
+                $ref: '#/components/schemas/Event'
 
   /events/import-ical:
     post:
       operationId: importEventsIcal
       tags: [events]
       responses:
-        "200":
+        '200':
           description: Import completed or the native file picker was cancelled
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EventIcalImportResult"
-        "400":
+                $ref: '#/components/schemas/EventIcalImportResult'
+        '400':
           description: Invalid iCalendar file
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /events/{id}:
     get:
@@ -231,18 +231,18 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
-        "404":
+                $ref: '#/components/schemas/Event'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       operationId: updateEvent
       tags: [events]
@@ -257,20 +257,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EventUpdate"
+              $ref: '#/components/schemas/EventUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Event"
-        "404":
+                $ref: '#/components/schemas/Event'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteEvent
       tags: [events]
@@ -281,14 +281,14 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   # ── Grades ────────────────────────────────────────────────────────────────
   /grades:
@@ -301,14 +301,14 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Grade"
+                  $ref: '#/components/schemas/Grade'
     post:
       operationId: createGrade
       tags: [grades]
@@ -317,44 +317,44 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GradeInput"
+              $ref: '#/components/schemas/GradeInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Grade"
+                $ref: '#/components/schemas/Grade'
 
   /grades/import-csv:
     post:
       operationId: importGradesCsv
       tags: [grades]
       responses:
-        "200":
+        '200':
           description: Import completed or the native file picker was cancelled
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GradeCsvImportResult"
-        "400":
+                $ref: '#/components/schemas/GradeCsvImportResult'
+        '400':
           description: Invalid CSV file
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /grades/stats:
     get:
       operationId: getGradeStats
       tags: [grades]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GradeStats"
+                $ref: '#/components/schemas/GradeStats'
 
   /grades/{id}:
     patch:
@@ -371,20 +371,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GradeUpdate"
+              $ref: '#/components/schemas/GradeUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Grade"
-        "404":
+                $ref: '#/components/schemas/Grade'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteGrade
       tags: [grades]
@@ -395,14 +395,14 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   # ── Timetable ─────────────────────────────────────────────────────────────
   /timetable:
@@ -410,14 +410,14 @@ paths:
       operationId: listTimetableEntries
       tags: [timetable]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TimetableEntry"
+                  $ref: '#/components/schemas/TimetableEntry'
     post:
       operationId: addTimetableEntry
       tags: [timetable]
@@ -426,14 +426,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TimetableEntryInput"
+              $ref: '#/components/schemas/TimetableEntryInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TimetableEntry"
+                $ref: '#/components/schemas/TimetableEntry'
 
   /timetable/{id}:
     delete:
@@ -446,21 +446,21 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /timetable/clear:
     delete:
       operationId: clearTimetable
       tags: [timetable]
       responses:
-        "204":
+        '204':
           description: Cleared
 
   /timetable/presets:
@@ -468,14 +468,14 @@ paths:
       operationId: listTimetablePresets
       tags: [timetable]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TimetablePreset"
+                  $ref: '#/components/schemas/TimetablePreset'
 
   /timetable/presets/{presetId}/entries:
     get:
@@ -488,14 +488,14 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/PresetEntry"
+                  $ref: '#/components/schemas/PresetEntry'
 
   # ── Study Programs ─────────────────────────────────────────────────────────
   /study-programs:
@@ -503,14 +503,14 @@ paths:
       operationId: listStudyPrograms
       tags: [studyPrograms]
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/StudyProgram"
+                  $ref: '#/components/schemas/StudyProgram'
 
   /study-programs/{id}/courses:
     get:
@@ -523,14 +523,14 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Course"
+                  $ref: '#/components/schemas/Course'
 
   # ── Study Groups ──────────────────────────────────────────────────────────
   /groups:
@@ -539,14 +539,14 @@ paths:
       tags: [groups]
       summary: List all groups I am a member of
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/StudyGroup"
+                  $ref: '#/components/schemas/StudyGroup'
     post:
       operationId: createGroup
       tags: [groups]
@@ -556,14 +556,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StudyGroupInput"
+              $ref: '#/components/schemas/StudyGroupInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StudyGroup"
+                $ref: '#/components/schemas/StudyGroup'
 
   /groups/activity:
     get:
@@ -571,14 +571,14 @@ paths:
       tags: [groups]
       summary: Recent activity across all my groups
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupActivityItem"
+                  $ref: '#/components/schemas/GroupActivityItem'
 
   /groups/events:
     get:
@@ -597,14 +597,14 @@ paths:
             type: string
             format: date-time
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupEvent"
+                  $ref: '#/components/schemas/GroupEvent'
 
   /groups/{id}:
     get:
@@ -617,18 +617,18 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StudyGroup"
-        "404":
+                $ref: '#/components/schemas/StudyGroup'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       operationId: updateGroup
       tags: [groups]
@@ -643,26 +643,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StudyGroupUpdate"
+              $ref: '#/components/schemas/StudyGroupUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StudyGroup"
-        "404":
+                $ref: '#/components/schemas/StudyGroup'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteGroup
       tags: [groups]
@@ -673,20 +673,20 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/invite:
     post:
@@ -700,12 +700,12 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupInviteLink"
+                $ref: '#/components/schemas/GroupInviteLink'
 
   /groups/{id}/leave:
     post:
@@ -718,7 +718,7 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Left group
 
   /groups/{id}/members:
@@ -732,14 +732,14 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupMember"
+                  $ref: '#/components/schemas/GroupMember'
 
   /groups/{id}/members/{userId}:
     delete:
@@ -757,14 +757,14 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Removed
-        "403":
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/events:
     get:
@@ -777,20 +777,20 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupEvent"
-        "403":
+                  $ref: '#/components/schemas/GroupEvent'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: createGroupEvent
       tags: [groups]
@@ -805,20 +805,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupEventInput"
+              $ref: '#/components/schemas/GroupEventInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupEvent"
-        "403":
+                $ref: '#/components/schemas/GroupEvent'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/events/{eventId}:
     patch:
@@ -840,26 +840,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupEventUpdate"
+              $ref: '#/components/schemas/GroupEventUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupEvent"
-        "404":
+                $ref: '#/components/schemas/GroupEvent'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteGroupEvent
       tags: [groups]
@@ -875,20 +875,20 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/events/{eventId}/comments:
     get:
@@ -906,26 +906,26 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Comment"
-        "403":
+                  $ref: '#/components/schemas/Comment'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Event not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: addEventComment
       tags: [groups]
@@ -945,26 +945,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CommentInput"
+              $ref: '#/components/schemas/CommentInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Comment"
-        "403":
+                $ref: '#/components/schemas/Comment'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Event not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/tasks:
     get:
@@ -977,20 +977,20 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupTask"
-        "403":
+                  $ref: '#/components/schemas/GroupTask'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: createGroupTask
       tags: [groups]
@@ -1005,26 +1005,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupTaskInput"
+              $ref: '#/components/schemas/GroupTaskInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupTask"
-        "400":
+                $ref: '#/components/schemas/GroupTask'
+        '400':
           description: Invalid assignee
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/tasks/{taskId}:
     patch:
@@ -1046,32 +1046,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupTaskUpdate"
+              $ref: '#/components/schemas/GroupTaskUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupTask"
-        "404":
+                $ref: '#/components/schemas/GroupTask'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "400":
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
           description: Invalid assignee
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteGroupTask
       tags: [groups]
@@ -1087,20 +1087,20 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/tasks/{taskId}/comments:
     get:
@@ -1118,26 +1118,26 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Comment"
-        "403":
+                  $ref: '#/components/schemas/Comment'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Task not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: addTaskComment
       tags: [groups]
@@ -1157,26 +1157,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CommentInput"
+              $ref: '#/components/schemas/CommentInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Comment"
-        "403":
+                $ref: '#/components/schemas/Comment'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Task not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/notes:
     get:
@@ -1189,20 +1189,20 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupNote"
-        "403":
+                  $ref: '#/components/schemas/GroupNote'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       operationId: createGroupNote
       tags: [groups]
@@ -1217,20 +1217,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupNoteInput"
+              $ref: '#/components/schemas/GroupNoteInput'
       responses:
-        "201":
+        '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupNote"
-        "403":
+                $ref: '#/components/schemas/GroupNote'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /groups/{id}/notes/{noteId}:
     patch:
@@ -1252,26 +1252,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/GroupNoteUpdate"
+              $ref: '#/components/schemas/GroupNoteUpdate'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupNote"
-        "404":
+                $ref: '#/components/schemas/GroupNote'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       operationId: deleteGroupNote
       tags: [groups]
@@ -1287,20 +1287,20 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "404":
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "403":
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /comments/{id}:
     delete:
@@ -1313,20 +1313,20 @@ paths:
           schema:
             type: integer
       responses:
-        "204":
+        '204':
           description: Deleted
-        "403":
+        '403':
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   # ── Invite ────────────────────────────────────────────────────────────────
   /invite/{token}:
@@ -1341,18 +1341,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GroupInviteInfo"
-        "404":
+                $ref: '#/components/schemas/GroupInviteInfo'
+        '404':
           description: Not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
   /invite/{token}/join:
     post:
@@ -1366,24 +1366,24 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StudyGroup"
-        "400":
+                $ref: '#/components/schemas/StudyGroup'
+        '400':
           description: Already a member
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "404":
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -1416,7 +1416,7 @@ components:
           type: string
           minLength: 1
         studyProgramId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
 
     LoginInput:
       type: object
@@ -1438,7 +1438,7 @@ components:
         displayName:
           type: string
         studyProgramId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
 
     # ── Dashboard ─────────────────────────────────────────────────────────────
     DashboardStats:
@@ -1446,7 +1446,7 @@ components:
       required: [gpa, totalEcts, upcomingDeadlinesCount, gradesCount]
       properties:
         gpa:
-          type: ["number", "null"]
+          type: ['number', 'null']
         totalEcts:
           type: number
         upcomingDeadlinesCount:
@@ -1487,7 +1487,7 @@ components:
         title:
           type: string
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         startDate:
           type: string
           format: date-time
@@ -1495,13 +1495,13 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         importance:
-          $ref: "#/components/schemas/Importance"
+          $ref: '#/components/schemas/Importance'
         isMultiDay:
           type: boolean
         location:
-          type: ["string", "null"]
+          type: ['string', 'null']
         userId:
           type: integer
 
@@ -1521,9 +1521,9 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         importance:
-          $ref: "#/components/schemas/Importance"
+          $ref: '#/components/schemas/Importance'
         location:
           type: string
 
@@ -1542,9 +1542,9 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         importance:
-          $ref: "#/components/schemas/Importance"
+          $ref: '#/components/schemas/Importance'
         location:
           type: string
 
@@ -1572,7 +1572,7 @@ components:
         courseName:
           type: string
         grade:
-          type: ["number", "null"]
+          type: ['number', 'null']
         ects:
           type: number
         semester:
@@ -1580,11 +1580,11 @@ components:
         passed:
           type: boolean
         notes:
-          type: ["string", "null"]
+          type: ['string', 'null']
         userId:
           type: integer
         courseId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
 
     GradeInput:
       type: object
@@ -1617,7 +1617,7 @@ components:
           type: string
           minLength: 1
         grade:
-          type: ["number", "null"]
+          type: ['number', 'null']
         ects:
           type: number
           minimum: 0
@@ -1626,22 +1626,22 @@ components:
         passed:
           type: boolean
         notes:
-          type: ["string", "null"]
+          type: ['string', 'null']
         courseId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
 
     GradeStats:
       type: object
       required: [overallGpa, totalEcts, bySemester]
       properties:
         overallGpa:
-          type: ["number", "null"]
+          type: ['number', 'null']
         totalEcts:
           type: number
         bySemester:
           type: array
           items:
-            $ref: "#/components/schemas/SemesterStats"
+            $ref: '#/components/schemas/SemesterStats'
 
     GradeCsvImportResult:
       type: object
@@ -1664,7 +1664,7 @@ components:
         semester:
           type: string
         gpa:
-          type: ["number", "null"]
+          type: ['number', 'null']
         ects:
           type: number
         count:
@@ -1688,17 +1688,17 @@ components:
         courseName:
           type: string
         weekDay:
-          $ref: "#/components/schemas/WeekDay"
+          $ref: '#/components/schemas/WeekDay'
         timeSlot:
-          $ref: "#/components/schemas/TimeSlot"
+          $ref: '#/components/schemas/TimeSlot'
         room:
-          type: ["string", "null"]
+          type: ['string', 'null']
         professor:
-          type: ["string", "null"]
+          type: ['string', 'null']
         isCustom:
           type: boolean
         color:
-          type: ["string", "null"]
+          type: ['string', 'null']
         userId:
           type: integer
 
@@ -1710,9 +1710,9 @@ components:
           type: string
           minLength: 1
         weekDay:
-          $ref: "#/components/schemas/WeekDay"
+          $ref: '#/components/schemas/WeekDay'
         timeSlot:
-          $ref: "#/components/schemas/TimeSlot"
+          $ref: '#/components/schemas/TimeSlot'
         room:
           type: string
         professor:
@@ -1746,13 +1746,13 @@ components:
         courseName:
           type: string
         weekDay:
-          $ref: "#/components/schemas/WeekDay"
+          $ref: '#/components/schemas/WeekDay'
         timeSlot:
-          $ref: "#/components/schemas/TimeSlot"
+          $ref: '#/components/schemas/TimeSlot'
         room:
-          type: ["string", "null"]
+          type: ['string', 'null']
         professor:
-          type: ["string", "null"]
+          type: ['string', 'null']
 
     # ── Study Programs ─────────────────────────────────────────────────────────
     StudyProgram:
@@ -1799,18 +1799,18 @@ components:
         name:
           type: string
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         createdBy:
           type: integer
         createdAt:
           type: string
           format: date-time
         myRole:
-          $ref: "#/components/schemas/GroupRole"
+          $ref: '#/components/schemas/GroupRole'
         memberCount:
           type: integer
         inviteToken:
-          type: ["string", "null"]
+          type: ['string', 'null']
 
     StudyGroupInput:
       type: object
@@ -1829,7 +1829,7 @@ components:
           type: string
           minLength: 1
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
 
     GroupMember:
       type: object
@@ -1842,7 +1842,7 @@ components:
         displayName:
           type: string
         role:
-          $ref: "#/components/schemas/GroupRole"
+          $ref: '#/components/schemas/GroupRole'
         joinedAt:
           type: string
           format: date-time
@@ -1865,7 +1865,7 @@ components:
         memberCount:
           type: integer
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
 
     GroupActivityItem:
       type: object
@@ -1879,7 +1879,18 @@ components:
           type: string
         type:
           type: string
-          enum: [event_created, event_updated, event_deleted, task_created, task_updated, task_completed, note_created, member_joined, member_left]
+          enum:
+            [
+              event_created,
+              event_updated,
+              event_deleted,
+              task_created,
+              task_updated,
+              task_completed,
+              note_created,
+              member_joined,
+              member_left
+            ]
         description:
           type: string
         actorName:
@@ -1890,7 +1901,19 @@ components:
 
     GroupEvent:
       type: object
-      required: [id, groupId, title, startDate, endDate, type, createdBy, createdByName, createdAt, updatedAt]
+      required:
+        [
+          id,
+          groupId,
+          title,
+          startDate,
+          endDate,
+          type,
+          createdBy,
+          createdByName,
+          createdAt,
+          updatedAt
+        ]
       properties:
         id:
           type: integer
@@ -1899,7 +1922,7 @@ components:
         title:
           type: string
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         startDate:
           type: string
           format: date-time
@@ -1907,9 +1930,9 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         location:
-          type: ["string", "null"]
+          type: ['string', 'null']
         createdBy:
           type: integer
         createdByName:
@@ -1937,7 +1960,7 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         location:
           type: string
 
@@ -1948,7 +1971,7 @@ components:
           type: string
           minLength: 1
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         startDate:
           type: string
           format: date-time
@@ -1956,9 +1979,9 @@ components:
           type: string
           format: date-time
         type:
-          $ref: "#/components/schemas/EventType"
+          $ref: '#/components/schemas/EventType'
         location:
-          type: ["string", "null"]
+          type: ['string', 'null']
 
     TaskStatus:
       type: string
@@ -1975,16 +1998,16 @@ components:
         title:
           type: string
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         dueDate:
-          type: ["string", "null"]
+          type: ['string', 'null']
           format: date-time
         assigneeId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
         assigneeName:
-          type: ["string", "null"]
+          type: ['string', 'null']
         status:
-          $ref: "#/components/schemas/TaskStatus"
+          $ref: '#/components/schemas/TaskStatus'
         createdBy:
           type: integer
         createdByName:
@@ -2018,14 +2041,14 @@ components:
           type: string
           minLength: 1
         description:
-          type: ["string", "null"]
+          type: ['string', 'null']
         dueDate:
-          type: ["string", "null"]
+          type: ['string', 'null']
           format: date-time
         assigneeId:
-          type: ["integer", "null"]
+          type: ['integer', 'null']
         status:
-          $ref: "#/components/schemas/TaskStatus"
+          $ref: '#/components/schemas/TaskStatus'
 
     NoteType:
       type: string
@@ -2042,11 +2065,11 @@ components:
         title:
           type: string
         content:
-          type: ["string", "null"]
+          type: ['string', 'null']
         url:
-          type: ["string", "null"]
+          type: ['string', 'null']
         type:
-          $ref: "#/components/schemas/NoteType"
+          $ref: '#/components/schemas/NoteType'
         createdBy:
           type: integer
         createdByName:
@@ -2070,7 +2093,7 @@ components:
         url:
           type: string
         type:
-          $ref: "#/components/schemas/NoteType"
+          $ref: '#/components/schemas/NoteType'
 
     GroupNoteUpdate:
       type: object
@@ -2079,11 +2102,11 @@ components:
           type: string
           minLength: 1
         content:
-          type: ["string", "null"]
+          type: ['string', 'null']
         url:
-          type: ["string", "null"]
+          type: ['string', 'null']
         type:
-          $ref: "#/components/schemas/NoteType"
+          $ref: '#/components/schemas/NoteType'
 
     Comment:
       type: object

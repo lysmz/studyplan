@@ -1,20 +1,17 @@
-import { Link, useLocation } from "wouter";
-import { 
-  useGetMe, 
-  useLogout
-} from "@/api";
-import type { AuthUser } from "@/api";
-import { 
-  BookOpen, 
-  CalendarDays, 
-  GraduationCap, 
-  LayoutDashboard, 
+import { Link, useLocation } from 'wouter'
+import { useGetMe, useLogout } from '@/api'
+import type { AuthUser } from '@/api'
+import {
+  BookOpen,
+  CalendarDays,
+  GraduationCap,
+  LayoutDashboard,
   LogOut,
   Table as TableIcon,
   Users
-} from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
+import { Button } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -25,40 +22,59 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger
-} from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useEffect } from "react";
+} from '@/components/ui/sidebar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { useEffect } from 'react'
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const { data: user, isLoading, error, refetch } = useGetMe();
-  const [, setLocation] = useLocation();
-  const logout = useLogout();
-  const queryClient = useQueryClient();
+  const { data: user, isLoading, error, refetch } = useGetMe()
+  const [, setLocation] = useLocation()
+  const logout = useLogout()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
-    if (error?.code === "UNAUTHENTICATED") {
-      setLocation("/login", { replace: true });
+    if (error?.code === 'UNAUTHENTICATED') {
+      setLocation('/login', { replace: true })
     }
-  }, [error?.code, setLocation]);
+  }, [error?.code, setLocation])
 
   const handleLogout = () => {
     logout.mutate(undefined, {
       onSuccess: () => {
-        queryClient.clear();
-        setLocation("/login", { replace: true });
+        queryClient.clear()
+        setLocation('/login', { replace: true })
       }
-    });
-  };
+    })
+  }
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center bg-background"><div className="animate-pulse flex items-center gap-2"><BookOpen className="h-6 w-6 text-primary" /><span className="text-xl font-serif text-primary">Studienplaner</span></div></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse flex items-center gap-2">
+          <BookOpen className="h-6 w-6 text-primary" />
+          <span className="text-xl font-serif text-primary">Studienplaner</span>
+        </div>
+      </div>
+    )
   }
 
-  if (error && error.code !== "UNAUTHENTICATED") {
-    return <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background p-6 text-center"><div><h1 className="font-serif text-2xl font-semibold">Die Anwendung konnte deine Daten nicht laden.</h1><p className="mt-2 text-muted-foreground">Bitte versuche es erneut. Falls der Fehler bestehen bleibt, starte die Anwendung neu.</p></div><Button onClick={() => void refetch()}>Erneut versuchen</Button></div>;
+  if (error && error.code !== 'UNAUTHENTICATED') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background p-6 text-center">
+        <div>
+          <h1 className="font-serif text-2xl font-semibold">
+            Die Anwendung konnte deine Daten nicht laden.
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Bitte versuche es erneut. Falls der Fehler bestehen bleibt, starte die Anwendung neu.
+          </p>
+        </div>
+        <Button onClick={() => void refetch()}>Erneut versuchen</Button>
+      </div>
+    )
   }
 
-  if (!user) return null;
+  if (!user) return null
 
   return (
     <SidebarProvider>
@@ -70,27 +86,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <h2 className="font-serif text-lg text-foreground/80 font-medium">Semester im Blick</h2>
           </header>
           <div className="flex-1 p-6 md:p-8 overflow-auto">
-            <div className="max-w-6xl mx-auto w-full">
-              {children}
-            </div>
+            <div className="max-w-6xl mx-auto w-full">{children}</div>
           </div>
         </main>
       </div>
     </SidebarProvider>
-  );
+  )
 }
 
-function AppSidebar({ user, onLogout }: { user: AuthUser, onLogout: () => void }) {
-  const [location] = useLocation();
+function AppSidebar({ user, onLogout }: { user: AuthUser; onLogout: () => void }) {
+  const [location] = useLocation()
 
   const navigation = [
-    { name: "Cockpit", href: "/", icon: LayoutDashboard },
-    { name: "Kalender", href: "/kalender", icon: CalendarDays },
-    { name: "Stundenplan", href: "/stundenplan", icon: TableIcon },
-    { name: "Noten & ECTS", href: "/noten", icon: GraduationCap },
-    { name: "Studium", href: "/studie", icon: BookOpen },
-    { name: "Gruppen", href: "/gruppen", icon: Users },
-  ];
+    { name: 'Cockpit', href: '/', icon: LayoutDashboard },
+    { name: 'Kalender', href: '/kalender', icon: CalendarDays },
+    { name: 'Stundenplan', href: '/stundenplan', icon: TableIcon },
+    { name: 'Noten & ECTS', href: '/noten', icon: GraduationCap },
+    { name: 'Studium', href: '/studie', icon: BookOpen },
+    { name: 'Gruppen', href: '/gruppen', icon: Users }
+  ]
 
   return (
     <Sidebar variant="inset">
@@ -103,7 +117,7 @@ function AppSidebar({ user, onLogout }: { user: AuthUser, onLogout: () => void }
       <SidebarContent className="px-3 py-4 gap-1">
         <SidebarMenu>
           {navigation.map((item) => {
-            const isActive = location === item.href;
+            const isActive = location === item.href
             return (
               <SidebarMenuItem key={item.name}>
                 <SidebarMenuButton
@@ -118,7 +132,7 @@ function AppSidebar({ user, onLogout }: { user: AuthUser, onLogout: () => void }
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            );
+            )
           })}
         </SidebarMenu>
       </SidebarContent>
@@ -140,5 +154,5 @@ function AppSidebar({ user, onLogout }: { user: AuthUser, onLogout: () => void }
         </Button>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }
