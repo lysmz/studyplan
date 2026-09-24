@@ -17,6 +17,7 @@ import Studie from '@/pages/studie'
 import Gruppen from '@/pages/gruppen'
 import GruppenDetail from '@/pages/gruppen-detail'
 import Einladung from '@/pages/einladung'
+import GruppenSync, { GruppenSyncDetail } from '@/pages/gruppen-sync'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,16 @@ function Router() {
       <Route path="/gruppen">
         <AppLayout>
           <Gruppen />
+        </AppLayout>
+      </Route>
+      <Route path="/gruppen-sync">
+        <AppLayout>
+          <GruppenSync />
+        </AppLayout>
+      </Route>
+      <Route path="/gruppen-sync/:id">
+        <AppLayout>
+          <GruppenSyncDetail />
         </AppLayout>
       </Route>
       <Route path="/gruppen/:id">

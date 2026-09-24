@@ -1,0 +1,55 @@
+config:
+  edition: 3
+
+streams:
+  collaboration_groups:
+    auto_subscribe: true
+    with:
+      user_groups: |
+        SELECT group_id
+        FROM group_members
+        WHERE user_id = auth.user_id()
+    queries:
+      - |
+        SELECT id, name, description, created_by, created_at, updated_at
+        FROM study_groups
+        WHERE id IN user_groups
+      - |
+        SELECT id, group_id, user_id, role, joined_at
+        FROM group_members
+        WHERE group_id IN user_groups
+      - |
+        SELECT id, group_id, title, description, due_date, assignee_id, status,
+               created_by, updated_by, created_at, updated_at
+        FROM group_tasks
+        WHERE group_id IN user_groups
+      - |
+        SELECT profiles.id, profiles.username, profiles.display_name,
+               profiles.discoverable, profiles.created_at, profiles.updated_at
+        FROM profiles
+        JOIN group_members ON group_members.user_id = profiles.id
+        WHERE group_members.group_id IN user_groups
+
+  collaboration_invitations:
+    auto_subscribe: true
+    queries:
+      - |
+        SELECT id, group_id, inviter_id, invitee_id, status, created_at, responded_at
+        FROM group_invitations
+        WHERE invitee_id = auth.user_id()
+      - |
+        SELECT id, group_id, inviter_id, invitee_id, status, created_at, responded_at
+        FROM group_invitations
+        WHERE inviter_id = auth.user_id()
+      - |
+        SELECT profiles.id, profiles.username, profiles.display_name,
+               profiles.discoverable, profiles.created_at, profiles.updated_at
+        FROM profiles
+        JOIN group_invitations ON group_invitations.inviter_id = profiles.id
+        WHERE group_invitations.invitee_id = auth.user_id()
+      - |
+        SELECT profiles.id, profiles.username, profiles.display_name,
+               profiles.discoverable, profiles.created_at, profiles.updated_at
+        FROM profiles
+        JOIN group_invitations ON group_invitations.invitee_id = profiles.id
+        WHERE group_invitations.inviter_id = auth.user_id()

@@ -7,3 +7,4 @@ out
 *.db
 *.db-shm
 *.db-wal
+.env.powersync-groups.local

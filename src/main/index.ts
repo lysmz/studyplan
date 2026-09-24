@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, dialog } from 'electron'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'path'
 import { pathToFileURL } from 'url'
+import { config as loadDotenv } from 'dotenv'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
@@ -55,9 +56,16 @@ import {
   runElectronPowerSyncDrizzleChecks,
   runElectronPowerSyncDrizzleCloudChecks
 } from './spikes/powersync-drizzle'
+import {
+  CollaborationRuntime,
+  registerCollaborationIpc,
+  runElectronCollaborationChecks,
+  runElectronCollaborationCloudChecks
+} from './collaboration'
 
 const senderPolicy = createWindowSenderPolicy()
 let powerSyncSpike: PowerSyncSpikeRuntime | undefined
+let collaborationRuntime: CollaborationRuntime | undefined
 
 async function writePowerSyncSpikeReport(report: unknown): Promise<void> {
   const argument = process.argv.find((value) => value.startsWith('--powersync-spike-report='))
@@ -147,6 +155,43 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  if (process.argv.includes('--powersync-groups-cloud-test')) {
+    try {
+      loadDotenv({ path: join(process.cwd(), '.env.powersync-groups.local'), quiet: true })
+      const checks = await runElectronCollaborationCloudChecks(app.getPath('temp'))
+      const report = { result: 'pass', checks }
+      console.log(JSON.stringify(report, null, 2))
+      await writePowerSyncSpikeReport(report)
+      app.exit(0)
+    } catch (error) {
+      console.error('[PowerSync groups cloud] Electron checks failed:', error)
+      await writePowerSyncSpikeReport({
+        result: 'fail',
+        error: error instanceof Error ? error.stack : String(error)
+      })
+      app.exit(1)
+    }
+    return
+  }
+
+  if (process.argv.includes('--powersync-groups-test')) {
+    try {
+      const checks = await runElectronCollaborationChecks(app.getPath('temp'))
+      const report = { result: 'pass', checks }
+      console.log(JSON.stringify(report, null, 2))
+      await writePowerSyncSpikeReport(report)
+      app.exit(0)
+    } catch (error) {
+      console.error('[PowerSync groups] Electron checks failed:', error)
+      await writePowerSyncSpikeReport({
+        result: 'fail',
+        error: error instanceof Error ? error.stack : String(error)
+      })
+      app.exit(1)
+    }
+    return
+  }
+
   if (process.argv.includes('--powersync-drizzle-cloud-test')) {
     try {
       const checks = await runElectronPowerSyncDrizzleCloudChecks(app.getPath('temp'))
@@ -222,6 +267,9 @@ app.whenReady().then(async () => {
       console.error('[PowerSync spike] Startup failed:', error)
     }
   }
+
+  loadDotenv({ path: join(process.cwd(), '.env.powersync-groups.local'), quiet: true })
+  collaborationRuntime = new CollaborationRuntime(app.getPath('userData'))
 
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
@@ -304,6 +352,7 @@ app.whenReady().then(async () => {
     isSenderAllowed: senderPolicy.isAllowed,
     onError: (error, context) => console.error('[API]', context, error)
   })
+  registerCollaborationIpc(collaborationRuntime, senderPolicy.isAllowed, sessionService)
 
   createWindow()
 
@@ -326,6 +375,7 @@ app.on('window-all-closed', () => {
 app.on('will-quit', () => {
   closeDatabase()
   void powerSyncSpike?.close()
+  void collaborationRuntime?.close()
 })
 
 // In this file you can include the rest of your app's specific main process

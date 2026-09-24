@@ -26,6 +26,8 @@
     "powersync:drizzle:test": "electron-vite build && electron . --powersync-drizzle-spike-test",
     "powersync:drizzle:smoke": "electron . --powersync-drizzle-spike-test",
     "powersync:drizzle:cloud": "electron-vite build && electron . --powersync-drizzle-cloud-test",
+    "powersync:groups:test": "electron-vite build && electron . --powersync-groups-test",
+    "powersync:groups:cloud": "electron-vite build && electron . --powersync-groups-cloud-test",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",

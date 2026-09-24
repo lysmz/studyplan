@@ -4,6 +4,7 @@ import type { AuthUser } from '@/api'
 import {
   BookOpen,
   CalendarDays,
+  Cloud,
   GraduationCap,
   LayoutDashboard,
   LogOut,
@@ -11,6 +12,7 @@ import {
   Users
 } from 'lucide-react'
 import { useQueryClient } from '@tanstack/react-query'
+import { collaboration } from '@/collaboration/client'
 import { Button } from '@/components/ui/button'
 import {
   Sidebar,
@@ -25,8 +27,9 @@ import {
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useEffect } from 'react'
+import type { JSX } from 'react'
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+export function AppLayout({ children }: { children: React.ReactNode }): JSX.Element | null {
   const { data: user, isLoading, error, refetch } = useGetMe()
   const [, setLocation] = useLocation()
   const logout = useLogout()
@@ -38,13 +41,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [error?.code, setLocation])
 
-  const handleLogout = () => {
-    logout.mutate(undefined, {
-      onSuccess: () => {
-        queryClient.clear()
-        setLocation('/login', { replace: true })
-      }
-    })
+  const handleLogout = (): void => {
+    void collaboration('signOut', {})
+      .catch(() => undefined)
+      .finally(() => {
+        logout.mutate(undefined, {
+          onSuccess: () => {
+            queryClient.clear()
+            setLocation('/login', { replace: true })
+          }
+        })
+      })
   }
 
   if (isLoading) {
@@ -94,7 +101,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   )
 }
 
-function AppSidebar({ user, onLogout }: { user: AuthUser; onLogout: () => void }) {
+function AppSidebar({ user, onLogout }: { user: AuthUser; onLogout: () => void }): JSX.Element {
   const [location] = useLocation()
 
   const navigation = [
@@ -103,7 +110,8 @@ function AppSidebar({ user, onLogout }: { user: AuthUser; onLogout: () => void }
     { name: 'Stundenplan', href: '/stundenplan', icon: TableIcon },
     { name: 'Noten & ECTS', href: '/noten', icon: GraduationCap },
     { name: 'Studium', href: '/studie', icon: BookOpen },
-    { name: 'Gruppen', href: '/gruppen', icon: Users }
+    { name: 'Gruppen', href: '/gruppen', icon: Users },
+    { name: 'Gruppen (Sync)', href: '/gruppen-sync', icon: Cloud }
   ]
 
   return (
