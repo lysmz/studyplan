@@ -1,4 +1,5 @@
 import { app, shell, BrowserWindow, dialog } from 'electron'
+import { writeFile } from 'node:fs/promises'
 import { join } from 'path'
 import { pathToFileURL } from 'url'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -48,8 +49,22 @@ import {
   definePartialApiHandlers,
   registerApiDispatcher
 } from './ipc/api-dispatcher'
+import type { PowerSyncSpikeRuntime } from './spikes/powersync'
+import { runElectronPowerSyncSpikeChecks, startPowerSyncSpike } from './spikes/powersync'
+import {
+  runElectronPowerSyncDrizzleChecks,
+  runElectronPowerSyncDrizzleCloudChecks
+} from './spikes/powersync-drizzle'
 
 const senderPolicy = createWindowSenderPolicy()
+let powerSyncSpike: PowerSyncSpikeRuntime | undefined
+
+async function writePowerSyncSpikeReport(report: unknown): Promise<void> {
+  const argument = process.argv.find((value) => value.startsWith('--powersync-spike-report='))
+  const reportPath = argument?.slice('--powersync-spike-report='.length)
+  if (!reportPath) return
+  await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
+}
 
 function isSafeExternalUrl(value: string): boolean {
   try {
@@ -132,6 +147,60 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  if (process.argv.includes('--powersync-drizzle-cloud-test')) {
+    try {
+      const checks = await runElectronPowerSyncDrizzleCloudChecks(app.getPath('temp'))
+      const report = { result: 'pass', checks }
+      console.log(JSON.stringify(report, null, 2))
+      await writePowerSyncSpikeReport(report)
+      app.exit(0)
+    } catch (error) {
+      console.error('[PowerSync Drizzle cloud spike] Electron checks failed:', error)
+      await writePowerSyncSpikeReport({
+        result: 'fail',
+        error: error instanceof Error ? error.stack : String(error)
+      })
+      app.exit(1)
+    }
+    return
+  }
+
+  if (process.argv.includes('--powersync-drizzle-spike-test')) {
+    try {
+      const checks = await runElectronPowerSyncDrizzleChecks(app.getPath('temp'))
+      const report = { result: 'pass', checks }
+      console.log(JSON.stringify(report, null, 2))
+      await writePowerSyncSpikeReport(report)
+      app.exit(0)
+    } catch (error) {
+      console.error('[PowerSync Drizzle spike] Electron checks failed:', error)
+      await writePowerSyncSpikeReport({
+        result: 'fail',
+        error: error instanceof Error ? error.stack : String(error)
+      })
+      app.exit(1)
+    }
+    return
+  }
+
+  if (process.argv.includes('--powersync-spike-test')) {
+    try {
+      const checks = await runElectronPowerSyncSpikeChecks(app.getPath('temp'))
+      const report = { result: 'pass', checks }
+      console.log(JSON.stringify(report, null, 2))
+      await writePowerSyncSpikeReport(report)
+      app.exit(0)
+    } catch (error) {
+      console.error('[PowerSync spike] Electron checks failed:', error)
+      await writePowerSyncSpikeReport({
+        result: 'fail',
+        error: error instanceof Error ? error.stack : String(error)
+      })
+      app.exit(1)
+    }
+    return
+  }
+
   // Connect and initialize database
   let database: AppDatabase
   try {
@@ -144,6 +213,14 @@ app.whenReady().then(async () => {
     )
     app.quit()
     return
+  }
+
+  if (process.env.POWERSYNC_SPIKE_ENABLED === 'true') {
+    try {
+      powerSyncSpike = await startPowerSyncSpike(app.getPath('userData'))
+    } catch (error) {
+      console.error('[PowerSync spike] Startup failed:', error)
+    }
   }
 
   // Set app user model id for windows
@@ -248,6 +325,7 @@ app.on('window-all-closed', () => {
 
 app.on('will-quit', () => {
   closeDatabase()
+  void powerSyncSpike?.close()
 })
 
 // In this file you can include the rest of your app's specific main process

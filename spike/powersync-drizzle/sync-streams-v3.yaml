@@ -1,0 +1,18 @@
+config:
+  edition: 3
+
+streams:
+  spike_tasks:
+    auto_subscribe: true
+    query: |
+      SELECT id, owner_id, title, status, priority, created_at, updated_at
+      FROM spike_tasks
+      WHERE owner_id = auth.user_id()
+
+  spike_events:
+    auto_subscribe: true
+    query: |
+      SELECT id, owner_id, title, description, start_date, end_date, type,
+             importance, is_multi_day, location, created_at, updated_at
+      FROM spike_events
+      WHERE owner_id = auth.user_id()
