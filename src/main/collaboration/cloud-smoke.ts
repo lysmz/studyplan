@@ -236,6 +236,40 @@ export async function runElectronCollaborationCloudChecks(
       evidence: { taskId: task.id, queueWhileOffline, queueAfterUpload: 0 }
     })
 
+    await aliceDatabase.powerSync.disconnect()
+    const offlineEdit = await aliceTasks.update(task.id, group.id, aliceId, { status: 'done' })
+    requireCondition(offlineEdit?.updatedBy === aliceId, 'Offline actor was not available locally.')
+    await aliceDatabase.powerSync.connect(alice.connector)
+    await waitForUploadQueue(aliceDatabase.powerSync)
+    const { data: acceptedTask, error: acceptedTaskError } = await alice.supabase
+      .from('group_tasks')
+      .select('updated_by, updated_at, status')
+      .eq('id', task.id)
+      .single()
+    requireCondition(
+      !acceptedTaskError && acceptedTask?.updated_by === aliceId && acceptedTask.status === 'done',
+      'The server did not attribute the offline edit to Alice.'
+    )
+    const acceptedAt = Date.parse(acceptedTask.updated_at)
+    requireCondition(Number.isFinite(acceptedAt), 'Server acceptance timestamp is invalid.')
+    await waitUntil('both members to receive authoritative task audit fields', async () => {
+      const rows = await Promise.all([
+        aliceTasks.findByIdAndGroupId(task.id, group.id),
+        bobTasks.findByIdAndGroupId(task.id, group.id)
+      ])
+      return rows.every(
+        (row) =>
+          row?.status === 'done' &&
+          row.updatedBy === aliceId &&
+          Date.parse(row.updatedAt) === acceptedAt
+      )
+    })
+    checks.push({
+      name: 'offline edit audit attribution and server timestamp convergence',
+      status: 'pass',
+      evidence: { taskId: task.id, actorId: aliceId, serverAcceptedAt: acceptedTask.updated_at }
+    })
+
     return checks
   } catch (error) {
     if (createdGroupId && error instanceof Error) {

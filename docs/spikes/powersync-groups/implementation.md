@@ -19,7 +19,8 @@ UI would require a later, explicit migration step.
 - Creating a group is online-only through `create_group_with_owner`.
 - Searching users is online-only through `search_invitable_profiles`. It exposes safe profile
   fields and never exposes `auth.users` or email addresses.
-- Sending an invitation is online-only through `send_group_invitation`.
+- Only the group owner may invite people. Sending an invitation is online-only through
+  `send_group_invitation`; regular group members cannot send invitations.
 - Accepting or declining an invitation is online-only through `respond_group_invitation`.
 - Reading groups, memberships, profiles, invitations, and tasks uses the local PowerSync database.
 - Group-task create, update, and delete operations are local-first and uploaded by the connector.
@@ -32,6 +33,33 @@ The following migrations have been applied to Supabase project `repsgcypslupjhdb
 1. `0004_create_collaboration_groups.sql`
 2. `0005_allow_rls_membership_helpers.sql`
 3. `0006_index_collaboration_foreign_keys.sql`
+4. `20260926100612_enforce_group_task_audit_actor.sql`
+
+## Task audit attribution
+
+The task-specific `BEFORE INSERT OR UPDATE` trigger derives `updated_by` from `auth.uid()`
+and replaces `updated_at` with server acceptance time. Submitted actor IDs and update timestamps
+are overridden. Writes without an authenticated actor are rejected, including administrative writes
+without user claims. Existing membership RLS and immutable task identity checks remain in place.
+The trigger uses invoker privileges; it does not bypass RLS.
+
+Local task writes still expose provisional actor and timestamp values while offline. PowerSync
+replaces them with the accepted server values after upload. `created_at` remains client-reported
+creation time; `created_by` is constrained by insert RLS and immutable afterward. Existing audit
+values are not retroactively verified. These fields describe the latest accepted write, not a full
+activity log, and identify the authenticated account rather than the person using the device.
+
+Run `spike/powersync-groups/supabase/tests/task-audit.sql` as the database administrator against a
+test deployment with two existing Auth users. The test assumes authenticated roles for writes and
+rolls back its disposable fixtures. It checks forged insert/update actors and timestamps, immutable
+identity fields, non-member access, anonymous access, and missing actor rejection. The regression
+failed before the migration with `Forged insert actor was accepted` and passed after deployment.
+The extended cloud harness passed offline task editing and convergence of the authoritative actor
+and server timestamp on both clients. The local durability smoke test, typecheck, and focused lint
+also passed. The disposable cloud test group was removed after verifying its exact ID and name.
+The security advisor reported only the previously documented RPC and password-protection warnings.
+
+## Deployment security notes
 
 All public tables have RLS enabled. The four security-definer RPCs are intentionally executable
 only by authenticated users, validate `auth.uid()`, use an empty `search_path`, and perform their
