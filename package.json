@@ -19,6 +19,7 @@
     "grades:test": "tsx --test scripts/grades/grades.test.ts",
     "groups:test": "tsx --test scripts/groups/groups.test.ts",
     "group-resources:test": "tsx --test scripts/groups/group-resources.test.ts",
+    "collaboration:test": "tsx --tsconfig tsconfig.web.json --test scripts/collaboration/*.test.ts scripts/collaboration/*.test.tsx",
     "study-programs:test": "tsx --test scripts/study-programs/study-programs.test.ts",
     "timetable:test": "tsx --test scripts/timetable/timetable.test.ts",
     "powersync:test": "electron-vite build && electron . --powersync-spike-test",

@@ -34,6 +34,7 @@ The following migrations have been applied to Supabase project `repsgcypslupjhdb
 2. `0005_allow_rls_membership_helpers.sql`
 3. `0006_index_collaboration_foreign_keys.sql`
 4. `20260926100612_enforce_group_task_audit_actor.sql`
+5. `20260926102746_harden_group_task_uploads.sql` (remote history: `20260926104441`)
 
 ## Task audit attribution
 
@@ -94,6 +95,20 @@ project after verifying its exact ID. The cloud harness reports any future test 
 The test can be rerun with `npm run powersync:groups:cloud` after filling the Git-ignored
 `.env.powersync-groups.local` file from `.env.powersync-groups.example`. The local offline check is
 `npm run powersync:groups:test`. Neither check requires a service-role key.
+
+## Upload correctness hardening
+
+Task uploads now use an authenticated, invoker-privilege `upload_group_task` RPC. A private receipt
+commits with each task operation; repeating that operation returns its earlier result without
+reapplying it. Missing/inaccessible PATCH targets are explicit rejections. A rejected draft is saved
+in the local-only `collaboration_upload_failures` table before queue acknowledgement; unrelated
+tasks can then upload. The UI exposes pending and rejected counts plus preserved draft details.
+
+The fast command is `npm run collaboration:test`. The existing local/cloud commands now also cover
+journal persistence, forced process exit, replay and deterministic lost responses. The deployment,
+baseline failures, passing evidence and remaining repository lint backlog are recorded in
+[p1-hardening-results.md](p1-hardening-results.md). There are still five synchronized domain tables;
+the private receipts and local rejection journal are separate metadata.
 
 ## Desktop prototype
 

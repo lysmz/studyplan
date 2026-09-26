@@ -7,6 +7,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
 import { SessionService } from './auth/session.service'
+import { runUploadCrashChild } from './collaboration/upload-smoke'
 import { ActivityLogRepository } from './repositories/activity-log.repository'
 import { EventsRepository } from './repositories/events.repository'
 import { GradesRepository } from './repositories/grades.repository'
@@ -155,6 +156,18 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  const crashArgument = process.argv.find((value) => value.startsWith('--powersync-upload-crash='))
+  if (crashArgument) {
+    try {
+      await runUploadCrashChild(
+        crashArgument.slice('--powersync-upload-crash='.length),
+        app.getPath('temp')
+      )
+    } catch {
+      app.exit(1)
+    }
+    return
+  }
   if (process.argv.includes('--powersync-groups-cloud-test')) {
     try {
       loadDotenv({ path: join(process.cwd(), '.env.powersync-groups.local'), quiet: true })

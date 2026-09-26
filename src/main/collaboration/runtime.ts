@@ -20,6 +20,7 @@ import {
 } from './repositories'
 import type { InvitableProfile } from './online-gateway'
 import type { CollaborationTaskRow } from './schema'
+import { LocalUploadFailureStore } from './upload-failures'
 
 export class CollaborationSessionRequiredError extends Error {
   constructor() {
@@ -70,17 +71,30 @@ export class CollaborationRuntime {
     private readonly environment: NodeJS.ProcessEnv = process.env
   ) {}
 
-  state(): CollaborationState {
+  async state(): Promise<CollaborationState> {
     const configured = Boolean(
       this.environment.POWERSYNC_SPIKE_ENDPOINT?.trim() &&
       this.environment.SUPABASE_URL?.trim() &&
       (this.environment.SUPABASE_PUBLISHABLE_KEY ?? this.environment.SUPABASE_ANON_KEY)?.trim()
     )
+    const active = this.active
+    const uploadFailures = active
+      ? await new LocalUploadFailureStore(active.database.powerSync, active.userId).list()
+      : []
+    const pendingUploads = active
+      ? (await active.database.powerSync.getUploadQueueStats()).count
+      : 0
     return {
       configured,
-      signedIn: this.active !== null,
-      userId: this.active?.userId ?? null,
-      connected: this.active?.database.powerSync.currentStatus.connected ?? false
+      signedIn: active !== null,
+      userId: active?.userId ?? null,
+      connected: active?.database.powerSync.currentStatus.connected ?? false,
+      pendingUploads,
+      rejectedUploads: uploadFailures.length,
+      uploadError: active?.database.powerSync.currentStatus.uploadError
+        ? 'Aufgaben konnten noch nicht übertragen werden. Sie bleiben lokal gespeichert.'
+        : null,
+      uploadFailures
     }
   }
 

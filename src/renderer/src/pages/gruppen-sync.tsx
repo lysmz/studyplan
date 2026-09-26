@@ -2,13 +2,14 @@ import { useState } from 'react'
 import type { JSX } from 'react'
 import { Link, useLocation, useParams } from 'wouter'
 import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query'
-import { ArrowLeft, Check, Cloud, CloudOff, Plus, Users, X } from 'lucide-react'
+import { ArrowLeft, Check, Plus, Users, X } from 'lucide-react'
 import type {
   CollaborationMember,
   CollaborationState,
   CollaborationTask
 } from '../../../shared/collaboration/ipc'
 import { collaboration } from '@/collaboration/client'
+import { UploadStatus } from '@/collaboration/upload-status'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -24,15 +25,6 @@ function useCollaborationState(): UseQueryResult<CollaborationState> {
     queryFn: () => collaboration('state', {}),
     refetchInterval: refreshInterval
   })
-}
-
-function CloudStatus({ connected }: { connected: boolean }): JSX.Element {
-  return (
-    <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-      {connected ? <Cloud className="h-4 w-4" /> : <CloudOff className="h-4 w-4" />}
-      {connected ? 'Synchronisiert' : 'Offline · Aufgaben bleiben lokal verfügbar'}
-    </span>
-  )
 }
 
 function SignIn(): JSX.Element {
@@ -170,7 +162,7 @@ export default function GruppenSync(): JSX.Element {
           <p className="mt-2 text-muted-foreground">
             Einladungen laufen online; gemeinsame Aufgaben sind lokal verfügbar.
           </p>
-          {state.data?.signedIn && <CloudStatus connected={state.data.connected} />}
+          {state.data?.signedIn && <UploadStatus state={state.data} />}
         </div>
         {state.data?.signedIn && (
           <Button variant="outline" onClick={() => signOut.mutate()} disabled={signOut.isPending}>
@@ -486,7 +478,7 @@ export function GruppenSyncDetail(): JSX.Element {
               <h1 className="font-serif text-4xl font-bold">{group.data.name}</h1>
               <p className="mt-2 text-muted-foreground">{group.data.description}</p>
             </div>
-            <CloudStatus connected={state.data.connected} />
+            <UploadStatus state={state.data} />
           </div>
           <div className="grid gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2">

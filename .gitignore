@@ -8,3 +8,4 @@ out
 *.db-shm
 *.db-wal
 .env.powersync-groups.local
+spike/powersync-groups/supabase/.temp/

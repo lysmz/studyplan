@@ -1,0 +1,277 @@
+{
+  "date": "2026-09-26",
+  "baselineCommit": "8068c7e",
+  "implementation": "verification captured in the primary checkout before the implementation commit",
+  "environment": {
+    "platform": "Windows/Electron",
+    "supabaseProject": "repsgcypslupjhdbtcjm",
+    "localMigration": "20260926102746_harden_group_task_uploads.sql",
+    "deployedMigrationVersion": "20260926104441"
+  },
+  "baseline": {
+    "source": "Observed pre-fix node:test output; summarized without credentials",
+    "result": "five expected regression failures",
+    "cases": [
+      {
+        "case": "Z1",
+        "expected": "rejected edit durable before acknowledgement",
+        "observed": "failure count 0 instead of 1"
+      },
+      {
+        "case": "Q1",
+        "expected": "unrelated B uploads despite rejected A",
+        "observed": "B absent from backend"
+      },
+      {
+        "case": "R1",
+        "expected": "Bob newer edit preserved after partial success retry",
+        "observed": "Alice original overwrote Bob edit"
+      },
+      {
+        "case": "R2",
+        "expected": "Bob later edit preserved after lost PUT response",
+        "observed": "Alice original overwrote Bob edit"
+      },
+      {
+        "case": "R3",
+        "expected": "Bob later edit preserved after lost PATCH response",
+        "observed": "Alice edit overwrote Bob edit"
+      }
+    ],
+    "localHappyPath": "three original checks passed"
+  },
+  "fast": {
+    "command": "npm run collaboration:test",
+    "passed": 19,
+    "failed": 0
+  },
+  "local": {
+    "result": "pass",
+    "checks": [
+      {
+        "name": "read synchronized group graph while offline",
+        "status": "pass",
+        "evidence": {
+          "groups": 1,
+          "members": 2,
+          "invitations": 1
+        }
+      },
+      {
+        "name": "offline group task durability",
+        "status": "pass",
+        "evidence": {
+          "taskId": "acc86497-b9a7-40b3-a9dd-0c3b7a4dc2ff",
+          "queuedBeforeRestart": 8,
+          "queuedAfterRestart": 8
+        }
+      },
+      {
+        "name": "online-only invitation boundary",
+        "status": "pass",
+        "evidence": {
+          "offlineInvitationRejected": true
+        }
+      },
+      {
+        "name": "Q1/Q4/Q6/Q7: journal write failure, dependency preservation and account-isolated restart",
+        "status": "pass",
+        "evidence": {
+          "rejected": 3,
+          "pending": 0,
+          "pendingDuringJournalFailure": 4,
+          "validTaskUploaded": true,
+          "replicaStable": true,
+          "journalEnqueuedWrites": 0,
+          "deletedSnapshotPreserved": true
+        }
+      },
+      {
+        "name": "Z1: real PATCH for a missing server task retains the edit",
+        "status": "pass",
+        "evidence": {
+          "durableRejection": true,
+          "pending": 0
+        }
+      },
+      {
+        "name": "Q2: transient failure preserves the real queue across restart",
+        "status": "pass",
+        "evidence": {
+          "pendingDuringFailure": 1,
+          "pendingAfterRecovery": 0
+        }
+      },
+      {
+        "name": "R1: real multi-operation transaction safely replays partial success",
+        "status": "pass",
+        "evidence": {
+          "transactionOperations": 2,
+          "bobEditPreserved": true,
+          "pending": 0
+        }
+      },
+      {
+        "name": "Q4/Q5: forced exit after journal commit recovers before acknowledgement",
+        "status": "pass",
+        "evidence": {
+          "rejectedAfterRestart": 1,
+          "pendingAfterRestart": 2,
+          "rejectedAfterRecovery": 1,
+          "pendingAfterRecovery": 0
+        }
+      },
+      {
+        "name": "R5: queue identities differ by replica and remain stable across restart",
+        "status": "pass",
+        "evidence": {
+          "equalSequences": true,
+          "differentReplicas": true,
+          "identityStableAfterRestart": true
+        }
+      }
+    ]
+  },
+  "cloud": {
+    "result": "pass",
+    "checks": [
+      {
+        "name": "online discovery and invitation delivery",
+        "status": "pass",
+        "evidence": {
+          "groupId": "20c2f06b-5e65-4b21-af74-be9a1580d280",
+          "invitationId": "511a463e-4634-4abd-946c-85bbebf9480d",
+          "bobReceivedGroup": false
+        }
+      },
+      {
+        "name": "atomic invitation acceptance and membership sync",
+        "status": "pass",
+        "evidence": {
+          "bobRole": "member",
+          "memberCount": 2
+        }
+      },
+      {
+        "name": "offline task upload and member convergence",
+        "status": "pass",
+        "evidence": {
+          "taskId": "e6028d3c-7020-4527-ab93-e1f353f86510",
+          "queueWhileOffline": 1,
+          "queueAfterUpload": 0
+        }
+      },
+      {
+        "name": "offline edit audit attribution and server timestamp convergence",
+        "status": "pass",
+        "evidence": {
+          "taskId": "e6028d3c-7020-4527-ab93-e1f353f86510",
+          "actorId": "4f773159-4a78-4599-aaa5-0fc3cfb1e303",
+          "serverAcceptedAt": "2026-09-26T11:07:09.012595+00:00"
+        }
+      },
+      {
+        "name": "Z1: deleted task PATCH is preserved before queue retirement",
+        "status": "pass",
+        "evidence": {
+          "rejected": 1,
+          "pending": 0,
+          "remoteTaskAbsent": true
+        }
+      },
+      {
+        "name": "Z2/Q1: RLS-hidden edits rejected; unrelated task reaches Bob",
+        "status": "pass",
+        "evidence": {
+          "rejected": 3,
+          "pending": 0,
+          "hiddenDataReturned": false,
+          "unrelatedTaskConverged": true,
+          "cleanupGroupId": "78631b8a-32f3-4f85-8838-aae9669dbd60"
+        }
+      },
+      {
+        "name": "R1: partial transaction replay preserves Bob’s complete row",
+        "status": "pass",
+        "evidence": {
+          "transactionOperations": 2,
+          "newerRowUnchanged": true,
+          "pending": 0
+        }
+      },
+      {
+        "name": "R2/R3: lost PUT and PATCH replies cannot overwrite Bob’s subsequent edits",
+        "status": "pass",
+        "evidence": {
+          "newerRowsUnchanged": true,
+          "replicasConverged": true,
+          "pending": 0
+        }
+      },
+      {
+        "name": "R4/Z4: lost DELETE reply and absent target remain safe no-ops",
+        "status": "pass",
+        "evidence": {
+          "remoteTaskAbsent": true,
+          "pending": 0
+        }
+      },
+      {
+        "name": "backend: concurrent duplicate requests serialize and apply once",
+        "status": "pass",
+        "evidence": {
+          "outcomes": ["accepted", "already_applied"],
+          "newerRowUnchanged": true
+        }
+      },
+      {
+        "name": "cloud recovery: both replicas converge and rejected drafts remain inspectable",
+        "status": "pass",
+        "evidence": {
+          "rejected": 3,
+          "pending": 0,
+          "replicasConverged": true
+        }
+      },
+      {
+        "name": "disposable cloud fixtures",
+        "status": "pass",
+        "evidence": {
+          "cleanupGroupIds": [
+            "20c2f06b-5e65-4b21-af74-be9a1580d280",
+            "78631b8a-32f3-4f85-8838-aae9669dbd60"
+          ]
+        }
+      }
+    ]
+  },
+  "backend": {
+    "taskUploadSql": "pass; fixture subtransaction rolled back",
+    "taskAuditSql": "pass; fixture subtransaction rolled back",
+    "securityAdvisor": "four existing online SECURITY DEFINER RPC warnings and disabled leaked-password protection; no new upload warning"
+  },
+  "gates": {
+    "typecheck": "pass",
+    "build": "pass",
+    "changedFilesLint": "pass",
+    "repositoryLint": {
+      "result": "fail",
+      "warnings": 1959,
+      "errors": 210,
+      "errorFiles": 46,
+      "errorFilesUnchanged": true
+    }
+  },
+  "cleanup": {
+    "cloudGroupsRemoved": 4,
+    "uploadReceiptsRemoved": 24,
+    "exactGroupIds": [
+      "31774c30-3aea-4505-8c70-07a4ae7f983c",
+      "8dcb90e9-9b41-4da0-a084-f0e137b567c8",
+      "20c2f06b-5e65-4b21-af74-be9a1580d280",
+      "78631b8a-32f3-4f85-8838-aae9669dbd60"
+    ],
+    "localDatabases": "temporary directories removed by harness"
+  },
+  "manualDesktopWalkthrough": "not performed; status component checked through static rendering"
+}

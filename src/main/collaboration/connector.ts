@@ -1,5 +1,7 @@
-import { UpdateType, type PowerSyncBackendConnector, type PowerSyncDatabase } from '@powersync/node'
+import type { PowerSyncBackendConnector, PowerSyncDatabase } from '@powersync/node'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { uploadTaskTransaction, type UploadFailureStore } from './upload'
+import { LocalUploadFailureStore } from './upload-failures'
 
 export interface CollaborationRemoteConfig {
   powerSyncEndpoint: string
@@ -15,11 +17,10 @@ export interface CollaborationConnection {
 }
 
 export class SupabaseCollaborationConnector implements PowerSyncBackendConnector {
-  private static readonly writableTables = new Set(['group_tasks'])
-
   constructor(
     private readonly powerSyncEndpoint: string,
-    private readonly supabase: SupabaseClient
+    private readonly supabase: SupabaseClient,
+    private readonly options: { userId?: string; failureStore?: UploadFailureStore } = {}
   ) {}
 
   static async signIn(config: CollaborationRemoteConfig): Promise<CollaborationConnection> {
@@ -30,13 +31,16 @@ export class SupabaseCollaborationConnector implements PowerSyncBackendConnector
         detectSessionInUrl: false
       }
     })
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: config.email,
       password: config.password
     })
-    if (error) throw new Error(`Supabase collaboration sign-in failed: ${error.message}`)
+    if (error || !data.user)
+      throw new Error(`Supabase collaboration sign-in failed: ${error?.message ?? 'no user'}`)
     return {
-      connector: new SupabaseCollaborationConnector(config.powerSyncEndpoint, supabase),
+      connector: new SupabaseCollaborationConnector(config.powerSyncEndpoint, supabase, {
+        userId: data.user.id
+      }),
       supabase
     }
   }
@@ -49,40 +53,13 @@ export class SupabaseCollaborationConnector implements PowerSyncBackendConnector
   }
 
   async uploadData(database: PowerSyncDatabase): Promise<void> {
-    const batch = await database.getCrudBatch(100)
-    if (!batch) return
-
-    for (const entry of batch.crud) {
-      if (!SupabaseCollaborationConnector.writableTables.has(entry.table)) {
-        throw new Error(
-          `Local writes to ${entry.table} are not allowed; use the authenticated collaboration RPC.`
-        )
-      }
-
-      let error: { message: string } | null = null
-      if (entry.op === UpdateType.PUT) {
-        const response = await this.supabase.from('group_tasks').upsert({
-          id: entry.id,
-          ...(entry.opData ?? {})
-        })
-        error = response.error
-      } else if (entry.op === UpdateType.PATCH) {
-        const response = await this.supabase
-          .from('group_tasks')
-          .update(entry.opData ?? {})
-          .eq('id', entry.id)
-        error = response.error
-      } else if (entry.op === UpdateType.DELETE) {
-        const response = await this.supabase.from('group_tasks').delete().eq('id', entry.id)
-        error = response.error
-      }
-
-      if (error) {
-        throw new Error(`Supabase rejected ${entry.op} group task ${entry.id}: ${error.message}`)
-      }
-    }
-
-    await batch.complete()
+    const userId = this.options.userId ?? (await this.getUserId())
+    await uploadTaskTransaction(
+      database,
+      this.supabase,
+      userId,
+      this.options.failureStore ?? new LocalUploadFailureStore(database, userId)
+    )
   }
 
   async getUserId(): Promise<string> {
