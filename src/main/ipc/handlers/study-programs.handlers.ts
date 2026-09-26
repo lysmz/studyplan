@@ -8,6 +8,10 @@ export function createStudyProgramsHandlers(
   sessionService: SessionService
 ): PartialApiHandlerRegistry {
   return definePartialApiHandlers({
+    refreshStudyCatalog() {
+      return studyProgramsService.refreshStudyCatalog()
+    },
+
     listStudyPrograms() {
       return studyProgramsService.listStudyPrograms()
     },

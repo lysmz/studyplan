@@ -1,14 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState, type JSX } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   useListStudyPrograms,
   useListStudyProgramCourses,
-  getListStudyProgramCoursesQueryKey
+  useRefreshStudyCatalog,
+  getListStudyProgramsQueryKey,
+  getListStudyProgramCoursesQueryKey,
+  type StudyProgram,
+  type Course
 } from '@/api'
 import { GraduationCap, Building2, Search } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -25,9 +31,28 @@ import {
 } from '@/components/ui/accordion'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export default function Studie() {
+export default function Studie(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('')
+  const queryClient = useQueryClient()
   const { data: programs, isLoading: programsLoading } = useListStudyPrograms()
+  const {
+    mutate: refreshCatalog,
+    isPending: catalogRefreshing,
+    isError: catalogRefreshFailed
+  } = useRefreshStudyCatalog({
+    mutation: {
+      onSuccess: async () => {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: getListStudyProgramsQueryKey() }),
+          queryClient.invalidateQueries({ queryKey: ['api', 'listStudyProgramCourses'] })
+        ])
+      }
+    }
+  })
+
+  useEffect(() => {
+    refreshCatalog()
+  }, [refreshCatalog])
 
   const filteredPrograms = programs?.filter(
     (p) =>
@@ -52,6 +77,22 @@ export default function Studie() {
           />
         </div>
       </div>
+
+      {(catalogRefreshing || catalogRefreshFailed) && (
+        <div role="status" aria-live="polite" className="text-sm text-muted-foreground">
+          {catalogRefreshing && <p>Studiengänge werden aktualisiert…</p>}
+          {catalogRefreshFailed && (
+            <div className="flex flex-wrap items-center gap-2">
+              <p>
+                Aktualisierung fehlgeschlagen. Lokal gespeicherte Studiengänge bleiben verfügbar.
+              </p>
+              <Button variant="outline" size="sm" onClick={() => refreshCatalog()}>
+                Erneut versuchen
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-6">
         {programsLoading ? (
@@ -84,12 +125,12 @@ export default function Studie() {
   )
 }
 
-function ProgramAccordionItem({ program }: { program: any }) {
+function ProgramAccordionItem({ program }: { program: StudyProgram }): JSX.Element {
   const { data: courses, isLoading } = useListStudyProgramCourses(program.id, {
     query: { enabled: true, queryKey: getListStudyProgramCoursesQueryKey(program.id) }
   })
 
-  const groupedBySemester = courses?.reduce((acc: any, course) => {
+  const groupedBySemester = courses?.reduce<Record<string, Course[]>>((acc, course) => {
     if (!acc[course.semester]) acc[course.semester] = []
     acc[course.semester].push(course)
     return acc
@@ -145,7 +186,7 @@ function ProgramAccordionItem({ program }: { program: any }) {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {groupedBySemester[semester].map((course: any) => (
+                      {groupedBySemester?.[semester].map((course) => (
                         <TableRow key={course.id}>
                           <TableCell className="font-medium">{course.name}</TableCell>
                           <TableCell className="text-center">

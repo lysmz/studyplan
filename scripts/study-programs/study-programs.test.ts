@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { createServer } from 'node:http'
 import test from 'node:test'
 import { createClient, type Client } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
@@ -9,7 +11,9 @@ import {
   type ApiOperationId,
   type ApiOutput,
   type ApiResult,
-  type ApiTransport
+  type ApiTransport,
+  type StudyProgram,
+  type Course
 } from '../../src/shared/api'
 import * as schema from '../../src/main/db/schema'
 import { SessionService } from '../../src/main/auth/session.service'
@@ -25,7 +29,14 @@ interface TestContext {
   dispatch: ReturnType<typeof createApiDispatcher>
 }
 
-async function createTestContext(): Promise<TestContext> {
+const sampleCatalog = JSON.parse(
+  readFileSync('supabase/functions/study-catalog/catalog.json', 'utf8')
+) as { programs: StudyProgram[]; courses: Course[] }
+
+async function createTestContext(
+  fetchCatalog: typeof fetch = fetch,
+  catalogUrl = 'https://catalog.example.test/catalog.json'
+): Promise<TestContext> {
   const client = createClient({ url: 'file::memory:' })
   await client.batch(
     [
@@ -57,7 +68,7 @@ async function createTestContext(): Promise<TestContext> {
 
   const database = drizzle(client, { schema })
   const repository = new StudyProgramsRepository(database)
-  const service = new StudyProgramsService(repository)
+  const service = new StudyProgramsService(repository, catalogUrl, fetchCatalog)
   const session = new SessionService()
   const dispatch = createApiDispatcher({
     handlers: createStudyProgramsHandlers(service, session),
@@ -132,6 +143,131 @@ test('rejects malformed and extra IPC input before invoking a handler', async ()
       assert.equal(result.ok, false)
       if (!result.ok) assert.equal(result.error.code, 'VALIDATION_ERROR')
     }
+  } finally {
+    context.client.close()
+  }
+})
+
+test('fetches JSON over HTTP, imports three programs, and updates without duplicates', async () => {
+  const catalog = structuredClone(sampleCatalog)
+  let requests = 0
+  const server = createServer((request, response) => {
+    assert.equal(request.url, '/catalog.json')
+    assert.equal(request.headers.authorization, undefined)
+    requests += 1
+    response.writeHead(200, { 'Content-Type': 'application/json' })
+    response.end(JSON.stringify(catalog))
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const address = server.address()
+  assert.ok(address && typeof address !== 'string')
+  const context = await createTestContext(fetch, `http://127.0.0.1:${address.port}/catalog.json`)
+
+  try {
+    // Downloading the public catalog does not require a Supabase or local account.
+    const imported = await context.api.studyPrograms.refreshStudyCatalog()
+    assert.deepEqual(imported, { programCount: 3, courseCount: 12 })
+    assert.equal((await context.api.studyPrograms.listStudyPrograms()).length, 5)
+    context.session.start(42)
+    for (const program of catalog.programs) {
+      assert.deepEqual(
+        await context.api.studyPrograms.listStudyProgramCourses({ path: { id: program.id } }),
+        catalog.courses
+          .filter((course) => course.studyProgramId === program.id)
+          .sort((a, b) => a.semester.localeCompare(b.semester) || a.name.localeCompare(b.name))
+      )
+    }
+
+    await context.api.studyPrograms.refreshStudyCatalog()
+    assert.equal((await context.api.studyPrograms.listStudyPrograms()).length, 5)
+    const courseCount = await context.client.execute('SELECT count(*) AS count FROM courses')
+    assert.equal(courseCount.rows[0].count, 16)
+
+    catalog.programs[0].name = 'Physik – aktualisiert'
+    catalog.courses[0].name = "Newton's Mechanik"
+    catalog.courses[0].ects = 7.5
+    await context.api.studyPrograms.refreshStudyCatalog()
+    const programs = await context.api.studyPrograms.listStudyPrograms()
+    assert.equal(programs.find((program) => program.id === 6)?.name, 'Physik – aktualisiert')
+    const courses = await context.api.studyPrograms.listStudyProgramCourses({ path: { id: 6 } })
+    assert.equal(courses.find((course) => course.id === 34)?.ects, 7.5)
+    assert.equal(courses.find((course) => course.id === 34)?.name, "Newton's Mechanik")
+    assert.equal(programs.find((program) => program.id === 1)?.name, 'Zoology')
+    assert.equal(requests, 3)
+  } finally {
+    context.client.close()
+    server.closeAllConnections()
+    await new Promise<void>((resolve, reject) => {
+      server.close((error) => (error ? reject(error) : resolve()))
+    })
+  }
+})
+
+test('failed downloads and invalid JSON keep local data intact, and a later retry succeeds', async () => {
+  let mode: 'offline' | 'http-error' | 'invalid-json' | 'invalid-shape' | 'success' = 'offline'
+  const context = await createTestContext(async () => {
+    if (mode === 'offline') throw new TypeError('fetch failed')
+    if (mode === 'http-error') return new Response('Unavailable', { status: 503 })
+    if (mode === 'invalid-json') return new Response('{broken')
+    if (mode === 'invalid-shape')
+      return Response.json({ programs: sampleCatalog.programs, courses: [{}] })
+    return Response.json(sampleCatalog)
+  })
+
+  try {
+    const before = await context.api.studyPrograms.listStudyPrograms()
+    for (const failure of ['offline', 'http-error', 'invalid-json', 'invalid-shape'] as const) {
+      mode = failure
+      await assert.rejects(() => context.api.studyPrograms.refreshStudyCatalog(), ApiClientError)
+      assert.deepEqual(await context.api.studyPrograms.listStudyPrograms(), before)
+      const courses = await context.client.execute('SELECT count(*) AS count FROM courses')
+      assert.equal(courses.rows[0].count, 4)
+    }
+
+    mode = 'success'
+    await context.api.studyPrograms.refreshStudyCatalog()
+    assert.equal((await context.api.studyPrograms.listStudyPrograms()).length, 5)
+  } finally {
+    context.client.close()
+  }
+})
+
+test('a database write failure rolls back the complete catalog import', async () => {
+  const context = await createTestContext(async () => Response.json(sampleCatalog))
+  try {
+    await context.client.execute(`
+      CREATE TRIGGER reject_sample_course BEFORE INSERT ON courses
+      WHEN NEW.id = 45 BEGIN SELECT RAISE(ABORT, 'simulated write failure'); END
+    `)
+    const before = await context.api.studyPrograms.listStudyPrograms()
+    await assert.rejects(() => context.api.studyPrograms.refreshStudyCatalog(), ApiClientError)
+    assert.deepEqual(await context.api.studyPrograms.listStudyPrograms(), before)
+    const courses = await context.client.execute('SELECT count(*) AS count FROM courses')
+    assert.equal(courses.rows[0].count, 4)
+  } finally {
+    context.client.close()
+  }
+})
+
+test('concurrent refresh requests share one download and import', async () => {
+  let calls = 0
+  let finishDownload!: () => void
+  const downloadReady = new Promise<void>((resolve) => {
+    finishDownload = resolve
+  })
+  const context = await createTestContext(async () => {
+    calls += 1
+    await downloadReady
+    return Response.json(sampleCatalog)
+  })
+
+  try {
+    const first = context.api.studyPrograms.refreshStudyCatalog()
+    const second = context.api.studyPrograms.refreshStudyCatalog()
+    finishDownload()
+    assert.deepEqual(await first, await second)
+    assert.equal(calls, 1)
+    assert.equal((await context.api.studyPrograms.listStudyPrograms()).length, 5)
   } finally {
     context.client.close()
   }

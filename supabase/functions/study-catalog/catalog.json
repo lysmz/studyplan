@@ -1,0 +1,115 @@
+{
+  "programs": [
+    { "id": 6, "name": "Physik (B.Sc.)", "faculty": "Fakultät für Physik", "totalEcts": 180 },
+    {
+      "id": 7,
+      "name": "Elektrotechnik (B.Sc.)",
+      "faculty": "Fakultät für Ingenieurwesen",
+      "totalEcts": 180
+    },
+    {
+      "id": 8,
+      "name": "Psychologie (B.Sc.)",
+      "faculty": "Fakultät für Psychologie",
+      "totalEcts": 180
+    }
+  ],
+  "courses": [
+    {
+      "id": 34,
+      "name": "Experimentalphysik I",
+      "ects": 9,
+      "semester": "1. Semester",
+      "studyProgramId": 6,
+      "isRequired": true
+    },
+    {
+      "id": 35,
+      "name": "Mathematische Methoden",
+      "ects": 6,
+      "semester": "1. Semester",
+      "studyProgramId": 6,
+      "isRequired": true
+    },
+    {
+      "id": 36,
+      "name": "Astrophysik",
+      "ects": 6,
+      "semester": "5. Semester",
+      "studyProgramId": 6,
+      "isRequired": false
+    },
+    {
+      "id": 37,
+      "name": "Bachelorarbeit",
+      "ects": 12,
+      "semester": "6. Semester",
+      "studyProgramId": 6,
+      "isRequired": true
+    },
+    {
+      "id": 38,
+      "name": "Grundlagen der Elektrotechnik",
+      "ects": 9,
+      "semester": "1. Semester",
+      "studyProgramId": 7,
+      "isRequired": true
+    },
+    {
+      "id": 39,
+      "name": "Schaltungstechnik",
+      "ects": 6,
+      "semester": "2. Semester",
+      "studyProgramId": 7,
+      "isRequired": true
+    },
+    {
+      "id": 40,
+      "name": "Erneuerbare Energien",
+      "ects": 6,
+      "semester": "5. Semester",
+      "studyProgramId": 7,
+      "isRequired": false
+    },
+    {
+      "id": 41,
+      "name": "Bachelorarbeit",
+      "ects": 12,
+      "semester": "6. Semester",
+      "studyProgramId": 7,
+      "isRequired": true
+    },
+    {
+      "id": 42,
+      "name": "Einführung in die Psychologie",
+      "ects": 6,
+      "semester": "1. Semester",
+      "studyProgramId": 8,
+      "isRequired": true
+    },
+    {
+      "id": 43,
+      "name": "Statistik und Forschungsmethoden",
+      "ects": 9,
+      "semester": "2. Semester",
+      "studyProgramId": 8,
+      "isRequired": true
+    },
+    {
+      "id": 44,
+      "name": "Arbeits- und Organisationspsychologie",
+      "ects": 6,
+      "semester": "5. Semester",
+      "studyProgramId": 8,
+      "isRequired": false
+    },
+    {
+      "id": 45,
+      "name": "Bachelorarbeit",
+      "ects": 12,
+      "semester": "6. Semester",
+      "studyProgramId": 8,
+      "isRequired": true
+    }
+  ]
+}

@@ -512,6 +512,19 @@ paths:
                 items:
                   $ref: '#/components/schemas/StudyProgram'
 
+  /study-programs/refresh:
+    post:
+      operationId: refreshStudyCatalog
+      tags: [studyPrograms]
+      summary: Fetch the public sample catalog and import it into the local database
+      responses:
+        '200':
+          description: Catalog imported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyCatalogImportResult'
+
   /study-programs/{id}/courses:
     get:
       operationId: listStudyProgramCourses
@@ -1755,6 +1768,15 @@ components:
           type: ['string', 'null']
 
     # ── Study Programs ─────────────────────────────────────────────────────────
+    StudyCatalogImportResult:
+      type: object
+      required: [programCount, courseCount]
+      properties:
+        programCount:
+          type: integer
+        courseCount:
+          type: integer
+
     StudyProgram:
       type: object
       required: [id, name, faculty, totalEcts]
