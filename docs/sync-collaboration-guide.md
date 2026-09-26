@@ -166,6 +166,14 @@ toast messages. These are ordinary TanStack React Query hooks around `collaborat
 PowerSync SDK instance or direct Supabase client in the renderer. This handwritten module is separate
 from the generated local API exports in `api/index.ts`.
 
+The overview uses the local groups page's card grid and create-group dialog. The detail page uses
+its coloured header and the same tab order: Termine, Aufgaben, Notizen, Mitglieder. Aufgaben opens
+by default; task creation, completion/reopening, deletion, member display, and owner invitations
+retain their collaboration hooks. Termine and Notizen display `not implemented`. Group editing,
+group deletion/leaving, task editing, and member removal also open a `not implemented` dialog without
+calling a mutation. Sign-in remains a gate before the overview's groups. Account switching and the
+account-wide upload status, including preserved rejected drafts, remain outside the detail tabs.
+
 - `useCollaborationState()` calls `state` every **2 seconds** to show configuration, sign-in, and
   connection status.
 - The overview queries `listGroups` and `listInvitations` every **2 seconds** after Supabase sign-in.

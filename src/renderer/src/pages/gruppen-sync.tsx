@@ -1,8 +1,28 @@
 import { useState } from 'react'
-import type { JSX } from 'react'
+import type { JSX, ReactNode } from 'react'
 import { Link, useLocation, useParams } from 'wouter'
-import { ArrowLeft, Check, Plus, Users, X } from 'lucide-react'
-import type { CollaborationMember, CollaborationTask } from '../../../shared/collaboration/ipc'
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Check,
+  ClipboardList,
+  FileText,
+  FolderKanban,
+  Mail,
+  Pencil,
+  Plus,
+  Trash2,
+  UserMinus,
+  UserPlus,
+  Users,
+  X
+} from 'lucide-react'
+import type {
+  CollaborationMember,
+  CollaborationState,
+  CollaborationTask
+} from '../../../shared/collaboration/ipc'
 import {
   useCollaborationCandidates,
   useCollaborationGroup,
@@ -21,10 +41,21 @@ import {
   useUpdateCollaborationTask
 } from '@/api/collaboration'
 import { UploadStatus } from '@/collaboration/upload-status'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 
@@ -45,9 +76,9 @@ function SignIn(): JSX.Element {
   })
 
   return (
-    <Card className="max-w-xl">
+    <Card className="max-w-xl border-primary/10 shadow-sm">
       <CardHeader>
-        <CardTitle>Bei synchronisierten Gruppen anmelden</CardTitle>
+        <CardTitle className="font-serif text-2xl">Bei synchronisierten Gruppen anmelden</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-5 text-sm text-muted-foreground">
@@ -92,16 +123,98 @@ function SignIn(): JSX.Element {
   )
 }
 
+function AccountSwitch(): JSX.Element {
+  const { toast } = useToast()
+  const signOut = useCollaborationSignOut({
+    onError: (error) =>
+      toast({
+        title: 'Abmeldung fehlgeschlagen',
+        description: error.message,
+        variant: 'destructive'
+      })
+  })
+  return (
+    <Button variant="outline" onClick={() => signOut.mutate({})} disabled={signOut.isPending}>
+      {signOut.isPending ? 'Wird abgemeldet …' : 'Online-Konto wechseln'}
+    </Button>
+  )
+}
+
+function SyncStatus({ state }: { state: CollaborationState }): JSX.Element {
+  return (
+    <div className="rounded-xl border border-primary/10 bg-card px-5 py-4">
+      <p className="text-xs font-semibold uppercase tracking-wider text-primary/70">
+        Übertragungsstatus · alle Gruppen
+      </p>
+      <UploadStatus state={state} />
+    </div>
+  )
+}
+
+function LoadingRows(): JSX.Element {
+  return (
+    <div className="space-y-3" role="status" aria-label="Wird geladen">
+      <Skeleton className="h-16 rounded-xl" />
+      <Skeleton className="h-16 rounded-xl" />
+    </div>
+  )
+}
+
+function QueryError({ message, retry }: { message: string; retry: () => void }): JSX.Element {
+  return (
+    <div className="space-y-3 rounded-xl border border-destructive/20 p-5 text-center">
+      <p>{message}</p>
+      <Button variant="outline" onClick={retry}>
+        Erneut versuchen
+      </Button>
+    </div>
+  )
+}
+
+function PanelCard({
+  title,
+  description,
+  icon: Icon,
+  action,
+  children
+}: {
+  title: string
+  description: string
+  icon: typeof Users
+  action?: ReactNode
+  children: ReactNode
+}): JSX.Element {
+  return (
+    <Card className="border-primary/10 shadow-sm">
+      <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-4">
+        <div className="flex gap-3">
+          <div className="self-start rounded-xl bg-secondary p-2.5 text-primary">
+            <Icon className="h-5 w-5" />
+          </div>
+          <div>
+            <CardTitle className="font-serif text-2xl">{title}</CardTitle>
+            <CardDescription className="mt-1">{description}</CardDescription>
+          </div>
+        </div>
+        {action}
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
+  )
+}
+
 export default function GruppenSync(): JSX.Element {
   const state = useCollaborationState()
   const [, setLocation] = useLocation()
   const { toast } = useToast()
+  const [createOpen, setCreateOpen] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const groups = useCollaborationGroups(state.data?.signedIn === true)
   const invitations = useCollaborationInvitations(state.data?.signedIn === true)
   const create = useCreateCollaborationGroup({
     onSuccess: (group) => {
+      setCreateOpen(false)
       setName('')
       setDescription('')
       setLocation(`/gruppen-sync/${group.id}`)
@@ -121,29 +234,85 @@ export default function GruppenSync(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const signOut = useCollaborationSignOut()
 
   return (
-    <div className="space-y-7 pb-10">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="space-y-8 pb-10 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-serif text-4xl font-bold">Synchronisierte Gruppen</h1>
-          <p className="mt-2 text-muted-foreground">
-            Einladungen laufen online; gemeinsame Aufgaben sind lokal verfügbar.
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/70">
+            Gemeinsam studieren
           </p>
-          {state.data?.signedIn && <UploadStatus state={state.data} />}
+          <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight">
+            Synchronisierte Gruppen
+          </h1>
+          <p className="mt-2 max-w-xl text-muted-foreground">
+            Euer gemeinsamer Studienraum. Aufgaben bleiben auch offline verfügbar.
+          </p>
         </div>
         {state.data?.signedIn && (
-          <Button variant="outline" onClick={() => signOut.mutate({})} disabled={signOut.isPending}>
-            Online-Konto wechseln
-          </Button>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <AccountSwitch />
+            <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+              <DialogTrigger asChild>
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" /> Gruppe anlegen
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="font-serif text-2xl">Neue Studiengruppe</DialogTitle>
+                  <DialogDescription>Lege einen gemeinsamen Studienraum an.</DialogDescription>
+                </DialogHeader>
+                <form
+                  className="space-y-4"
+                  onSubmit={(event) => {
+                    event.preventDefault()
+                    if (!name.trim()) return
+                    create.mutate({
+                      name: name.trim(),
+                      description: description.trim() || undefined
+                    })
+                  }}
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="sync-group-name">Name</Label>
+                    <Input
+                      id="sync-group-name"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      placeholder="z. B. Statistik Lerngruppe"
+                      required
+                      maxLength={120}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="sync-group-description">Beschreibung (optional)</Label>
+                    <Textarea
+                      id="sync-group-description"
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                      placeholder="Woran arbeitet ihr gerade?"
+                      rows={4}
+                      maxLength={2000}
+                    />
+                  </div>
+                  <Button className="w-full" disabled={create.isPending || !name.trim()}>
+                    {create.isPending ? 'Wird angelegt …' : 'Gruppe anlegen'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         )}
       </div>
 
       {state.isLoading ? (
-        <p>Gruppen werden vorbereitet …</p>
+        <LoadingRows />
       ) : state.isError ? (
-        <p>Der Gruppenstatus konnte nicht geladen werden.</p>
+        <QueryError
+          message="Der Gruppenstatus konnte nicht geladen werden."
+          retry={() => void state.refetch()}
+        />
       ) : !state.data?.configured ? (
         <Card>
           <CardContent className="py-8">
@@ -154,86 +323,38 @@ export default function GruppenSync(): JSX.Element {
         <SignIn />
       ) : (
         <>
-          <Card>
-            <CardHeader>
-              <CardTitle>Neue Gruppe</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form
-                className="space-y-3"
-                onSubmit={(event) => {
-                  event.preventDefault()
-                  create.mutate({
-                    name: name.trim(),
-                    description: description.trim() || undefined
-                  })
-                }}
-              >
-                <Input
-                  aria-label="Gruppenname"
-                  placeholder="Name der Gruppe"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  required
-                  maxLength={120}
-                />
-                <Textarea
-                  aria-label="Beschreibung"
-                  placeholder="Beschreibung (optional)"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  maxLength={2000}
-                />
-                <Button type="submit" disabled={create.isPending || !name.trim()}>
-                  <Plus className="mr-2 h-4 w-4" /> Gruppe anlegen
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Meine Gruppen</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {groups.isError && <p>Gruppen konnten nicht geladen werden.</p>}
-                {groups.data?.length === 0 && (
-                  <p className="text-muted-foreground">Noch keine Gruppen.</p>
-                )}
-                {groups.data?.map((group) => (
-                  <Link
-                    key={group.id}
-                    href={`/gruppen-sync/${group.id}`}
-                    className="block rounded-lg border p-4 hover:bg-muted/50"
-                  >
-                    <div className="font-medium">{group.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {group.myRole === 'owner' ? 'Besitzer' : 'Mitglied'} ·{' '}
-                      {group.description || 'Ohne Beschreibung'}
-                    </div>
-                  </Link>
-                ))}
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Einladungen</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {invitations.isError && <p>Einladungen konnten nicht geladen werden.</p>}
-                {invitations.data?.length === 0 && (
-                  <p className="text-muted-foreground">Keine offenen Einladungen.</p>
-                )}
+          <SyncStatus state={state.data} />
+          <PanelCard
+            title="Einladungen"
+            description="Hier beginnt euer nächstes gemeinsames Lernprojekt. Einladungen erfordern eine Verbindung."
+            icon={Mail}
+          >
+            {invitations.isError && invitations.data && (
+              <QueryError
+                message="Einladungen konnten nicht aktualisiert werden."
+                retry={() => void invitations.refetch()}
+              />
+            )}
+            {invitations.isLoading ? (
+              <LoadingRows />
+            ) : invitations.isError && !invitations.data ? (
+              <QueryError
+                message="Einladungen konnten nicht geladen werden."
+                retry={() => void invitations.refetch()}
+              />
+            ) : invitations.data?.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Keine offenen Einladungen.</p>
+            ) : (
+              <div className="grid gap-3 md:grid-cols-2">
                 {invitations.data?.map((invitation) => (
-                  <div key={invitation.id} className="rounded-lg border p-4">
+                  <div key={invitation.id} className="rounded-xl border p-4">
                     <p className="font-medium">
                       Einladung von {invitation.inviterName ?? 'einem Gruppenmitglied'}
                     </p>
-                    <p className="mb-3 text-sm text-muted-foreground">
+                    <p className="mb-4 mt-1 text-sm text-muted-foreground">
                       Nach der Annahme erscheint die Gruppe hier.
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <Button
                         size="sm"
                         disabled={respond.isPending}
@@ -256,9 +377,73 @@ export default function GruppenSync(): JSX.Element {
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            )}
+          </PanelCard>
+          <section className="space-y-4" aria-label="Meine Gruppen">
+            <h2 className="font-serif text-2xl font-semibold">Meine Gruppen</h2>
+            {groups.isError && groups.data && (
+              <QueryError
+                message="Gruppen konnten nicht aktualisiert werden."
+                retry={() => void groups.refetch()}
+              />
+            )}
+            {groups.isLoading ? (
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                <Skeleton className="h-60 rounded-2xl" />
+                <Skeleton className="h-60 rounded-2xl" />
+              </div>
+            ) : groups.isError && !groups.data ? (
+              <QueryError
+                message="Gruppen konnten nicht geladen werden."
+                retry={() => void groups.refetch()}
+              />
+            ) : groups.data?.length ? (
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {groups.data.map((group) => (
+                  <Link key={group.id} href={'/gruppen-sync/' + group.id} className="group block">
+                    <Card className="h-full overflow-hidden border-primary/10 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/35 group-hover:shadow-lg">
+                      <div className="h-2 bg-primary" />
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="rounded-xl bg-secondary p-3 text-primary">
+                            <FolderKanban className="h-5 w-5" />
+                          </div>
+                          <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+                        </div>
+                        <CardTitle className="break-words pt-2 font-serif text-2xl">
+                          {group.name}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-2 min-h-10">
+                          {group.description || 'Ein gemeinsamer Platz für euren Studienalltag.'}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex items-center gap-2 border-t bg-muted/20 pt-4 text-sm text-muted-foreground">
+                        <Users className="h-4 w-4 text-primary" />
+                        {group.myRole === 'owner' ? 'Eigentümer' : 'Mitglied'}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <Card className="border-dashed border-primary/25 bg-primary/[0.025]">
+                <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="mb-5 rounded-2xl bg-secondary p-4 text-primary">
+                    <Users className="h-8 w-8" />
+                  </div>
+                  <h3 className="font-serif text-2xl font-semibold">Noch keine Studiengruppe</h3>
+                  <p className="mt-2 max-w-sm text-muted-foreground">
+                    Gründe einen Raum für dein nächstes gemeinsames Lernprojekt oder nimm eine
+                    Einladung an.
+                  </p>
+                  <Button onClick={() => setCreateOpen(true)} className="mt-6 gap-2">
+                    <Plus className="h-4 w-4" /> Erste Gruppe anlegen
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </section>
         </>
       )}
     </div>
@@ -268,46 +453,76 @@ export default function GruppenSync(): JSX.Element {
 function TaskItem({
   task,
   members,
+  busy,
   onToggle,
+  onEdit,
   onDelete
 }: {
   task: CollaborationTask
   members: CollaborationMember[]
+  busy: boolean
   onToggle: () => void
+  onEdit: () => void
   onDelete: () => void
 }): JSX.Element {
   const assignee = members.find((member) => member.userId === task.assigneeId)
+  const done = task.status === 'done'
   return (
-    <div className="flex items-start justify-between gap-3 rounded-lg border p-4">
-      <div>
-        <div
+    <div
+      className={
+        'flex items-start gap-3 rounded-xl border p-4 ' + (done ? 'bg-muted/30' : 'bg-card')
+      }
+    >
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={done}
+        aria-label={'Aufgabe ' + task.title + (done ? ' öffnen' : ' erledigen')}
+        disabled={busy}
+        onClick={onToggle}
+        className={
+          'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 ' +
+          (done ? 'border-primary bg-primary text-primary-foreground' : 'border-primary/30')
+        }
+      >
+        {done && <Check className="h-3.5 w-3.5" />}
+      </button>
+      <div className="min-w-0 flex-1">
+        <p
           className={
-            task.status === 'done'
-              ? 'font-medium line-through text-muted-foreground'
-              : 'font-medium'
+            'break-words font-medium ' + (done ? 'line-through text-muted-foreground' : '')
           }
         >
           {task.title}
-        </div>
-        {task.description && (
-          <p className="mt-1 text-sm text-muted-foreground">{task.description}</p>
-        )}
-        <p className="mt-2 text-xs text-muted-foreground">
-          {assignee && `Zuständig: ${assignee.displayName}`}
-          {task.dueDate && ` · Fällig: ${new Date(task.dueDate).toLocaleString('de-DE')}`}
         </p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {assignee && assignee.displayName + ' · '}
+          {task.dueDate ? new Date(task.dueDate).toLocaleString('de-DE') : 'Ohne Termin'}
+        </p>
+        {task.description && (
+          <p className="mt-2 whitespace-pre-wrap break-words text-sm text-foreground/75">
+            {task.description}
+          </p>
+        )}
       </div>
-      <div className="flex shrink-0 gap-2">
-        <Button size="sm" variant="outline" onClick={onToggle}>
-          {task.status === 'done' ? 'Öffnen' : 'Erledigt'}
+      <div className="flex shrink-0 flex-wrap gap-1">
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={onEdit}
+          aria-label={'Aufgabe ' + task.title + ' bearbeiten'}
+        >
+          <Pencil className="h-4 w-4" />
         </Button>
         <Button
-          size="sm"
+          size="icon"
           variant="ghost"
+          disabled={busy}
+          className="text-muted-foreground hover:text-destructive"
           onClick={onDelete}
-          aria-label={`Aufgabe ${task.title} löschen`}
+          aria-label={'Aufgabe ' + task.title + ' löschen'}
         >
-          <X className="h-4 w-4" />
+          <Trash2 className="h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -319,6 +534,9 @@ export function GruppenSyncDetail(): JSX.Element {
   const [, setLocation] = useLocation()
   const { toast } = useToast()
   const state = useCollaborationState()
+  const [tab, setTab] = useState('aufgaben')
+  const [taskOpen, setTaskOpen] = useState(false)
+  const [stubFeature, setStubFeature] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [taskTitle, setTaskTitle] = useState('')
   const [taskDescription, setTaskDescription] = useState('')
@@ -347,6 +565,7 @@ export function GruppenSyncDetail(): JSX.Element {
   })
   const createTask = useCreateCollaborationTask({
     onSuccess: () => {
+      setTaskOpen(false)
       setTaskTitle('')
       setTaskDescription('')
       setTaskAssignee('')
@@ -377,10 +596,18 @@ export function GruppenSyncDetail(): JSX.Element {
       })
   })
 
-  if (!state.data?.signedIn) {
+  if (state.isLoading) return <LoadingRows />
+  if (state.isError && !state.data)
+    return (
+      <QueryError
+        message="Der Gruppenstatus konnte nicht geladen werden."
+        retry={() => void state.refetch()}
+      />
+    )
+  if (!state.data?.signedIn)
     return (
       <Card>
-        <CardContent className="py-8">
+        <CardContent className="py-12 text-center">
           <p>Melde dich zuerst für synchronisierte Gruppen an.</p>
           <Button className="mt-4" onClick={() => setLocation('/gruppen-sync')}>
             Zur Übersicht
@@ -388,150 +615,234 @@ export function GruppenSyncDetail(): JSX.Element {
         </CardContent>
       </Card>
     )
-  }
 
+  const owner = group.data?.myRole === 'owner'
   return (
-    <div className="space-y-6 pb-10">
-      <Button variant="ghost" onClick={() => setLocation('/gruppen-sync')}>
-        <ArrowLeft className="mr-2 h-4 w-4" /> Gruppenübersicht
-      </Button>
+    <div className="space-y-6 pb-12 animate-in fade-in duration-500">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Button variant="ghost" onClick={() => setLocation('/gruppen-sync')}>
+          <ArrowLeft className="mr-2 h-5 w-5" /> Gruppenübersicht
+        </Button>
+        <AccountSwitch />
+      </div>
       {!group.data ? (
         <Card>
-          <CardContent className="py-8">
-            {group.isError
-              ? 'Diese Gruppe ist lokal noch nicht verfügbar oder du bist kein Mitglied.'
-              : 'Gruppe wird synchronisiert …'}
+          <CardContent className="py-12 text-center">
+            {group.isError ? (
+              <QueryError
+                message="Diese Gruppe ist lokal noch nicht verfügbar oder du bist kein Mitglied."
+                retry={() => void group.refetch()}
+              />
+            ) : (
+              <p role="status">Gruppe wird synchronisiert …</p>
+            )}
           </CardContent>
         </Card>
       ) : (
-        <>
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <h1 className="font-serif text-4xl font-bold">{group.data.name}</h1>
-              <p className="mt-2 text-muted-foreground">{group.data.description}</p>
+        <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-lg md:p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="min-w-0">
+              <div className="mb-3 flex flex-wrap items-center gap-2 text-primary-foreground/70">
+                <Users className="h-4 w-4" />
+                <span className="text-xs font-semibold uppercase tracking-[0.2em]">
+                  {members.data
+                    ? members.data.length +
+                      (members.data.length === 1 ? ' Mitglied' : ' Mitglieder')
+                    : 'Studiengruppe'}
+                  {' · '}
+                  {owner ? 'Eigentümer' : 'Mitglied'}
+                </span>
+              </div>
+              <h1 className="break-words font-serif text-4xl font-bold tracking-tight">
+                {group.data.name}
+              </h1>
+              <p className="mt-2 max-w-2xl break-words text-primary-foreground/75">
+                {group.data.description || 'Euer gemeinsamer Studienraum.'}
+              </p>
             </div>
-            <UploadStatus state={state.data} />
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle>Gemeinsame Aufgaben</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <form
-                  className="space-y-3 rounded-lg border p-4"
-                  onSubmit={(event) => {
-                    event.preventDefault()
-                    createTask.mutate({
-                      groupId: groupId!,
-                      title: taskTitle.trim(),
-                      description: taskDescription.trim() || null,
-                      assigneeId: taskAssignee || null,
-                      dueDate: taskDueDate ? new Date(taskDueDate).toISOString() : null
-                    })
-                  }}
+            {owner && (
+              <div className="flex shrink-0 flex-wrap gap-2">
+                <Button variant="secondary" className="gap-2" onClick={() => setTab('mitglieder')}>
+                  <UserPlus className="h-4 w-4" /> Einladen
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  onClick={() => setStubFeature('Gruppe bearbeiten')}
                 >
-                  <Input
-                    aria-label="Aufgabentitel"
-                    placeholder="Neue Aufgabe"
-                    value={taskTitle}
-                    onChange={(event) => setTaskTitle(event.target.value)}
-                    required
-                    maxLength={200}
-                  />
-                  <Textarea
-                    aria-label="Aufgabenbeschreibung"
-                    placeholder="Beschreibung (optional)"
-                    value={taskDescription}
-                    onChange={(event) => setTaskDescription(event.target.value)}
-                    maxLength={4000}
-                  />
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <select
-                      aria-label="Zuständige Person"
-                      className="h-10 rounded-md border bg-background px-3 text-sm"
-                      value={taskAssignee}
-                      onChange={(event) => setTaskAssignee(event.target.value)}
-                    >
-                      <option value="">Niemandem zuweisen</option>
-                      {members.data?.map((member) => (
-                        <option key={member.userId} value={member.userId}>
-                          {member.displayName}
-                        </option>
-                      ))}
-                    </select>
-                    <Input
-                      aria-label="Fälligkeitsdatum"
-                      type="datetime-local"
-                      value={taskDueDate}
-                      onChange={(event) => setTaskDueDate(event.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" disabled={createTask.isPending || !taskTitle.trim()}>
-                    <Plus className="mr-2 h-4 w-4" /> Aufgabe hinzufügen
+                  <Pencil className="mr-2 h-4 w-4" /> Bearbeiten
+                </Button>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+      <SyncStatus state={state.data} />
+      {group.data && (
+        <>
+          <Tabs value={tab} onValueChange={setTab} className="space-y-5">
+            <TabsList className="grid h-auto w-full grid-cols-4 bg-secondary/60 p-1">
+              <TabsTrigger value="termine" className="gap-2 px-2 py-2.5">
+                <CalendarDays className="hidden h-4 w-4 sm:block" /> Termine
+              </TabsTrigger>
+              <TabsTrigger value="aufgaben" className="gap-2 px-2 py-2.5">
+                <ClipboardList className="hidden h-4 w-4 sm:block" /> Aufgaben
+              </TabsTrigger>
+              <TabsTrigger value="notizen" className="gap-2 px-2 py-2.5">
+                <FileText className="hidden h-4 w-4 sm:block" /> Notizen
+              </TabsTrigger>
+              <TabsTrigger value="mitglieder" className="gap-2 px-2 py-2.5">
+                <Users className="hidden h-4 w-4 sm:block" /> Mitglieder
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="termine">
+              <PanelCard
+                title="Termine"
+                description="Eure gemeinsamen Lerntermine."
+                icon={CalendarDays}
+              >
+                <p className="py-12 text-center text-muted-foreground">not implemented</p>
+              </PanelCard>
+            </TabsContent>
+            <TabsContent value="aufgaben">
+              <PanelCard
+                title="Aufgaben"
+                description="Haltet fest, was als Nächstes ansteht."
+                icon={ClipboardList}
+                action={
+                  <Button size="sm" className="gap-2" onClick={() => setTaskOpen(true)}>
+                    <Plus className="h-4 w-4" /> Aufgabe
                   </Button>
-                </form>
-                {tasks.data?.length === 0 && (
-                  <p className="text-muted-foreground">Noch keine Aufgaben.</p>
-                )}
-                {tasks.data?.map((task) => (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    members={members.data ?? []}
-                    onToggle={() =>
-                      updateTask.mutate({
-                        groupId: groupId!,
-                        taskId: task.id,
-                        status: task.status === 'done' ? 'open' : 'done'
-                      })
-                    }
-                    onDelete={() => deleteTask.mutate({ groupId: groupId!, taskId: task.id })}
+                }
+              >
+                {tasks.isError && (
+                  <QueryError
+                    message="Aufgaben konnten nicht geladen werden."
+                    retry={() => void tasks.refetch()}
                   />
-                ))}
-              </CardContent>
-            </Card>
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Mitglieder</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  {members.data?.map((member) => (
-                    <div key={member.id} className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span>{member.displayName}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {member.role === 'owner' ? 'Besitzer' : 'Mitglied'}
-                      </span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-              {group.data.myRole === 'owner' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Person einladen</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <p className="text-sm text-muted-foreground">
-                      Suche nach Benutzername oder Anzeigename. Einladen erfordert eine Verbindung.
-                    </p>
+                )}
+                {tasks.isLoading ? (
+                  <LoadingRows />
+                ) : tasks.data?.length ? (
+                  <div className="space-y-3">
+                    {tasks.data.map((task) => (
+                      <TaskItem
+                        key={task.id}
+                        task={task}
+                        members={members.data ?? []}
+                        busy={
+                          (updateTask.isPending && updateTask.variables?.taskId === task.id) ||
+                          (deleteTask.isPending && deleteTask.variables?.taskId === task.id)
+                        }
+                        onToggle={() =>
+                          updateTask.mutate({
+                            groupId: groupId!,
+                            taskId: task.id,
+                            status: task.status === 'done' ? 'open' : 'done'
+                          })
+                        }
+                        onEdit={() => setStubFeature('Aufgabe bearbeiten')}
+                        onDelete={() => deleteTask.mutate({ groupId: groupId!, taskId: task.id })}
+                      />
+                    ))}
+                  </div>
+                ) : !tasks.isError ? (
+                  <p className="py-12 text-center text-muted-foreground">
+                    Noch keine Aufgaben in dieser Gruppe.
+                  </p>
+                ) : null}
+              </PanelCard>
+            </TabsContent>
+            <TabsContent value="notizen">
+              <PanelCard
+                title="Notizen & Links"
+                description="Ein gemeinsamer Platz für eure Gedanken und Materialien."
+                icon={FileText}
+              >
+                <p className="py-12 text-center text-muted-foreground">not implemented</p>
+              </PanelCard>
+            </TabsContent>
+            <TabsContent value="mitglieder" className="space-y-5">
+              <PanelCard
+                title="Mitglieder"
+                description="Wer gerade an eurem Studienprojekt arbeitet."
+                icon={Users}
+              >
+                {members.isError && (
+                  <QueryError
+                    message="Mitglieder konnten nicht geladen werden."
+                    retry={() => void members.refetch()}
+                  />
+                )}
+                {members.isLoading ? (
+                  <LoadingRows />
+                ) : (
+                  <div className="space-y-2">
+                    {members.data?.map((member) => (
+                      <div
+                        key={member.id}
+                        className="flex flex-wrap items-center gap-3 rounded-xl border p-3"
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary font-serif font-semibold text-primary">
+                          {member.displayName.slice(0, 2).toUpperCase()}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium">{member.displayName}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            @{member.username}
+                          </p>
+                        </div>
+                        <Badge variant={member.role === 'owner' ? 'default' : 'secondary'}>
+                          {member.role === 'owner' ? 'Eigentümer' : 'Mitglied'}
+                        </Badge>
+                        {owner && member.role !== 'owner' && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-muted-foreground hover:text-destructive"
+                            aria-label={member.displayName + ' aus der Gruppe entfernen'}
+                            onClick={() => setStubFeature('Mitglied entfernen')}
+                          >
+                            <UserMinus className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </PanelCard>
+              {owner && (
+                <PanelCard
+                  title="Person einladen"
+                  description="Suche nach Benutzername oder Anzeigename. Einladen erfordert eine Verbindung."
+                  icon={UserPlus}
+                >
+                  <div className="space-y-3">
+                    <Label htmlFor="sync-person-search">Person suchen</Label>
                     <Input
-                      aria-label="Person suchen"
+                      id="sync-person-search"
                       placeholder="Mindestens 2 Zeichen"
                       value={search}
                       onChange={(event) => setSearch(event.target.value)}
                     />
+                    {candidates.isFetching && (
+                      <p className="text-sm text-muted-foreground">Wird gesucht …</p>
+                    )}
+                    {candidates.isError && (
+                      <QueryError
+                        message="Personen konnten nicht gesucht werden. Bitte prüfe deine Verbindung."
+                        retry={() => void candidates.refetch()}
+                      />
+                    )}
                     {candidates.data?.map((candidate) => (
                       <div
                         key={candidate.id}
-                        className="flex items-center justify-between gap-2 rounded-md border p-2 text-sm"
+                        className="flex flex-wrap items-center justify-between gap-3 rounded-xl border p-3 text-sm"
                       >
-                        <span>
-                          {candidate.displayName}{' '}
-                          <span className="text-muted-foreground">@{candidate.username}</span>
-                        </span>
+                        <div className="min-w-0">
+                          <p className="break-words font-medium">{candidate.displayName}</p>
+                          <p className="break-words text-muted-foreground">@{candidate.username}</p>
+                        </div>
                         <Button
                           size="sm"
                           disabled={invite.isPending}
@@ -546,11 +857,117 @@ export function GruppenSyncDetail(): JSX.Element {
                     {search.trim().length >= 2 && candidates.data?.length === 0 && (
                       <p className="text-sm text-muted-foreground">Keine verfügbaren Personen.</p>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                </PanelCard>
               )}
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
+          <Card className="border-destructive/20">
+            <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-medium">{owner ? 'Gruppe verwalten' : 'Nicht mehr dabei?'}</p>
+                <p className="text-sm text-muted-foreground">
+                  {owner
+                    ? 'Einstellungen für euren gemeinsamen Studienraum.'
+                    : 'Deine Mitgliedschaft in dieser Gruppe.'}
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                className="gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => setStubFeature(owner ? 'Gruppe löschen' : 'Gruppe verlassen')}
+              >
+                <Trash2 className="h-4 w-4" /> {owner ? 'Gruppe löschen' : 'Gruppe verlassen'}
+              </Button>
+            </CardContent>
+          </Card>
+          <Dialog open={taskOpen} onOpenChange={setTaskOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="font-serif text-2xl">Neue Aufgabe</DialogTitle>
+                <DialogDescription>
+                  Die Aufgabe wird zuerst auf diesem Gerät gespeichert.
+                </DialogDescription>
+              </DialogHeader>
+              <form
+                className="space-y-4"
+                onSubmit={(event) => {
+                  event.preventDefault()
+                  if (!taskTitle.trim()) return
+                  createTask.mutate({
+                    groupId: groupId!,
+                    title: taskTitle.trim(),
+                    description: taskDescription.trim() || null,
+                    assigneeId: taskAssignee || null,
+                    dueDate: taskDueDate ? new Date(taskDueDate).toISOString() : null
+                  })
+                }}
+              >
+                <div className="space-y-2">
+                  <Label htmlFor="sync-task-title">Titel</Label>
+                  <Input
+                    id="sync-task-title"
+                    value={taskTitle}
+                    onChange={(event) => setTaskTitle(event.target.value)}
+                    required
+                    maxLength={200}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sync-task-description">Beschreibung (optional)</Label>
+                  <Textarea
+                    id="sync-task-description"
+                    value={taskDescription}
+                    onChange={(event) => setTaskDescription(event.target.value)}
+                    maxLength={4000}
+                  />
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="sync-task-assignee">Zuständige Person</Label>
+                    <select
+                      id="sync-task-assignee"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                      value={taskAssignee}
+                      onChange={(event) => setTaskAssignee(event.target.value)}
+                    >
+                      <option value="">Niemandem zuweisen</option>
+                      {members.data?.map((member) => (
+                        <option key={member.userId} value={member.userId}>
+                          {member.displayName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="sync-task-due-date">Fälligkeitsdatum</Label>
+                    <Input
+                      id="sync-task-due-date"
+                      type="datetime-local"
+                      value={taskDueDate}
+                      onChange={(event) => setTaskDueDate(event.target.value)}
+                    />
+                  </div>
+                </div>
+                <Button className="w-full" disabled={createTask.isPending || !taskTitle.trim()}>
+                  {createTask.isPending ? 'Wird gespeichert …' : 'Aufgabe hinzufügen'}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+          <Dialog
+            open={stubFeature !== null}
+            onOpenChange={(open) => {
+              if (!open) setStubFeature(null)
+            }}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="font-serif text-2xl">{stubFeature}</DialogTitle>
+                <DialogDescription>not implemented</DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </div>
