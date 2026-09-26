@@ -1,14 +1,25 @@
 import { useState } from 'react'
 import type { JSX } from 'react'
 import { Link, useLocation, useParams } from 'wouter'
-import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query'
 import { ArrowLeft, Check, Plus, Users, X } from 'lucide-react'
-import type {
-  CollaborationMember,
-  CollaborationState,
-  CollaborationTask
-} from '../../../shared/collaboration/ipc'
-import { collaboration } from '@/collaboration/client'
+import type { CollaborationMember, CollaborationTask } from '../../../shared/collaboration/ipc'
+import {
+  useCollaborationCandidates,
+  useCollaborationGroup,
+  useCollaborationGroups,
+  useCollaborationInvitations,
+  useCollaborationMembers,
+  useCollaborationSignIn,
+  useCollaborationSignOut,
+  useCollaborationState,
+  useCollaborationTasks,
+  useCreateCollaborationGroup,
+  useCreateCollaborationTask,
+  useDeleteCollaborationTask,
+  useRespondCollaborationInvitation,
+  useSendCollaborationInvitation,
+  useUpdateCollaborationTask
+} from '@/api/collaboration'
 import { UploadStatus } from '@/collaboration/upload-status'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -17,26 +28,13 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 
-const refreshInterval = 2_000
-
-function useCollaborationState(): UseQueryResult<CollaborationState> {
-  return useQuery({
-    queryKey: ['collaboration', 'state'],
-    queryFn: () => collaboration('state', {}),
-    refetchInterval: refreshInterval
-  })
-}
-
 function SignIn(): JSX.Element {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const queryClient = useQueryClient()
   const { toast } = useToast()
-  const signIn = useMutation({
-    mutationFn: () => collaboration('signIn', { email, password }),
+  const signIn = useCollaborationSignIn({
     onSuccess: () => {
       setPassword('')
-      void queryClient.invalidateQueries({ queryKey: ['collaboration'] })
     },
     onError: (error) =>
       toast({
@@ -60,7 +58,7 @@ function SignIn(): JSX.Element {
           className="space-y-4"
           onSubmit={(event) => {
             event.preventDefault()
-            signIn.mutate()
+            signIn.mutate({ email, password })
           }}
         >
           <div className="space-y-2">
@@ -96,33 +94,16 @@ function SignIn(): JSX.Element {
 
 export default function GruppenSync(): JSX.Element {
   const state = useCollaborationState()
-  const queryClient = useQueryClient()
   const [, setLocation] = useLocation()
   const { toast } = useToast()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const groups = useQuery({
-    queryKey: ['collaboration', 'groups'],
-    queryFn: () => collaboration('listGroups', {}),
-    enabled: state.data?.signedIn === true,
-    refetchInterval: refreshInterval
-  })
-  const invitations = useQuery({
-    queryKey: ['collaboration', 'invitations'],
-    queryFn: () => collaboration('listInvitations', {}),
-    enabled: state.data?.signedIn === true,
-    refetchInterval: refreshInterval
-  })
-  const create = useMutation({
-    mutationFn: () =>
-      collaboration('createGroup', {
-        name: name.trim(),
-        description: description.trim() || undefined
-      }),
+  const groups = useCollaborationGroups(state.data?.signedIn === true)
+  const invitations = useCollaborationInvitations(state.data?.signedIn === true)
+  const create = useCreateCollaborationGroup({
     onSuccess: (group) => {
       setName('')
       setDescription('')
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'groups'] })
       setLocation(`/gruppen-sync/${group.id}`)
     },
     onError: (error) =>
@@ -132,13 +113,7 @@ export default function GruppenSync(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const respond = useMutation({
-    mutationFn: (input: { invitationId: string; response: 'accepted' | 'declined' }) =>
-      collaboration('respondInvitation', input),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'invitations'] })
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'groups'] })
-    },
+  const respond = useRespondCollaborationInvitation({
     onError: (error) =>
       toast({
         title: 'Einladung konnte nicht beantwortet werden',
@@ -146,13 +121,7 @@ export default function GruppenSync(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const signOut = useMutation({
-    mutationFn: () => collaboration('signOut', {}),
-    onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['collaboration'] })
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'state'] })
-    }
-  })
+  const signOut = useCollaborationSignOut()
 
   return (
     <div className="space-y-7 pb-10">
@@ -165,7 +134,7 @@ export default function GruppenSync(): JSX.Element {
           {state.data?.signedIn && <UploadStatus state={state.data} />}
         </div>
         {state.data?.signedIn && (
-          <Button variant="outline" onClick={() => signOut.mutate()} disabled={signOut.isPending}>
+          <Button variant="outline" onClick={() => signOut.mutate({})} disabled={signOut.isPending}>
             Online-Konto wechseln
           </Button>
         )}
@@ -194,7 +163,10 @@ export default function GruppenSync(): JSX.Element {
                 className="space-y-3"
                 onSubmit={(event) => {
                   event.preventDefault()
-                  create.mutate()
+                  create.mutate({
+                    name: name.trim(),
+                    description: description.trim() || undefined
+                  })
                 }}
               >
                 <Input
@@ -345,7 +317,6 @@ function TaskItem({
 export function GruppenSyncDetail(): JSX.Element {
   const { id: groupId } = useParams<{ id: string }>()
   const [, setLocation] = useLocation()
-  const queryClient = useQueryClient()
   const { toast } = useToast()
   const state = useCollaborationState()
   const [search, setSearch] = useState('')
@@ -354,34 +325,15 @@ export function GruppenSyncDetail(): JSX.Element {
   const [taskAssignee, setTaskAssignee] = useState('')
   const [taskDueDate, setTaskDueDate] = useState('')
   const enabled = state.data?.signedIn === true && Boolean(groupId)
-  const group = useQuery({
-    queryKey: ['collaboration', 'group', groupId],
-    queryFn: () => collaboration('getGroup', { groupId: groupId! }),
-    enabled,
-    refetchInterval: refreshInterval,
-    retry: false
-  })
-  const members = useQuery({
-    queryKey: ['collaboration', 'members', groupId],
-    queryFn: () => collaboration('listMembers', { groupId: groupId! }),
-    enabled: enabled && group.isSuccess,
-    refetchInterval: refreshInterval
-  })
-  const tasks = useQuery({
-    queryKey: ['collaboration', 'tasks', groupId],
-    queryFn: () => collaboration('listTasks', { groupId: groupId! }),
-    enabled: enabled && group.isSuccess,
-    refetchInterval: refreshInterval
-  })
-  const candidates = useQuery({
-    queryKey: ['collaboration', 'candidates', groupId, search],
-    queryFn: () => collaboration('searchCandidates', { groupId: groupId!, query: search.trim() }),
-    enabled: enabled && group.data?.myRole === 'owner' && search.trim().length >= 2,
-    retry: false
-  })
-  const invite = useMutation({
-    mutationFn: (inviteeId: string) =>
-      collaboration('sendInvitation', { groupId: groupId!, inviteeId }),
+  const group = useCollaborationGroup(groupId, enabled)
+  const members = useCollaborationMembers(groupId, enabled && group.isSuccess)
+  const tasks = useCollaborationTasks(groupId, enabled && group.isSuccess)
+  const candidates = useCollaborationCandidates(
+    groupId,
+    search,
+    enabled && group.data?.myRole === 'owner'
+  )
+  const invite = useSendCollaborationInvitation({
     onSuccess: () => {
       setSearch('')
       toast({ title: 'Einladung gesendet' })
@@ -393,21 +345,12 @@ export function GruppenSyncDetail(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const createTask = useMutation({
-    mutationFn: () =>
-      collaboration('createTask', {
-        groupId: groupId!,
-        title: taskTitle.trim(),
-        description: taskDescription.trim() || null,
-        assigneeId: taskAssignee || null,
-        dueDate: taskDueDate ? new Date(taskDueDate).toISOString() : null
-      }),
+  const createTask = useCreateCollaborationTask({
     onSuccess: () => {
       setTaskTitle('')
       setTaskDescription('')
       setTaskAssignee('')
       setTaskDueDate('')
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'tasks', groupId] })
       toast({ title: 'Aufgabe lokal gespeichert' })
     },
     onError: (error) =>
@@ -417,15 +360,7 @@ export function GruppenSyncDetail(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const updateTask = useMutation({
-    mutationFn: (task: CollaborationTask) =>
-      collaboration('updateTask', {
-        groupId: groupId!,
-        taskId: task.id,
-        status: task.status === 'done' ? 'open' : 'done'
-      }),
-    onSuccess: () =>
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'tasks', groupId] }),
+  const updateTask = useUpdateCollaborationTask({
     onError: (error) =>
       toast({
         title: 'Aufgabe konnte nicht geändert werden',
@@ -433,10 +368,7 @@ export function GruppenSyncDetail(): JSX.Element {
         variant: 'destructive'
       })
   })
-  const deleteTask = useMutation({
-    mutationFn: (taskId: string) => collaboration('deleteTask', { groupId: groupId!, taskId }),
-    onSuccess: () =>
-      void queryClient.invalidateQueries({ queryKey: ['collaboration', 'tasks', groupId] }),
+  const deleteTask = useDeleteCollaborationTask({
     onError: (error) =>
       toast({
         title: 'Aufgabe konnte nicht gelöscht werden',
@@ -490,7 +422,13 @@ export function GruppenSyncDetail(): JSX.Element {
                   className="space-y-3 rounded-lg border p-4"
                   onSubmit={(event) => {
                     event.preventDefault()
-                    createTask.mutate()
+                    createTask.mutate({
+                      groupId: groupId!,
+                      title: taskTitle.trim(),
+                      description: taskDescription.trim() || null,
+                      assigneeId: taskAssignee || null,
+                      dueDate: taskDueDate ? new Date(taskDueDate).toISOString() : null
+                    })
                   }}
                 >
                   <Input
@@ -541,8 +479,14 @@ export function GruppenSyncDetail(): JSX.Element {
                     key={task.id}
                     task={task}
                     members={members.data ?? []}
-                    onToggle={() => updateTask.mutate(task)}
-                    onDelete={() => deleteTask.mutate(task.id)}
+                    onToggle={() =>
+                      updateTask.mutate({
+                        groupId: groupId!,
+                        taskId: task.id,
+                        status: task.status === 'done' ? 'open' : 'done'
+                      })
+                    }
+                    onDelete={() => deleteTask.mutate({ groupId: groupId!, taskId: task.id })}
                   />
                 ))}
               </CardContent>
@@ -591,7 +535,9 @@ export function GruppenSyncDetail(): JSX.Element {
                         <Button
                           size="sm"
                           disabled={invite.isPending}
-                          onClick={() => invite.mutate(candidate.id)}
+                          onClick={() =>
+                            invite.mutate({ groupId: groupId!, inviteeId: candidate.id })
+                          }
                         >
                           Einladen
                         </Button>
