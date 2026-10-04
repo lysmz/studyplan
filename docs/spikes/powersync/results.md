@@ -9,17 +9,17 @@
 
 ## Result table
 
-| Check                          | Status                                  | Evidence                                                       |
-| ------------------------------ | --------------------------------------- | -------------------------------------------------------------- |
-| Native SQLite loads in Node    | Passed                                  | `better-sqlite3` in-memory query returned `{ ok: 1 }`          |
-| Offline write survives restart | Passed                                  | Electron check retained the same task ID                       |
-| Upload queue survives restart  | Passed                                  | Queue count remained 1 before and after restart                |
-| Client schema v1 to v2         | Passed                                  | Existing row read as `priority = null`, then updated to `high` |
-| Typecheck                      | Passed                                  | `npm run typecheck`                                            |
-| Production bundle              | Passed                                  | `electron-vite build` during `npm run powersync:test`          |
-| Unpacked Electron package      | Passed                                  | Packaged EXE returned a passing JSON report                    |
-| Two-device cloud convergence   | Passed                                  | Alice B received Alice A's uploaded row and `priority = high`  |
-| Cross-user isolation           | Passed                                  | Bob received zero rows; forbidden insert/update had no effect  |
+| Check                          | Status | Evidence                                                       |
+| ------------------------------ | ------ | -------------------------------------------------------------- |
+| Native SQLite loads in Node    | Passed | `better-sqlite3` in-memory query returned `{ ok: 1 }`          |
+| Offline write survives restart | Passed | Electron check retained the same task ID                       |
+| Upload queue survives restart  | Passed | Queue count remained 1 before and after restart                |
+| Client schema v1 to v2         | Passed | Existing row read as `priority = null`, then updated to `high` |
+| Typecheck                      | Passed | `npm run typecheck`                                            |
+| Production bundle              | Passed | `electron-vite build` during `npm run powersync:test`          |
+| Unpacked Electron package      | Passed | Packaged EXE returned a passing JSON report                    |
+| Two-device cloud convergence   | Passed | Alice B received Alice A's uploaded row and `priority = high`  |
+| Cross-user isolation           | Passed | Bob received zero rows; forbidden insert/update had no effect  |
 
 ## Findings
 

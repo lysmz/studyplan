@@ -61,6 +61,8 @@ import type {
   OperationGetTimetablePresetEntriesOutput,
   OperationListStudyProgramsInput,
   OperationListStudyProgramsOutput,
+  OperationRefreshStudyCatalogInput,
+  OperationRefreshStudyCatalogOutput,
   OperationListStudyProgramCoursesInput,
   OperationListStudyProgramCoursesOutput,
   OperationListGroupsInput,
@@ -187,6 +189,9 @@ export interface ApiClient {
     listStudyPrograms(
       input?: OperationListStudyProgramsInput
     ): Promise<OperationListStudyProgramsOutput>
+    refreshStudyCatalog(
+      input?: OperationRefreshStudyCatalogInput
+    ): Promise<OperationRefreshStudyCatalogOutput>
     listStudyProgramCourses(
       input: OperationListStudyProgramCoursesInput
     ): Promise<OperationListStudyProgramCoursesOutput>
@@ -310,6 +315,8 @@ export function createApiClient(transport: ApiTransport): ApiClient {
     studyPrograms: {
       listStudyPrograms: (input = {}) =>
         invoke('listStudyPrograms', input as OperationListStudyProgramsInput),
+      refreshStudyCatalog: (input = {}) =>
+        invoke('refreshStudyCatalog', input as OperationRefreshStudyCatalogInput),
       listStudyProgramCourses: (input) =>
         invoke('listStudyProgramCourses', input as OperationListStudyProgramCoursesInput)
     },

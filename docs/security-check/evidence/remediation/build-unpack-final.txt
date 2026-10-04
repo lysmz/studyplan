@@ -1,0 +1,69 @@
+
+> studyplan@2.0.0 build:unpack
+> npm run build && electron-builder --dir --win --x64 --publish never
+
+
+> studyplan@2.0.0 build
+> npm run api:check && npm run typecheck && electron-vite build
+
+
+> studyplan@2.0.0 api:check
+> tsx scripts/openapi-ipc/generate.ts --check
+
+Generated API files are current.
+
+> studyplan@2.0.0 typecheck
+> npm run typecheck:node && npm run typecheck:web
+
+
+> studyplan@2.0.0 typecheck:node
+> tsc --noEmit -p tsconfig.node.json --composite false
+
+
+> studyplan@2.0.0 typecheck:web
+> tsc --noEmit -p tsconfig.web.json --composite false
+
+vite v7.3.6 building ssr environment for production...
+transforming...
+✓ 99 modules transformed.
+rendering chunks...
+out/main/powersync.worker-C3S61gVm.js    1.17 kB
+out/main/index.js                      267.40 kB
+✓ built in 434ms
+vite v7.3.6 building ssr environment for production...
+transforming...
+✓ 3 modules transformed.
+rendering chunks...
+out/preload/index.js  0.73 kB
+✓ built in 16ms
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 3399 modules transformed.
+rendering chunks...
+../../out/renderer/index.html                     0.76 kB
+../../out/renderer/assets/index-C7rpJJAo.css    146.94 kB
+../../out/renderer/assets/index-1Dd27aXk.js   2,727.79 kB
+✓ built in 9.68s
+  • electron-builder  version=26.15.3 os=10.0.26200
+  • loaded configuration  file=C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\electron-builder.yml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=win32 arch=x64 electron=44.5.1 appOutDir=dist\win-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked
+  • searching for node modules  pm=npm searchDir=C:\Users\Joshua\Desktop\Desktop App prototype\studyplan
+  • duplicate dependency references  dependencies=["debug@4.4.3","electron@44.5.1","better-sqlite3@13.0.3","@libsql/client@0.18.0","better-sqlite3@13.0.3"]
+  • updating asar integrity executable resource  executablePath=dist\win-unpacked\studyplan.exe
+  • executing @electron/fuses  electronPath=dist\win-unpacked\studyplan.exe
+  • signing with signtool.exe  path=dist\win-unpacked\studyplan.exe

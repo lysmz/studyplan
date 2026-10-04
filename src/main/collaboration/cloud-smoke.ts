@@ -1,5 +1,6 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
+import { runCloudUploadChecks } from './cloud-upload-smoke'
 import type { PowerSyncDatabase } from '@powersync/node'
 import {
   SupabaseCollaborationConnector,
@@ -111,7 +112,7 @@ export async function runElectronCollaborationCloudChecks(
   const checks: CollaborationCloudCheck[] = []
   const connections: CollaborationConnection[] = []
   const databases: CollaborationDatabase[] = []
-  let createdGroupId: string | undefined
+  const createdGroupIds: string[] = []
 
   try {
     const [alice, bob] = await Promise.all([
@@ -152,7 +153,7 @@ export async function runElectronCollaborationCloudChecks(
       `Cloud collaboration probe ${crypto.randomUUID().slice(0, 8)}`,
       'Disposable cloud check group'
     )
-    createdGroupId = group.id
+    createdGroupIds.push(group.id)
     await waitUntil('Alice to receive the created group', async () => {
       return (await aliceGroups.findByIdForUser(group.id, aliceId))?.myRole === 'owner'
     })
@@ -270,10 +271,27 @@ export async function runElectronCollaborationCloudChecks(
       evidence: { taskId: task.id, actorId: aliceId, serverAcceptedAt: acceptedTask.updated_at }
     })
 
+    checks.push(
+      ...(await runCloudUploadChecks(
+        config.alice,
+        alice,
+        bob,
+        aliceDatabase,
+        bobDatabase,
+        group.id,
+        task.id,
+        (id) => createdGroupIds.push(id)
+      ))
+    )
+    checks.push({
+      name: 'disposable cloud fixtures',
+      status: 'pass',
+      evidence: { cleanupGroupIds: createdGroupIds }
+    })
     return checks
   } catch (error) {
-    if (createdGroupId && error instanceof Error) {
-      error.message = `${error.message} Test group requiring cleanup: ${createdGroupId}.`
+    if (createdGroupIds.length && error instanceof Error) {
+      error.message = `${error.message} Test groups requiring cleanup: ${createdGroupIds.join(', ')}.`
     }
     throw error
   } finally {

@@ -1,0 +1,46 @@
+
+> studyplan@2.0.0 start
+> electron-vite preview
+
+vite v7.3.6 building ssr environment for production...
+transforming...
+✓ 94 modules transformed.
+rendering chunks...
+out/main/powersync.worker-C3S61gVm.js    1.17 kB
+out/main/index.js                      263.88 kB
+✓ built in 418ms
+vite v7.3.6 building ssr environment for production...
+transforming...
+✓ 3 modules transformed.
+rendering chunks...
+out/preload/index.js  0.73 kB
+✓ built in 20ms
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 3399 modules transformed.
+rendering chunks...
+../../out/renderer/index.html                     0.76 kB
+../../out/renderer/assets/index-C7rpJJAo.css    146.94 kB
+../../out/renderer/assets/index-COBo6ek7.js   2,725.06 kB
+✓ built in 10.59s
+
+starting electron app...
+
+
+[DB] Ready at: C:\Users\Joshua\AppData\Roaming\studyplan\data\studyplan-dev.db
+[9028:1003/182534.108:ERROR:CONSOLE:1] "Request Autofill.enable failed. {"code":-32601,"message":"'Autofill.enable' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+[9028:1003/182534.108:ERROR:CONSOLE:1] "Request Autofill.setAddresses failed. {"code":-32601,"message":"'Autofill.setAddresses' wasn't found"}", source: devtools://devtools/bundled/core/protocol_client/protocol_client.js (1)
+
+Exitcode: 0

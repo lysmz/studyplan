@@ -158,10 +158,21 @@ than a Zod output validation step.
 
 ## 7. Renderer hooks and refresh behavior
 
-All sync screen hooks currently live in
-[`src/renderer/src/pages/gruppen-sync.tsx`](../src/renderer/src/pages/gruppen-sync.tsx). They are
-ordinary TanStack React Query hooks around `collaboration()`; there is no PowerSync SDK instance or
-direct Supabase client in the renderer.
+The sync screen's query and mutation hooks live in
+[`src/renderer/src/api/collaboration.ts`](../src/renderer/src/api/collaboration.ts). They own polling,
+IPC calls, and cache updates. The
+[`page`](../src/renderer/src/pages/gruppen-sync.tsx) keeps form state, sign-in gating, navigation, and
+toast messages. These are ordinary TanStack React Query hooks around `collaboration()`; there is no
+PowerSync SDK instance or direct Supabase client in the renderer. This handwritten module is separate
+from the generated local API exports in `api/index.ts`.
+
+The overview uses the local groups page's card grid and create-group dialog. The detail page uses
+its coloured header and the same tab order: Termine, Aufgaben, Notizen, Mitglieder. Aufgaben opens
+by default; task creation, completion/reopening, deletion, member display, and owner invitations
+retain their collaboration hooks. Termine and Notizen display `not implemented`. Group editing,
+group deletion/leaving, task editing, and member removal also open a `not implemented` dialog without
+calling a mutation. Sign-in remains a gate before the overview's groups. Account switching and the
+account-wide upload status, including preserved rejected drafts, remain outside the detail tabs.
 
 - `useCollaborationState()` calls `state` every **2 seconds** to show configuration, sign-in, and
   connection status.

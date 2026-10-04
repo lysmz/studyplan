@@ -1,12 +1,14 @@
-import { app, shell, BrowserWindow, dialog } from 'electron'
+import { app, protocol, BrowserWindow, dialog } from 'electron'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'path'
-import { pathToFileURL } from 'url'
+import { createBundleHandler } from './security/app-protocol'
+import { APP_RENDERER_URL, createRendererUrlPolicy } from './security/renderer-url'
 import { config as loadDotenv } from 'dotenv'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { closeDatabase, initDatabase, type AppDatabase } from './db'
 import { SessionService } from './auth/session.service'
+import { runUploadCrashChild } from './collaboration/upload-smoke'
 import { ActivityLogRepository } from './repositories/activity-log.repository'
 import { EventsRepository } from './repositories/events.repository'
 import { GradesRepository } from './repositories/grades.repository'
@@ -64,6 +66,9 @@ import {
 } from './collaboration'
 
 const senderPolicy = createWindowSenderPolicy()
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true } }
+])
 let powerSyncSpike: PowerSyncSpikeRuntime | undefined
 let collaborationRuntime: CollaborationRuntime | undefined
 
@@ -72,14 +77,6 @@ async function writePowerSyncSpikeReport(report: unknown): Promise<void> {
   const reportPath = argument?.slice('--powersync-spike-report='.length)
   if (!reportPath) return
   await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
-}
-
-function isSafeExternalUrl(value: string): boolean {
-  try {
-    return new URL(value).protocol === 'https:'
-  } catch {
-    return false
-  }
 }
 
 function createWindow(): void {
@@ -98,22 +95,9 @@ function createWindow(): void {
     }
   })
 
-  const rendererUrl =
-    is.dev && process.env['ELECTRON_RENDERER_URL']
-      ? process.env['ELECTRON_RENDERER_URL']
-      : pathToFileURL(join(__dirname, '../renderer/index.html')).href
-  const expectedRendererUrl = new URL(rendererUrl)
-  const isRendererUrlAllowed = (value: string): boolean => {
-    try {
-      const candidate = new URL(value)
-      if (expectedRendererUrl.protocol === 'file:') {
-        return candidate.protocol === 'file:' && candidate.pathname === expectedRendererUrl.pathname
-      }
-      return candidate.origin === expectedRendererUrl.origin
-    } catch {
-      return false
-    }
-  }
+  const devUrl = is.dev ? process.env['ELECTRON_RENDERER_URL'] : undefined
+  const rendererUrl = devUrl || APP_RENDERER_URL
+  const isRendererUrlAllowed = createRendererUrlPolicy(devUrl)
 
   const isPermissionAllowed = (
     webContents: Electron.WebContents | null,
@@ -141,10 +125,7 @@ function createWindow(): void {
     mainWindow.show()
   })
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    if (isSafeExternalUrl(details.url)) void shell.openExternal(details.url)
-    return { action: 'deny' }
-  })
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
@@ -155,6 +136,19 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  protocol.handle('app', createBundleHandler(join(__dirname, '../renderer')))
+  const crashArgument = process.argv.find((value) => value.startsWith('--powersync-upload-crash='))
+  if (crashArgument) {
+    try {
+      await runUploadCrashChild(
+        crashArgument.slice('--powersync-upload-crash='.length),
+        app.getPath('temp')
+      )
+    } catch {
+      app.exit(1)
+    }
+    return
+  }
   if (process.argv.includes('--powersync-groups-cloud-test')) {
     try {
       loadDotenv({ path: join(process.cwd(), '.env.powersync-groups.local'), quiet: true })

@@ -3,6 +3,7 @@
 An Electron application with React and TypeScript
 
 See the [architecture diagrams](docs/architecture.md) for the component layout and request/data flow.
+See the [public sample study catalog](docs/study-catalog.md) for the JSON download and import example.
 
 ## Recommended IDE Setup
 

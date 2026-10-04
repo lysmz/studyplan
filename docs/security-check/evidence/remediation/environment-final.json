@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-04",
+  "node": "24.18.1",
+  "platform": "win32",
+  "arch": "x64",
+  "electron": "44.5.1",
+  "builder": "26.15.3",
+  "electronVite": "5.0.0",
+  "betterSqlite3": "13.0.3",
+  "powerSync": "1.1.1",
+  "resolver": "5.9.1",
+  "reactHookForm": "7.88.0",
+  "zod": "4.6.5"
+}

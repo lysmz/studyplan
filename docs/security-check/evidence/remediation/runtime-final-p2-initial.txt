@@ -1,0 +1,134 @@
+Window: "Studienplaner", App: studyplan.exe.
+	0 window Studienplaner Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Studienplaner
+			3 region
+				4 region
+					5 region
+						6 region
+							7 region
+								8 region
+									9 document Studienplaner Value: app://bundle/index.html#/gruppen-sync/059637d3-ada0-4e04-80fc-49d76731fa62 ID: RootWebArea
+										77 group
+											10 group ID: root
+												209 text Studienplaner
+												210 list
+													211 list item Cockpit
+														212 link Cockpit Value: app://bundle/index.html#/
+													213 list item Kalender
+														214 link Kalender Value: app://bundle/index.html#/kalender
+													215 list item Stundenplan
+														216 link Stundenplan Value: app://bundle/index.html#/stundenplan
+													217 list item Noten & ECTS
+														218 link Noten & ECTS Value: app://bundle/index.html#/noten
+													219 list item Studium
+														220 link Studium Value: app://bundle/index.html#/studie
+													221 list item Gruppen
+														222 link Gruppen Value: app://bundle/index.html#/gruppen
+													223 list item Gruppen (Sync)
+														224 link Gruppen (Sync) Value: app://bundle/index.html#/gruppen-sync
+												225 text SU
+												226 text surveyy
+												227 text @
+												228 text surveyy.josh@gmai.com
+												229 button Abmelden
+												48 main
+													230 section header
+														231 button Toggle Sidebar
+														232 heading Semester im Blick
+													233 button Gruppenübersicht
+													234 button Online-Konto wechseln
+													235 text 2 MITGLIEDER
+													236 text ·
+													237 text EIGENTÜMER
+													238 heading Neue Gruppe
+													239 text beschreibung
+													240 button Einladen
+													241 button Bearbeiten
+													242 text ÜBERTRAGUNGSSTATUS · ALLE GRUPPEN
+													108 region Übertragungsstatus
+														109 text Verbunden · keine ausstehenden Übertragungen
+													243 tab
+														244 tab item (selectable) Termine ID: radix-_r_c_-trigger-termine
+														245 tab item (selectable) Aufgaben ID: radix-_r_c_-trigger-aufgaben
+														246 tab item (selectable) Notizen ID: radix-_r_c_-trigger-notizen
+														247 tab item (selectable) Mitglieder ID: radix-_r_c_-trigger-mitglieder
+													248 tab panel Aufgaben ID: radix-_r_c_-content-aufgaben
+														249 text Aufgaben
+														250 text Haltet fest, was als Nächstes ansteht.
+														251 button Aufgabe
+														252 checkbox (settable, string) Aufgabe abc erledigen
+														253 text abc
+														254 text josh ·
+														255 text Ohne Termin
+														256 button Aufgabe abc bearbeiten
+														257 button Aufgabe abc löschen
+														258 checkbox (settable, string) Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> erledigen
+														259 text <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg>
+														260 text Ohne Termin
+														261 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> bearbeiten
+														262 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> löschen
+														263 checkbox (settable, string) Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> erledigen
+														264 text <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg>
+														265 text Ohne Termin
+														266 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> bearbeiten
+														267 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> löschen
+													268 text Gruppe verwalten
+													269 text Einstellungen für euren gemeinsamen Studienraum.
+													270 button Gruppe löschen
+												271 region Notifications (F8)
+													273 list
+								26 region
+
+Document text: ```
+￼
+Studienplaner
+Cockpit
+Kalender
+Stundenplan
+Noten & ECTS
+Studium
+Gruppen
+Gruppen (Sync)
+SU
+surveyy
+@surveyy.josh@gmai.com
+Abmelden
+Toggle Sidebar
+Semester im Blick
+Gruppenübersicht
+Online-Konto wechseln
+2 MITGLIEDER · EIGENTÜMER
+Neue Gruppe
+beschreibung
+Einladen
+Bearbeiten
+ÜBERTRAGUNGSSTATUS · ALLE GRUPPEN
+Verbunden · keine ausstehenden Übertragungen
+Termine
+Aufgaben
+Notizen
+Mitglieder
+Aufgaben
+Haltet fest, was als Nächstes ansteht.
+Aufgabe
+Aufgabe abc erledigen
+abc
+josh · Ohne Termin
+Aufgabe abc bearbeiten
+Aufgabe abc löschen
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> erledigen
+<svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg>
+Ohne Termin
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> bearbeiten
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> löschen
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> erledigen
+<svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg>
+Ohne Termin
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> bearbeiten
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2-2026-10-04</svg> löschen
+Gruppe verwalten
+Einstellungen für euren gemeinsamen Studienraum.
+Gruppe löschen
+￼
+```

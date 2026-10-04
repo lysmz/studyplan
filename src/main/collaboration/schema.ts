@@ -89,17 +89,38 @@ export const collaborationTasksTable = sqliteTable(
   ]
 )
 
+export const collaborationUploadFailuresTable = sqliteTable(
+  'collaboration_upload_failures',
+  {
+    id: text('id').primaryKey().notNull(),
+    userId: text('user_id').notNull(),
+    taskId: text('task_id').notNull(),
+    detectedAt: text('detected_at').notNull(),
+    record: text('record').notNull()
+  },
+  (table) => [index('collaboration_upload_failures_task_idx').on(table.userId, table.taskId)]
+)
+
 export const powerSyncCollaborationSchemaDefinition = {
   collaborationProfilesTable,
   collaborationGroupsTable,
   collaborationGroupMembersTable,
   collaborationInvitationsTable,
-  collaborationTasksTable
+  collaborationTasksTable,
+  collaborationUploadFailuresTable
 }
 
-export const powerSyncCollaborationSchema = new DrizzleAppSchema(
-  powerSyncCollaborationSchemaDefinition
-)
+export const powerSyncCollaborationSchema = new DrizzleAppSchema({
+  ...powerSyncCollaborationSchemaDefinition,
+  collaborationTasksTable: {
+    tableDefinition: collaborationTasksTable,
+    options: { trackPrevious: true }
+  },
+  collaborationUploadFailuresTable: {
+    tableDefinition: collaborationUploadFailuresTable,
+    options: { localOnly: true }
+  }
+})
 
 export type CollaborationProfileRow = typeof collaborationProfilesTable.$inferSelect
 export type CollaborationGroupRow = typeof collaborationGroupsTable.$inferSelect

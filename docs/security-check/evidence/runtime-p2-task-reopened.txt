@@ -1,0 +1,124 @@
+Window: "Studienplaner", App: electron.exe.
+	0 window Studienplaner Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Studienplaner
+			3 region
+				4 region
+					5 region
+						6 region
+							7 region
+								8 region
+									10 document Studienplaner Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/gruppen-sync/059637d3-ada0-4e04-80fc-49d76731fa62 ID: RootWebArea
+										83 group
+											11 group ID: root
+												254 text Studienplaner
+												255 list
+													256 list item Cockpit
+														257 link Cockpit Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/
+													258 list item Kalender
+														259 link Kalender Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/kalender
+													260 list item Stundenplan
+														261 link Stundenplan Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/stundenplan
+													262 list item Noten & ECTS
+														263 link Noten & ECTS Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/noten
+													264 list item Studium
+														265 link Studium Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/studie
+													266 list item Gruppen
+														267 link Gruppen Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/gruppen
+													268 list item Gruppen (Sync)
+														269 link Gruppen (Sync) Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/gruppen-sync
+												270 text TE
+												271 text test
+												272 text @
+												273 text test.1
+												274 button Abmelden
+												48 main
+													275 section header
+														276 button Toggle Sidebar
+														277 heading Semester im Blick
+													278 button Gruppenübersicht
+													279 button Online-Konto wechseln
+													280 text 2 MITGLIEDER
+													281 text ·
+													282 text EIGENTÜMER
+													283 heading Neue Gruppe
+													284 text beschreibung
+													285 button Einladen
+													286 button Bearbeiten
+													287 text ÜBERTRAGUNGSSTATUS · ALLE GRUPPEN
+													200 region Übertragungsstatus
+														201 text Verbunden · keine ausstehenden Übertragungen
+													288 tab
+														289 tab item (selectable) Termine ID: radix-_r_c_-trigger-termine
+														290 tab item (selectable) Aufgaben ID: radix-_r_c_-trigger-aufgaben
+														291 tab item (selectable) Notizen ID: radix-_r_c_-trigger-notizen
+														292 tab item (selectable) Mitglieder ID: radix-_r_c_-trigger-mitglieder
+													322 tab panel Aufgaben ID: radix-_r_c_-content-aufgaben
+														323 text Aufgaben
+														324 text Haltet fest, was als Nächstes ansteht.
+														325 button Aufgabe
+														326 checkbox (settable, string) Aufgabe abc erledigen
+														327 text abc
+														328 text josh ·
+														329 text Ohne Termin
+														330 button Aufgabe abc bearbeiten
+														331 button Aufgabe abc löschen
+														332 checkbox (settable, string) Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> erledigen
+														333 text <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg>
+														334 text Ohne Termin
+														335 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> bearbeiten
+														336 button Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> löschen
+													308 text Gruppe verwalten
+													309 text Einstellungen für euren gemeinsamen Studienraum.
+													310 button Gruppe löschen
+												311 region Notifications (F8)
+													313 list
+								9 region
+
+Document text: ```
+￼
+Studienplaner
+Cockpit
+Kalender
+Stundenplan
+Noten & ECTS
+Studium
+Gruppen
+Gruppen (Sync)
+TE
+test
+@test.1
+Abmelden
+Toggle Sidebar
+Semester im Blick
+Gruppenübersicht
+Online-Konto wechseln
+2 MITGLIEDER · EIGENTÜMER
+Neue Gruppe
+beschreibung
+Einladen
+Bearbeiten
+ÜBERTRAGUNGSSTATUS · ALLE GRUPPEN
+Verbunden · keine ausstehenden Übertragungen
+Termine
+Aufgaben
+Notizen
+Mitglieder
+Aufgaben
+Haltet fest, was als Nächstes ansteht.
+Aufgabe
+Aufgabe abc erledigen
+abc
+josh · Ohne Termin
+Aufgabe abc bearbeiten
+Aufgabe abc löschen
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> erledigen
+<svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg>
+Ohne Termin
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> bearbeiten
+Aufgabe <svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg> löschen
+Gruppe verwalten
+Einstellungen für euren gemeinsamen Studienraum.
+Gruppe löschen
+￼
+```

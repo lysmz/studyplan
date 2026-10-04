@@ -110,7 +110,7 @@ export function registerCollaborationIpc(
       let data: unknown
       switch (candidate.operation) {
         case 'state':
-          data = runtime.state()
+          data = await runtime.state()
           break
         case 'signIn': {
           const values = inputSchemas.signIn.parse(input)

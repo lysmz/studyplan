@@ -5,6 +5,27 @@ export interface CollaborationState {
   signedIn: boolean
   userId: string | null
   connected: boolean
+  pendingUploads: number
+  rejectedUploads: number
+  uploadError: string | null
+  uploadFailures: CollaborationUploadFailure[]
+}
+
+export interface CollaborationUploadFailure {
+  operationId: string
+  userId: string
+  taskId: string
+  groupId: string | null
+  operation: 'PUT' | 'PATCH' | 'DELETE'
+  changes: Record<string, unknown>
+  snapshot: Record<string, unknown> | null
+  reason:
+    | 'MISSING_OR_INACCESSIBLE'
+    | 'INVALID_TASK'
+    | 'TASK_CONFLICT'
+    | 'OPERATION_CONFLICT'
+    | 'DEPENDENCY_REJECTED'
+  detectedAt: string
 }
 
 export interface CollaborationGroup {

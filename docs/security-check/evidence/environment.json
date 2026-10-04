@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-03",
+  "timezone": "Europe/Berlin",
+  "commit": "14e92697e983dee2d9d730b5622395e269391901",
+  "node": "v24.18.1",
+  "npm": "11.16.0",
+  "os": "Windows_NT",
+  "release": "10.0.26200",
+  "arch": "x64",
+  "lockElectron": "39.8.10",
+  "installedElectron": "39.8.10",
+  "binary": "node_modules/electron/dist/electron.exe",
+  "binarySha256": "9ba4530b08adeae75c13324a95b0fc8e87c5aa2889cfdc894474f8684b9f6c59"
+}

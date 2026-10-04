@@ -1,11 +1,7 @@
 import { join } from 'node:path'
 import { net } from 'electron'
 import type { CollaborationInvitation, CollaborationState } from '../../shared/collaboration/ipc'
-import {
-  SupabaseCollaborationConnector,
-  type CollaborationConnection,
-  type CollaborationRemoteConfig
-} from './connector'
+import { SupabaseCollaborationConnector, type CollaborationConnection } from './connector'
 import { openCollaborationDatabase, type CollaborationDatabase } from './database'
 import { SupabaseCollaborationGateway } from './online-gateway'
 import {
@@ -20,6 +16,8 @@ import {
 } from './repositories'
 import type { InvitableProfile } from './online-gateway'
 import type { CollaborationTaskRow } from './schema'
+import { LocalUploadFailureStore } from './upload-failures'
+import { isRemoteConfigured, readRemoteConfig } from './remote-config'
 
 export class CollaborationSessionRequiredError extends Error {
   constructor() {
@@ -46,22 +44,6 @@ interface ActiveCollaborationSession {
   tasks: CollaborationTasksRepository
 }
 
-function readRemoteConfig(
-  email: string,
-  password: string,
-  environment: NodeJS.ProcessEnv
-): CollaborationRemoteConfig {
-  const powerSyncEndpoint = environment.POWERSYNC_SPIKE_ENDPOINT?.trim()
-  const supabaseUrl = environment.SUPABASE_URL?.trim()
-  const supabasePublishableKey = (
-    environment.SUPABASE_PUBLISHABLE_KEY ?? environment.SUPABASE_ANON_KEY
-  )?.trim()
-  if (!powerSyncEndpoint || !supabaseUrl || !supabasePublishableKey) {
-    throw new Error('Configure PowerSync and Supabase before using synchronized groups.')
-  }
-  return { powerSyncEndpoint, supabaseUrl, supabasePublishableKey, email, password }
-}
-
 export class CollaborationRuntime {
   private active: ActiveCollaborationSession | null = null
 
@@ -70,17 +52,26 @@ export class CollaborationRuntime {
     private readonly environment: NodeJS.ProcessEnv = process.env
   ) {}
 
-  state(): CollaborationState {
-    const configured = Boolean(
-      this.environment.POWERSYNC_SPIKE_ENDPOINT?.trim() &&
-      this.environment.SUPABASE_URL?.trim() &&
-      (this.environment.SUPABASE_PUBLISHABLE_KEY ?? this.environment.SUPABASE_ANON_KEY)?.trim()
-    )
+  async state(): Promise<CollaborationState> {
+    const configured = isRemoteConfigured(this.environment)
+    const active = this.active
+    const uploadFailures = active
+      ? await new LocalUploadFailureStore(active.database.powerSync, active.userId).list()
+      : []
+    const pendingUploads = active
+      ? (await active.database.powerSync.getUploadQueueStats()).count
+      : 0
     return {
       configured,
-      signedIn: this.active !== null,
-      userId: this.active?.userId ?? null,
-      connected: this.active?.database.powerSync.currentStatus.connected ?? false
+      signedIn: active !== null,
+      userId: active?.userId ?? null,
+      connected: active?.database.powerSync.currentStatus.connected ?? false,
+      pendingUploads,
+      rejectedUploads: uploadFailures.length,
+      uploadError: active?.database.powerSync.currentStatus.uploadError
+        ? 'Aufgaben konnten noch nicht übertragen werden. Sie bleiben lokal gespeichert.'
+        : null,
+      uploadFailures
     }
   }
 

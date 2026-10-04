@@ -1218,6 +1218,55 @@ export function useListStudyPrograms<
   return withQueryKey(query, queryOptions.queryKey)
 }
 
+export type RefreshStudyCatalogMutationVariables = void
+export type RefreshStudyCatalogMutationResult = ApiOutput<'refreshStudyCatalog'>
+
+export type RefreshStudyCatalogMutationError = ApiOperationError<'refreshStudyCatalog'>
+export type RefreshStudyCatalogMutationHookOptions<TError, TContext> = {
+  mutation?: UseMutationOptions<
+    ApiOutput<'refreshStudyCatalog'>,
+    TError,
+    RefreshStudyCatalogMutationVariables,
+    TContext
+  >
+}
+
+export const getRefreshStudyCatalogMutationOptions = <
+  TError = RefreshStudyCatalogMutationError,
+  TContext = unknown
+>(
+  options?: RefreshStudyCatalogMutationHookOptions<TError, TContext>
+): UseMutationOptions<
+  ApiOutput<'refreshStudyCatalog'>,
+  TError,
+  RefreshStudyCatalogMutationVariables,
+  TContext
+> => {
+  const mutationOptions = options?.mutation
+  const mutationKey = mutationOptions?.mutationKey ?? ['api', 'refreshStudyCatalog']
+  const mutationFn: MutationFunction<
+    ApiOutput<'refreshStudyCatalog'>,
+    RefreshStudyCatalogMutationVariables
+  > = () => {
+    const input = {} satisfies ApiInput<'refreshStudyCatalog'>
+    return getApi()['studyPrograms']['refreshStudyCatalog'](input)
+  }
+
+  return { mutationKey, mutationFn, ...mutationOptions }
+}
+
+export const useRefreshStudyCatalog = <
+  TError = RefreshStudyCatalogMutationError,
+  TContext = unknown
+>(
+  options?: RefreshStudyCatalogMutationHookOptions<TError, TContext>
+): UseMutationResult<
+  ApiOutput<'refreshStudyCatalog'>,
+  TError,
+  RefreshStudyCatalogMutationVariables,
+  TContext
+> => useMutation(getRefreshStudyCatalogMutationOptions(options))
+
 export type ListStudyProgramCoursesQueryResult = ApiOutput<'listStudyProgramCourses'>
 export type ListStudyProgramCoursesQueryError = ApiOperationError<'listStudyProgramCourses'>
 export type ListStudyProgramCoursesQueryHookOptions<TData, TError> = {

@@ -30,6 +30,7 @@ export type {
   TimetableEntryInput,
   TimetablePreset,
   PresetEntry,
+  StudyCatalogImportResult,
   StudyProgram,
   Course,
   GroupRole,

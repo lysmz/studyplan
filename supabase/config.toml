@@ -1,0 +1,4 @@
+project_id = "studyplan"
+
+[functions.study-catalog]
+verify_jwt = false

@@ -2,17 +2,17 @@
 
 ## Automated local evidence
 
-| Check | Status | Evidence |
-| --- | --- | --- |
-| Existing schema assessment | Passed | Existing `events.id` and `events.user_id` are numeric and require a migration boundary |
-| Drizzle schema conversion | Passed | `DrizzleAppSchema` created the PowerSync schema for `spike_events` |
-| Typed CRUD and filtering | Passed | Insert, batch insert, select filters, update and delete used Drizzle APIs |
-| Domain mapping | Passed | ISO timestamps returned as `Date`; integer-backed boolean returned as boolean |
-| Offline restart | Passed | Event and four queued mutations survived database close/reopen |
-| Electron production bundle | Passed | `npm run powersync:drizzle:test` built and ran headlessly |
-| Cloud convergence | Passed | Alice B received Alice A's typed event; upload queue changed from 1 to 0 |
-| Cross-user RLS | Passed | Bob saw zero Alice rows; foreign-owner insert was rejected and update changed zero rows |
-| Unpacked package | Passed | Packaged `studyplan.exe` emitted `"result": "pass"` for all local checks |
+| Check                      | Status | Evidence                                                                                |
+| -------------------------- | ------ | --------------------------------------------------------------------------------------- |
+| Existing schema assessment | Passed | Existing `events.id` and `events.user_id` are numeric and require a migration boundary  |
+| Drizzle schema conversion  | Passed | `DrizzleAppSchema` created the PowerSync schema for `spike_events`                      |
+| Typed CRUD and filtering   | Passed | Insert, batch insert, select filters, update and delete used Drizzle APIs               |
+| Domain mapping             | Passed | ISO timestamps returned as `Date`; integer-backed boolean returned as boolean           |
+| Offline restart            | Passed | Event and four queued mutations survived database close/reopen                          |
+| Electron production bundle | Passed | `npm run powersync:drizzle:test` built and ran headlessly                               |
+| Cloud convergence          | Passed | Alice B received Alice A's typed event; upload queue changed from 1 to 0                |
+| Cross-user RLS             | Passed | Bob saw zero Alice rows; foreign-owner insert was rejected and update changed zero rows |
+| Unpacked package           | Passed | Packaged `studyplan.exe` emitted `"result": "pass"` for all local checks                |
 
 ## Findings
 

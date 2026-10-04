@@ -65,14 +65,15 @@ import { useToast } from '@/hooks/use-toast'
 
 const gradeSchema = z.object({
   courseName: z.string().min(1, 'Kursname ist erforderlich'),
-  grade: z.coerce.number().min(1).max(5).optional().or(z.literal('')),
-  ects: z.coerce.number().min(0),
+  grade: z.coerce.number<string | number>().min(1).max(5).optional().or(z.literal('')),
+  ects: z.coerce.number<string | number>().min(0),
   semester: z.string().min(1, 'Semester ist erforderlich'),
   passed: z.boolean().default(true),
   notes: z.string().optional()
 })
 
 type GradeFormValues = z.infer<typeof gradeSchema>
+type GradeFormInput = z.input<typeof gradeSchema>
 
 export default function Noten() {
   const [isAddOpen, setIsAddOpen] = useState(false)
@@ -111,7 +112,7 @@ export default function Noten() {
     }
   })
 
-  const form = useForm<GradeFormValues>({
+  const form = useForm<GradeFormInput, unknown, GradeFormValues>({
     resolver: zodResolver(gradeSchema),
     defaultValues: {
       courseName: '',

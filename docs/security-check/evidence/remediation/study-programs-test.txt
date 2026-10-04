@@ -1,0 +1,20 @@
+
+> studyplan@2.0.0 study-programs:test
+> tsx --test scripts/study-programs/study-programs.test.ts
+
+✔ lists study programs alphabetically without requiring a session (45.179ms)
+✔ protects course listing and returns only the requested program in semester/name order (14.9931ms)
+✔ rejects malformed and extra IPC input before invoking a handler (5.0087ms)
+✔ fetches a HTTPS catalog without redirects, imports programs, and updates without duplicates (119.7434ms)
+✔ unsafe catalog URLs are rejected before fetching or changing local data (14.7242ms)
+✔ failed downloads and invalid JSON keep local data intact, and a later retry succeeds (22.1639ms)
+✔ a database write failure rolls back the complete catalog import (15.9768ms)
+✔ concurrent refresh requests share one download and import (13.1661ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4853.5535

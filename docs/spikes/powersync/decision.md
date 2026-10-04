@@ -8,14 +8,14 @@ two-device convergence and cross-user isolation are demonstrated.
 
 ## Preliminary score
 
-| Criterion                            | Result | Reason                                                        |
-| ------------------------------------ | -----: | ------------------------------------------------------------- |
-| Electron and packaging compatibility |  30/30 | Development build and packaged Windows executable pass        |
-| Offline persistence and convergence  |  25/25 | Restart durability and Alice A-to-B convergence pass          |
-| Integration effort                   |  18/20 | Isolated main-process adapter; no current feature migration    |
-| Schema evolution                     |  15/15 | Existing v1 row survives additive v2 schema and remains usable |
-| Security boundary                    |  10/10 | Renderer isolation and Supabase RLS read/write probes pass    |
-| **Total**                            | **98/100** | **All hard-stop checks pass**                              |
+| Criterion                            |     Result | Reason                                                         |
+| ------------------------------------ | ---------: | -------------------------------------------------------------- |
+| Electron and packaging compatibility |      30/30 | Development build and packaged Windows executable pass         |
+| Offline persistence and convergence  |      25/25 | Restart durability and Alice A-to-B convergence pass           |
+| Integration effort                   |      18/20 | Isolated main-process adapter; no current feature migration    |
+| Schema evolution                     |      15/15 | Existing v1 row survives additive v2 schema and remains usable |
+| Security boundary                    |      10/10 | Renderer isolation and Supabase RLS read/write probes pass     |
+| **Total**                            | **98/100** | **All hard-stop checks pass**                                  |
 
 ## Interpretation rule
 

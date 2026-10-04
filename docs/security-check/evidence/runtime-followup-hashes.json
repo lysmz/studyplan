@@ -1,0 +1,86 @@
+[
+  {
+    "path": "src/main/index.ts",
+    "recordedSha256": "5f0d90fa6a2a674aa4d0ba30a5bb513adab3de41c8313f1d1b692fdb7f09a4c5",
+    "currentSha256": "5f0d90fa6a2a674aa4d0ba30a5bb513adab3de41c8313f1d1b692fdb7f09a4c5",
+    "unchanged": true
+  },
+  {
+    "path": "src/preload/index.ts",
+    "recordedSha256": "5ee99d74b5deeae92f9d484301fe8904d9442bd0e9a8f3cc1e2f033749c720c2",
+    "currentSha256": "5ee99d74b5deeae92f9d484301fe8904d9442bd0e9a8f3cc1e2f033749c720c2",
+    "unchanged": true
+  },
+  {
+    "path": "src/main/ipc/api-dispatcher.ts",
+    "recordedSha256": "8944292fec08afd1a1edb9335a2b00f88ba6b1afd31e92bc7fc20768958fc21e",
+    "currentSha256": "8944292fec08afd1a1edb9335a2b00f88ba6b1afd31e92bc7fc20768958fc21e",
+    "unchanged": true
+  },
+  {
+    "path": "src/main/collaboration/ipc.ts",
+    "recordedSha256": "c0f1a7ec3cb42435c50e5d262d0c37a63b6d0d7a7018deed71f6c7ee8e682f0e",
+    "currentSha256": "c0f1a7ec3cb42435c50e5d262d0c37a63b6d0d7a7018deed71f6c7ee8e682f0e",
+    "unchanged": true
+  },
+  {
+    "path": "src/main/collaboration/runtime.ts",
+    "recordedSha256": "5c767db79945fb4a30b0ad74e3acf22c41dbb9069868dd3e3261004af4dfa689",
+    "currentSha256": "5c767db79945fb4a30b0ad74e3acf22c41dbb9069868dd3e3261004af4dfa689",
+    "unchanged": true
+  },
+  {
+    "path": "src/renderer/index.html",
+    "recordedSha256": "43fa799af50d3dc2640bd4c461eee3b0da20e71615bb3f4546c664ba0c29dee9",
+    "currentSha256": "43fa799af50d3dc2640bd4c461eee3b0da20e71615bb3f4546c664ba0c29dee9",
+    "unchanged": true
+  },
+  {
+    "path": "src/renderer/src/pages/gruppen-sync.tsx",
+    "recordedSha256": "4053092129f5dc57ce44687ecd6b4ee2c14dc0a6a6254f23291372c484ce0755",
+    "currentSha256": "4053092129f5dc57ce44687ecd6b4ee2c14dc0a6a6254f23291372c484ce0755",
+    "unchanged": true
+  },
+  {
+    "path": "electron-builder.yml",
+    "recordedSha256": "9155f225b32a0360888b79cc0ed5d2fdbfffe5e9f0d12af6e1d52ddf7bbd429f",
+    "currentSha256": "9155f225b32a0360888b79cc0ed5d2fdbfffe5e9f0d12af6e1d52ddf7bbd429f",
+    "unchanged": true
+  },
+  {
+    "path": "electron.vite.config.ts",
+    "recordedSha256": "fd9e46611fddbfc94f4b5020e411b0eee49045be6a44321be388f2591d6f8d08",
+    "currentSha256": "fd9e46611fddbfc94f4b5020e411b0eee49045be6a44321be388f2591d6f8d08",
+    "unchanged": true
+  },
+  {
+    "path": "package.json",
+    "recordedSha256": "f0dcd44ed7e1af7008303c4547da416b11e3910eced6d13f71253ce8e2013652",
+    "currentSha256": "f0dcd44ed7e1af7008303c4547da416b11e3910eced6d13f71253ce8e2013652",
+    "unchanged": true
+  },
+  {
+    "path": "package-lock.json",
+    "recordedSha256": "13446e087c9369f08404d0be5458bc01301ca3aa1a1b3a74ba1e1ae46d4744f3",
+    "currentSha256": "13446e087c9369f08404d0be5458bc01301ca3aa1a1b3a74ba1e1ae46d4744f3",
+    "unchanged": true
+  },
+  {
+    "path": "out/main/index.js",
+    "recordedSha256": "665625b34464324c516852008303eccc2714902a9917c4f63134182423ad306f",
+    "currentSha256": "665625b34464324c516852008303eccc2714902a9917c4f63134182423ad306f",
+    "unchanged": true
+  },
+  {
+    "path": "out/preload/index.js",
+    "recordedSha256": "986ea4d63d0fab369046c3bf6e4116aaa12643f028c23245885cfbe8dd627130",
+    "currentSha256": "986ea4d63d0fab369046c3bf6e4116aaa12643f028c23245885cfbe8dd627130",
+    "unchanged": true
+  },
+  {
+    "path": "out/renderer/index.html",
+    "recordedSha256": "b7dc0ffcd9db758190e9dab0158a0a1ddc1d8e323c8d044e78549f737a0f171b",
+    "currentSha256": "b7dc0ffcd9db758190e9dab0158a0a1ddc1d8e323c8d044e78549f737a0f171b",
+    "unchanged": true
+  }
+]

@@ -250,6 +250,14 @@ export const PresetEntrySchema = z
   .passthrough()
 export type PresetEntry = z.infer<typeof PresetEntrySchema>
 
+export const StudyCatalogImportResultSchema = z
+  .object({
+    programCount: z.number().int(),
+    courseCount: z.number().int()
+  })
+  .passthrough()
+export type StudyCatalogImportResult = z.infer<typeof StudyCatalogImportResultSchema>
+
 export const StudyProgramSchema = z
   .object({
     id: z.number().int(),
@@ -861,6 +869,19 @@ export type OperationListStudyProgramsOutput = z.infer<
 >
 export const OperationListStudyProgramsErrorSchema = z.never()
 export type OperationListStudyProgramsError = z.infer<typeof OperationListStudyProgramsErrorSchema>
+
+export const OperationRefreshStudyCatalogInputSchema = z.object({}).strict()
+export type OperationRefreshStudyCatalogInput = z.infer<
+  typeof OperationRefreshStudyCatalogInputSchema
+>
+export const OperationRefreshStudyCatalogOutputSchema = StudyCatalogImportResultSchema
+export type OperationRefreshStudyCatalogOutput = z.infer<
+  typeof OperationRefreshStudyCatalogOutputSchema
+>
+export const OperationRefreshStudyCatalogErrorSchema = z.never()
+export type OperationRefreshStudyCatalogError = z.infer<
+  typeof OperationRefreshStudyCatalogErrorSchema
+>
 
 export const OperationListStudyProgramCoursesInputSchema = z
   .object({
@@ -1555,6 +1576,11 @@ export interface ApiOperations {
     output: OperationListStudyProgramsOutput
     error: OperationListStudyProgramsError
   }
+  refreshStudyCatalog: {
+    input: OperationRefreshStudyCatalogInput
+    output: OperationRefreshStudyCatalogOutput
+    error: OperationRefreshStudyCatalogError
+  }
   listStudyProgramCourses: {
     input: OperationListStudyProgramCoursesInput
     output: OperationListStudyProgramCoursesOutput
@@ -1933,6 +1959,14 @@ export const operationContracts = {
     input: OperationListStudyProgramsInputSchema,
     output: OperationListStudyProgramsOutputSchema,
     error: OperationListStudyProgramsErrorSchema
+  },
+  refreshStudyCatalog: {
+    method: 'POST',
+    path: '/study-programs/refresh',
+    tag: 'studyPrograms',
+    input: OperationRefreshStudyCatalogInputSchema,
+    output: OperationRefreshStudyCatalogOutputSchema,
+    error: OperationRefreshStudyCatalogErrorSchema
   },
   listStudyProgramCourses: {
     method: 'GET',

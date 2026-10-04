@@ -1,5 +1,6 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
+import { runUploadQueueChecks } from './upload-smoke'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { openCollaborationDatabase, type CollaborationDatabase } from './database'
 import { CollaborationOnlineRequiredError, SupabaseCollaborationGateway } from './online-gateway'
@@ -156,6 +157,7 @@ export async function runElectronCollaborationChecks(
       evidence: { offlineInvitationRejected: true }
     })
 
+    checks.push(...(await runUploadQueueChecks(temporaryRoot)))
     return checks
   } finally {
     await database?.powerSync.close().catch(() => undefined)
