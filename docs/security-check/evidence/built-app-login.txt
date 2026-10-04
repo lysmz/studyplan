@@ -1,0 +1,45 @@
+Window: "Studienplaner", App: electron.exe.
+	0 window Studienplaner Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Studienplaner
+			3 region
+				4 region
+					5 region
+						6 region
+							7 region
+								8 region
+									10 document Studienplaner Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/login ID: RootWebArea
+										11 group ID: root
+											12 text Studienplaner
+											13 heading Willkommen zurück
+											14 text Melde dich an, um deinen Studienalltag zu organisieren.
+											15 text Benutzername
+											16 edit (settable, string) Benutzername Description: max.mustermann
+											17 text Passwort
+											18 edit (settable, string) Passwort
+											19 button Anmelden
+											20 text Noch kein Konto?
+											21 text 
+											22 link Jetzt registrieren Value: file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html#/register
+											23 heading Klarheit für dein Studium.
+											24 text Dein Cockpit für Vorlesungen, Prüfungen und Noten. Ein Ort, der mitdenkt, damit du dich aufs Wesentliche konzentrieren kannst.
+											25 region Notifications (F8)
+												26 list
+								9 region
+
+Document text: ```
+Studienplaner
+Willkommen zurück
+Melde dich an, um deinen Studienalltag zu organisieren.
+Benutzername
+￼
+Passwort
+￼
+Anmelden
+Noch kein Konto? Jetzt registrieren
+￼
+Klarheit für
+dein Studium.
+Dein Cockpit für Vorlesungen, Prüfungen und Noten. Ein Ort, der mitdenkt, damit du dich aufs Wesentliche konzentrieren kannst.
+￼
+```

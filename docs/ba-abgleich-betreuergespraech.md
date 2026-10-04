@@ -2,6 +2,8 @@
 
 Stand des Abgleichs: 3. Oktober 2026.
 
+Technische Fortschreibung vom 4. Oktober: [Nachbesserungsbericht zur Electron-Prüfung](electron-security-remediation-results.md). Electron-Update, `app://`, Senderprüfung, HTTPS-Konfiguration und Paket-Fuses sind umgesetzt und gezielt geprüft. Die manuelle Paket-Nachprüfung einschließlich P1–P3 und Aufgaben-Schreiben/Lesen ist abgeschlossen; die PowerSync-Redirectgrenze bleibt dokumentiert. A7 ist damit weiterhin keine bestätigte vollständige Richtlinieneinhaltung. Dies ändert keine Festlegung zum BA-Scope oder zur übrigen Evaluation.
+
 ## Grundlage und Bedeutung der Markierungen
 
 Verglichen wurden die Gesprächszusammenfassung in `C:\Users\Joshua\Desktop\New Text Document.txt` und die ältere Planung in `C:\Users\Joshua\Desktop\BA-Studyplan\thesis\drafts\Grundstruktur der BA.md`. Hinzu kommen deine aktuellen Aussagen zum abgeschlossenen App-Umfang, zum vereinbarten Sicherheitsbegriff, zum ausgeschlossenen weiteren Reproduktionsdurchlauf und zu den dem Professor gezeigten Folieninhalten. Diese Inhalte konkretisieren den Scope; ihre Übernahme wird in der Gesprächszusammenfassung vorgesehen. Deine weiteren Festlegungen betreffen die Forschungsfrage als Arbeitsfassung, die minimale dokumentationsgestützte Plattformanalyse, die Literaturrecherche, die unterschiedliche Schreib- und Lesereihenfolge sowie die Vertagung der konkreten Anforderungsprüfung.
@@ -99,7 +101,7 @@ Die Frage bleibt als übergeordnete Forschungsfrage bewusst breit. Sie beschreib
 
 **[PASST] Ist-Zustand, Praxisproblem und Anforderungen:** Diese Teile deiner Planung passen unmittelbar zum vereinbarten Fokus.
 
-**[VERTAGT – Entwurf vorhanden] Anforderungen prüfbar machen:** Die endgültigen Kriterien, Bewertungsgrundlagen und Nachweise werden später festgelegt. Auf deinen Wunsch wurde im Seitenchat ein Vorschlag erarbeitet und im Abschnitt „Evaluationsentwurf: Nachweis der Anforderungen A1–A9“ am Ende dieser Datei festgehalten. Die Anforderungen und Scope-Grenzen bleiben bestehen; die Prüfungen wurden noch nicht durchgeführt.
+**[VERTAGT – Entwurf vorhanden] Anforderungen prüfbar machen:** Die endgültigen Kriterien, Bewertungsgrundlagen und Nachweise werden später festgelegt. Auf deinen Wunsch wurde im Seitenchat ein Vorschlag erarbeitet und im Abschnitt „Evaluationsentwurf: Nachweis der Anforderungen A1–A9“ am Ende dieser Datei festgehalten. Die Anforderungen und Scope-Grenzen bleiben bestehen; die übrigen Prüfungen stehen noch aus. Für A7 ist inzwischen die begrenzte Sicherheitsprüfung gesondert dokumentiert.
 
 ## 5. Entwurf, Migration und Migrationsleitfaden
 
@@ -123,7 +125,7 @@ Die Frage bleibt als übergeordnete Forschungsfrage bewusst breit. Sie beschreib
 
 **[GO durch deine Präzisierung] Rolle der Sicherheitsevaluation:** Sicherheit wird als Einhaltung der Electron Security Guidelines bewertet. Der in der alten Struktur vorgesehene umfassende Vergleich der Sicherheitslage von Web- und Desktop-Runtime wird durch einen systematischen Richtlinienabgleich ersetzt. Dieser Punkt erfordert keine weitere Rückfrage an den Professor.
 
-**[VERTAGT – Entwurf vorhanden] Konkrete Nachweise der Härtung:** Der Bewertungsrahmen bleibt die Einhaltung der Electron Security Guidelines einschließlich der genannten Eingabevalidierung und Schutzmaßnahmen gegen fremden Code. Der Evaluationsentwurf am Ende dieser Datei beschreibt einen möglichen Richtlinienabgleich mit ergänzenden Negativtests. Er ist keine bereits beschlossene oder durchgeführte Evaluation. SQLite-Verschlüsselung und Supabase-Datenbankhärtung bleiben ausgeschlossen. Die offizielle Electron-Sicherheitsdokumentation wurde für den Entwurf eingesehen; ihre Einhaltung durch die Anwendung wurde dabei nicht geprüft.
+**[FESTGELEGT durch dich – begrenzte Prüfung durchgeführt] Konkrete Nachweise der Härtung:** Der reduzierte Sicherheitsumfang wurde im Chat akzeptiert: vollständiger Richtlinienabgleich überwiegend anhand von Code und Konfiguration, passende vorhandene Tests und drei begrenzte manuelle Fälle für IPC-Eingabevalidierung, Aufgabeninhalte und CSP-Durchsetzung. Der konkrete Ablauf steht im [Umsetzungsplan](electron-security-implementation-plan.md); die Begründung im [Scope-Vorschlag](electron-security-check-ba-vorschlag.md). Der [Ergebnisbericht](electron-security-check-results.md) dokumentiert alle 20 Richtlinien, bestandene vorhandene Testläufe und die bestandenen Laufzeitfälle P1–P3. Aufgrund der verbleibenden Abweichungen ist A7 dennoch nicht vollständig erfüllt; die Prüfung ist keine Freigabe vollständiger Härtung. Die übrige Anforderungsprüfung bleibt gesondert zu planen. SQLite-Verschlüsselung und Supabase-Datenbankhärtung bleiben ausgeschlossen.
 
 **[VERTAGT] Datenhoheit konkretisieren:** Die ältere Struktur nennt Datenhoheit als Evaluationsziel, die Gesprächsnotizen ausdrücklich lokale Datenhaltung. Die genaue Operationalisierung und Prüfung dieses Punkts wird mit der übrigen Anforderungsprüfung später behandelt.
 
@@ -163,7 +165,7 @@ Ohne erneute Freigabe kann innerhalb des beschriebenen Rahmens begonnen werden:
 6. Zu einem späteren Zeitpunkt die konkrete Anforderungsprüfung und Evaluation endgültig festlegen und durchführen. Als Grundlage liegt der unten dokumentierte Entwurf aus dem Seitenchat vor.
 7. Diskussion, Fazit und schließlich die Einleitung auf die tatsächlich erzielten Ergebnisse und die breite Forschungsfrage abstimmen.
 
-Die zuvor offenen Punkte zur grundsätzlichen Planung des Forschungsstands und zur Plattformanalyse sind durch deine Präzisierungen geklärt. Quellenrecherche und Ausarbeitung sind verbleibende Arbeitsaufgaben. Die konkrete Anforderungsprüfung ist bewusst vertagt und wird nicht als notwendige sofortige Rückfrage an den Professor behandelt. Die englische Forschungsfrage ist deine aktuelle Arbeitsfassung, keine aus den Gesprächsnotizen belegte Freigabe ihres genauen Wortlauts.
+Die zuvor offenen Punkte zur grundsätzlichen Planung des Forschungsstands und zur Plattformanalyse sind durch deine Präzisierungen geklärt. Quellenrecherche und Ausarbeitung sind verbleibende Arbeitsaufgaben. Für den Sicherheitsnachweis wurde inzwischen der reduzierte Scope akzeptiert und die begrenzte Prüfung durchgeführt; der [Ergebnisbericht](electron-security-check-results.md) enthält bestandene P1–P3 und verbleibende Abweichungen. Die übrige Anforderungsprüfung bleibt gesondert zu planen und wird nicht als notwendige sofortige Rückfrage an den Professor behandelt. Die englische Forschungsfrage ist deine aktuelle Arbeitsfassung, keine aus den Gesprächsnotizen belegte Freigabe ihres genauen Wortlauts.
 
 Die acht Kapitel können als Arbeitsstruktur bestehen bleiben. Klar bestätigt sind insbesondere App-Umfang, Motivation, das besprochene methodische Vorgehen, die Eingrenzung der Analyse und durch deine Präzisierungen der Sicherheitsrahmen sowie der Ausschluss eines weiteren Reproduktionsdurchlaufs. Für die übrigen Kapitel ist überwiegend inhaltliche Passung erkennbar; eine pauschale Freigabe der gesamten alten Gliederung lässt sich aus den vorliegenden Gesprächsnotizen nicht ableiten.
 
@@ -171,7 +173,7 @@ Die acht Kapitel können als Arbeitsstruktur bestehen bleiben. Klar bestätigt s
 
 Dokumentiert am 3. Oktober 2026 auf deinen ausdrücklichen Wunsch im Seitenchat. Dieser Abschnitt ist als gemeinsame Referenz für den Hauptchat gedacht.
 
-**Status: Vorschlag zur weiteren Planung.** Die folgenden Anforderungen fassen die bisherigen Festlegungen zusammen und erhalten hier die Arbeitskennungen A1–A9. Die vorgeschlagenen Nachweise sind noch keine endgültig beschlossene Evaluationsmethode oder Freigabe des Professors. Es wurden weder Tests durchgeführt noch Codestellen der Anwendung geprüft. Die endgültigen Erfolgskriterien und die Durchführung bleiben für später offen.
+**Status: Vorschlag zur weiteren Planung, mit durchgeführter begrenzter Sicherheitsprüfung A7.** Die folgenden Anforderungen fassen die bisherigen Festlegungen zusammen und erhalten hier die Arbeitskennungen A1–A9. Für A7 gilt inzwischen der im Hauptchat akzeptierte reduzierte Scope und der verlinkte Umsetzungsplan; die Durchführung mit bestandenen P1–P3 und verbleibenden Richtlinienabweichungen ist im [Ergebnisbericht](electron-security-check-results.md) dokumentiert. Die übrigen vorgeschlagenen Nachweise sind noch keine endgültig beschlossene Evaluationsmethode oder Freigabe des Professors. Der ursprüngliche Entwurf entstand ohne Tests oder Codeprüfung. Die weitere Festlegung und Durchführung der übrigen Evaluation bleiben offen.
 
 ### Grundidee
 
@@ -208,6 +210,8 @@ Beispiel für A5, lokale Persistenz; dies ist ein vorgeschlagenes Szenario, kein
 - **Bewertung:** Erst nach Durchführung anhand des tatsächlichen Ergebnisses eintragen.
 
 ### Sicherheitsnachweis im vereinbarten Sinn
+
+Aktualisierung: Für diesen Teil gilt inzwischen der im Hauptchat akzeptierte reduzierte Scope. Die praktische Durchführung ist im [Umsetzungsplan](electron-security-implementation-plan.md) auf P1–P3 konkretisiert und im [Ergebnisbericht](electron-security-check-results.md) mit bestandenen Laufzeitfällen sowie verbleibenden Richtlinienabweichungen dokumentiert. Der folgende Richtlinienrahmen bleibt bestehen; daraus entsteht keine zusätzliche umfassende Audit-Testmatrix. Die übrigen Anforderungen A1–A6 und A8–A9 behalten den Status des Evaluationsentwurfs.
 
 Die vollständige offizielle Electron-Sicherheitscheckliste durchgehen. Für jeden Punkt dokumentieren: Richtlinie, Anwendbarkeit, Umsetzung, konkreter Beleg und Ergebnis. Ergebnisse als „erfüllt“, „nicht erfüllt“ oder „begründet nicht anwendbar“ ausweisen. Fehlende Nachweise gesondert kenntlich machen; eine fehlende Prüfung ist keine Erfüllung.
 

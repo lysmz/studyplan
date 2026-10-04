@@ -1,0 +1,26 @@
+{
+  "executable": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\dist\\win-unpacked\\studyplan.exe",
+  "archive": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\dist\\win-unpacked\\resources\\app.asar",
+  "appVersion": "2.0.0",
+  "executableSha256": "932caf08ed449d89272643b555a6592bd0d9442234ce630fda69d0ef9ac65413",
+  "asarSha256": "b85301a64ae50ec446c767088657d48d4032866ed97946d8cd7c5404ffef0ecb",
+  "fuses": {
+    "RunAsNode": 48,
+    "EnableCookieEncryption": 48,
+    "EnableNodeOptionsEnvironmentVariable": 48,
+    "EnableNodeCliInspectArguments": 48,
+    "EnableEmbeddedAsarIntegrityValidation": 49,
+    "OnlyLoadAppFromAsar": 49,
+    "LoadBrowserProcessSpecificV8Snapshot": 48,
+    "GrantFileProtocolExtraPrivileges": 48
+  },
+  "integrity": [
+    {
+      "file": "resources\\app.asar",
+      "alg": "SHA256",
+      "value": "d28fe58b3900ce8836e055bac1d0163372357ae60a2f3e4060f8112b69090674"
+    }
+  ],
+  "actualHeaderSha256": "d28fe58b3900ce8836e055bac1d0163372357ae60a2f3e4060f8112b69090674",
+  "integrityMatches": true
+}

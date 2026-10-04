@@ -1,0 +1,549 @@
+Window: "Developer Tools - app://bundle/index.html", App: studyplan.exe.
+	0 window Developer Tools - app://bundle/index.html Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Developer Tools - app://bundle/index.html
+			3 region
+				4 region
+					5 region
+						6 document DevTools Value: devtools://devtools/bundled/devtools_app.html?remoteBase=https://chrome-devtools-frontend.appspot.com/serve_file/@f29d393666d3495dcfbae75ecf3f3d45184bf8d/&can_dock=true&toolbarColor=rgba(223,223,223,1)&textColor=rgba(0,0,0,1)&experiments=true ID: RootWebArea
+							7 group
+								8 navigation Main toolbar
+									9 tool bar
+										51 group Select an element in the page to inspect it Description: Select an element in the page to inspect it - Ctrl + Shift + C
+											52 toggle button Select an element in the page to inspect it - Ctrl + Shift + C Description: Select an element in the page to inspect it - Ctrl + Shift + C
+										53 group Toggle device toolbar Description: Toggle device toolbar - Ctrl + Shift + M
+											54 toggle button Toggle device toolbar - Ctrl + Shift + M Description: Toggle device toolbar - Ctrl + Shift + M
+									10 tab Panels
+										12 tab item (selectable) Elements ID: tab-elements
+										13 tab item (selectable) Console ID: tab-console
+										14 tab item (selectable) Sources ID: tab-sources
+										15 tab item (selectable) Network ID: tab-network
+										16 tab item (selectable) Performance ID: tab-timeline
+										17 tab item (selectable) Memory ID: tab-heap-profiler
+										18 tab item (selectable) Application ID: tab-resources
+										19 tab item (selectable) Security ID: tab-security
+										20 tab item (selectable) Lighthouse ID: tab-lighthouse
+										21 tab item (selectable) Recorder ID: tab-chrome-recorder
+									55 tool bar
+										72 group Open Console to view 3 errors Description: Open Console to view 3 errors
+											73 button Open Console to view 3 errors
+										74 group Open Issues to view 3 issues: 2 page errors, 1 breaking change Description: Open Issues to view 3 issues: 2 page errors, 1 breaking change
+											75 button Open Issues to view 3 issues: 2 page errors, 1 breaking change
+										56 group Settings Description: Settings - F1 - Shift + ?
+											57 button Settings - F1 - Shift + ? Description: Settings - F1 - Shift + ?
+										58 button Customize and control DevTools Description: Customize and control DevTools
+											59 button Customize and control DevTools Description: Customize and control DevTools
+								11 tab panel Console panel
+									22 group console
+										23 tool bar
+											24 group Show Console sidebar Description: Show Console sidebar
+												25 button Show Console sidebar Description: Show Console sidebar
+											26 group Clear console Description: Clear console - Ctrl + L
+												27 button Clear console - Ctrl + L Description: Clear console - Ctrl + L
+											28 group Expand all Description: Expand all
+												29 button Expand all Description: Expand all
+											30 button JavaScript context: top Description: JavaScript context: top
+											31 group Create live expression Description: Create live expression
+												32 button Create live expression Description: Create live expression
+											33 group Description: e.g. /eventd/ -cdn url:a.com
+												34 edit (settable, string) Filter Description: Filter Value: Filter
+													499 text Filter
+											36 button Log level: Default levels Description: Log level: Default levels
+												37 text Default levels
+											38 group Some problems no longer generate console messages, but are surfaced in the Issues tab. Click to view 2 page errors, 1 breaking change Description: Some problems no longer generate console messages, but are surfaced in the Issues tab. Click to view 2 page errors, 1 breaking change ID: console-issues-counter
+												39 button Some problems no longer generate console messages, but are surfaced in the Issues tab. Click to view 2 page errors, 1 breaking change
+											40 group Console settings Description: Console settings
+												41 toggle button Console settings Description: Console settings
+											42 group 11 messages in console
+										43 group ID: console-messages
+											44 group
+												61 log Uncaught (in promise) ZodError
+													870 group Error, Repeated 2 times
+														871 text 2
+													64 group index-COBo6ek7.js:38550 Uncaught (in promise) Stack table collapsed
+														65 group
+															66 button index-COBo6ek7.js:38550 Description: app://bundle/assets/index-COBo6ek7.js:38550
+															67 text 
+															68 text Uncaught (in promise)
+															69 text 
+															79 text ZodError
+															80 text 
+															81 text at
+															82 link index-COBo6ek7.js:38550:84 Description: app://bundle/assets/index-COBo6ek7.js:38550:84
+															83 text 
+															84 text at
+															85 text Object.resolver
+															86 text (
+															87 link index-COBo6ek7.js:38557:9 Description: app://bundle/assets/index-COBo6ek7.js:38557:9
+															88 text )
+															89 text 
+															90 text at
+															91 text _runSchema
+															92 text (
+															93 link index-COBo6ek7.js:37417:27 Description: app://bundle/assets/index-COBo6ek7.js:37417:27
+															94 text )
+															95 text 
+															96 text at
+															97 text Object.onChange
+															98 text (
+															99 link index-COBo6ek7.js:37726:34 Description: app://bundle/assets/index-COBo6ek7.js:37726:34
+															100 text )
+															101 text 
+															102 text at
+															103 link index-COBo6ek7.js:36396:35 Description: app://bundle/assets/index-COBo6ek7.js:36396:35
+															104 text 
+															105 text at
+															106 text processDispatchQueue
+															107 text (
+															108 link index-COBo6ek7.js:10775:15 Description: app://bundle/assets/index-COBo6ek7.js:10775:15
+															109 text )
+															110 text 
+															111 text at
+															112 link index-COBo6ek7.js:11132:7 Description: app://bundle/assets/index-COBo6ek7.js:11132:7
+															113 text 
+															114 text at
+															115 text batchedUpdates$1
+															116 text (
+															117 link index-COBo6ek7.js:2188:38 Description: app://bundle/assets/index-COBo6ek7.js:2188:38
+															118 text )
+															119 text 
+															120 text at
+															121 text dispatchEventForPluginEventSystem
+															122 text (
+															123 link index-COBo6ek7.js:10867:5 Description: app://bundle/assets/index-COBo6ek7.js:10867:5
+															124 text )
+															125 text 
+															126 text at
+															127 text dispatchEvent2
+															128 text (
+															129 link index-COBo6ek7.js:13653:9 Description: app://bundle/assets/index-COBo6ek7.js:13653:9
+															130 text )
+												502 group
+													503 text void
+													504 text (
+													505 text async
+													506 text () => {
+													507 text console
+													508 text .
+													509 text log
+													510 text (
+													511 text 'BA-PACKAGE'
+													512 text ,
+													513 text JSON
+													514 text .
+													515 text stringify
+													516 text ({
+													517 text url
+													518 text :
+													519 text location
+													520 text .
+													521 text href
+													522 text ,
+													523 text userAgent
+													524 text :
+													525 text navigator
+													526 text .
+													527 text userAgent
+													528 text }));
+													529 text console
+													530 text .
+													531 text log
+													532 text (
+													533 text 'BA-P1-API'
+													534 text ,
+													535 text JSON
+													536 text .
+													537 text stringify
+													538 text (
+													539 text await
+													540 text 
+													541 text window
+													542 text .
+													543 text apiTransport
+													544 text .
+													545 text invoke
+													546 text (
+													547 text 'getEvent'
+													548 text ,{
+													549 text path
+													550 text :{
+													551 text id
+													552 text :
+													553 text 'not-a-number'
+													554 text }})));
+													555 text console
+													556 text .
+													557 text log
+													558 text (
+													559 text 'BA-P1-COLLAB'
+													560 text ,
+													561 text JSON
+													562 text .
+													563 text stringify
+													564 text (
+													565 text await
+													566 text 
+													567 text window
+													568 text .
+													569 text collaborationTransport
+													570 text .
+													571 text invoke
+													572 text (
+													573 text 'createTask'
+													574 text ,{
+													575 text groupId
+													576 text :
+													577 text 'not-a-uuid'
+													578 text ,
+													579 text title
+													580 text :
+													581 text 'BA-P1-2026-10-04'
+													582 text })));
+													583 text console
+													584 text .
+													585 text log
+													586 text (
+													587 text 'BA-P15'
+													588 text ,
+													589 text JSON
+													590 text .
+													591 text stringify
+													592 text ({
+													593 text windowOpenReturnedNull
+													594 text :
+													595 text window
+													596 text .
+													597 text open
+													598 text (
+													599 text 'https://ba-security.invalid/open'
+													600 text )===
+													601 text null
+													602 text }));
+													603 text var
+													604 text 
+													605 text before
+													606 text =
+													607 text location
+													608 text .
+													609 text href
+													610 text ;
+													611 text location
+													612 text .
+													613 text assign
+													614 text (
+													615 text 'https://ba-security.invalid/navigation'
+													616 text );
+													617 text setTimeout
+													618 text (()=>
+													619 text console
+													620 text .
+													621 text log
+													622 text (
+													623 text 'BA-NAVIGATION'
+													624 text ,
+													625 text JSON
+													626 text .
+													627 text stringify
+													628 text ({
+													629 text unchanged
+													630 text :
+													631 text location
+													632 text .
+													633 text href
+													634 text ===
+													635 text before
+													636 text ,
+													637 text url
+													638 text :
+													639 text location
+													640 text .
+													641 text href
+													642 text })),
+													643 text 500
+													644 text );
+													645 text var
+													646 text 
+													647 text script
+													648 text =
+													649 text document
+													650 text .
+													651 text createElement
+													652 text (
+													653 text 'script'
+													654 text );
+													655 text script
+													656 text .
+													657 text src
+													658 text =
+													659 text 'https://ba-security.invalid/marker.js'
+													660 text ;
+													661 text var
+													662 text 
+													663 text violations
+													664 text =[];
+													665 text var
+													666 text 
+													667 text listener
+													668 text =
+													669 text e
+													670 text =>{
+													671 text if
+													672 text (
+													673 text e
+													674 text .
+													675 text blockedURI
+													676 text ===
+													677 text script
+													678 text .
+													679 text src
+													680 text )
+													681 text violations
+													682 text .
+													683 text push
+													684 text ({
+													685 text directive
+													686 text :
+													687 text e
+													688 text .
+													689 text effectiveDirective
+													690 text ,
+													691 text blockedURI
+													692 text :
+													693 text e
+													694 text .
+													695 text blockedURI
+													696 text })};
+													697 text document
+													698 text .
+													699 text addEventListener
+													700 text (
+													701 text 'securitypolicyviolation'
+													702 text ,
+													703 text listener
+													704 text );
+													705 text document
+													706 text .
+													707 text head
+													708 text .
+													709 text appendChild
+													710 text (
+													711 text script
+													712 text );
+													713 text setTimeout
+													714 text (()=>{
+													715 text console
+													716 text .
+													717 text log
+													718 text (
+													719 text 'BA-P3'
+													720 text ,
+													721 text JSON
+													722 text .
+													723 text stringify
+													724 text ({
+													725 text violations
+													726 text ,
+													727 text markerIsUndefined
+													728 text :
+													729 text document
+													730 text .
+													731 text documentElement
+													732 text .
+													733 text dataset
+													734 text .
+													735 text baSecurityMarker
+													736 text ===
+													737 text undefined
+													738 text }));
+													739 text script
+													740 text .
+													741 text remove
+													742 text ();
+													743 text document
+													744 text .
+													745 text removeEventListener
+													746 text (
+													747 text 'securitypolicyviolation'
+													748 text ,
+													749 text listener
+													750 text )},
+													751 text 500
+													752 text );
+													753 text var
+													754 text 
+													755 text status
+													756 text =
+													757 text await
+													758 text 
+													759 text window
+													760 text .
+													761 text collaborationTransport
+													762 text .
+													763 text invoke
+													764 text (
+													765 text 'state'
+													766 text ,{});
+													767 text console
+													768 text .
+													769 text log
+													770 text (
+													771 text 'BA-SYNC-STATE'
+													772 text ,
+													773 text JSON
+													774 text .
+													775 text stringify
+													776 text (
+													777 text status
+													778 text .
+													779 text ok
+													780 text ?{
+													781 text configured
+													782 text :
+													783 text status
+													784 text .
+													785 text data
+													786 text .
+													787 text configured
+													788 text ,
+													789 text signedIn
+													790 text :
+													791 text status
+													792 text .
+													793 text data
+													794 text .
+													795 text signedIn
+													796 text ,
+													797 text connected
+													798 text :
+													799 text status
+													800 text .
+													801 text data
+													802 text .
+													803 text connected
+													804 text ,
+													805 text pendingUploads
+													806 text :
+													807 text status
+													808 text .
+													809 text data
+													810 text .
+													811 text pendingUploads
+													812 text }:
+													813 text status
+													814 text )); })()
+												815 group BA-PACKAGE
+													816 group BA-PACKAGE {"url":"app://bundle/index.html#/gruppen-sync","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) studyplan/2.0.0 Chrome/152.0.7977.130 Electron/44.5.1 Safari/537.36"} Stack table collapsed
+														817 group
+															818 link VM73:1 Description: debugger:///VM73:1
+															819 text 
+															820 text BA-PACKAGE
+															821 text 
+															822 text {"url":"
+															823 link app://bundle/index.html#/gruppen-sync
+															824 text ","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) studyplan/2.0.0 Chrome/152.0.7977.130 Electron/44.5.1 Safari/537.36"}
+												825 group
+													826 group undefined Stack table collapsed
+														827 group
+															828 text undefined
+												829 group BA-P1-API
+													830 group BA-P1-API {"ok":false,"error":{"code":"VALIDATION_ERROR","message":"Invalid input for getEvent.","details":[{"code":"invalid_type","path":["path","id"],"message":"Invalid input: expected number, received string"}],"requestId":"6ea4cc12-23a1-4950-b9aa-9f6d7e0f3a14"}} Stack table collapsed
+														831 group
+															832 link VM73:1 Description: debugger:///VM73:1
+															833 text 
+															834 text BA-P1-API
+															835 text 
+															836 text {"ok":false,"error":{"code":"VALIDATION_ERROR","message":"Invalid input for getEvent.","details":[{"code":"invalid_type","path":["path","id"],"message":"Invalid input: expected number, received string"}],"requestId":"6ea4cc12-23a1-4950-b9aa-9f6d7e0f3a14"}}
+												837 group BA-P1-COLLAB
+													838 group BA-P1-COLLAB {"ok":false,"error":{"code":"INVALID","message":"Invalid collaboration input."}} Stack table collapsed
+														839 group
+															840 link VM73:1 Description: debugger:///VM73:1
+															841 text 
+															842 text BA-P1-COLLAB
+															843 text 
+															844 text {"ok":false,"error":{"code":"INVALID","message":"Invalid collaboration input."}}
+												845 group BA-P15
+													846 group BA-P15 {"windowOpenReturnedNull":true} Stack table collapsed
+														847 group
+															848 link VM73:1 Description: debugger:///VM73:1
+															849 text 
+															850 text BA-P15
+															851 text 
+															852 text {"windowOpenReturnedNull":true}
+												853 log Loading the script 'https://ba-security.invalid/marker.js' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+													854 group Error
+													855 group Loading the script 'https://ba-security.invalid/marker.js' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked. Stack table collapsed
+														856 group
+															857 link VM73:1 Description: debugger:///VM73:1
+															858 text 
+															859 text Loading the script '
+															860 link https://ba-security.invalid/marker.js
+															861 text ' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+												862 group BA-SYNC-STATE
+													863 group BA-SYNC-STATE {"configured":true,"signedIn":true,"connected":false,"pendingUploads":0} Stack table collapsed
+														864 group
+															865 link VM73:1 Description: debugger:///VM73:1
+															866 text 
+															867 text BA-SYNC-STATE
+															868 text 
+															869 text {"configured":true,"signedIn":true,"connected":false,"pendingUploads":0}
+												872 group BA-NAVIGATION
+													873 group BA-NAVIGATION {"unchanged":true,"url":"app://bundle/index.html#/gruppen-sync"} Stack table collapsed
+														874 group
+															875 link VM73:1 Description: debugger:///VM73:1
+															876 text 
+															877 text BA-NAVIGATION
+															878 text 
+															879 text {"unchanged":true,"url":"
+															880 link app://bundle/index.html#/gruppen-sync
+															881 text "}
+												882 group BA-P3
+													883 group BA-P3 {"violations":[{"directive":"script-src-elem","blockedURI":"https://ba-security.invalid/marker.js"}],"markerIsUndefined":true} Stack table collapsed
+														884 group
+															885 link VM73:1 Description: debugger:///VM73:1
+															886 text 
+															887 text BA-P3
+															888 text 
+															889 text {"violations":[{"directive":"script-src-elem","blockedURI":"
+															890 link https://ba-security.invalid/marker.js
+															891 text "}],"markerIsUndefined":true}
+											45 group
+											46 group
+												47 edit (settable, string) Console prompt Value: 
+													498 text 
+							131 complementary Tool drawer
+								132 group
+									133 tool bar
+										134 button More Tools Description: More Tools
+											135 button More Tools Description: More Tools
+									136 tab
+										137 tab item (selectable) Console ID: tab-console-view
+										138 tab item (selectable) What’s new ID: tab-release-note
+									139 tool bar
+										140 group Minimize drawer Description: Minimize drawer
+											141 button Minimize drawer Description: Minimize drawer
+										142 group Close drawer Description: Close drawer
+											143 button Close drawer Description: Close drawer
+									144 tab panel What’s new panel
+										145 group whats-new
+											150 text What’s new in DevTools 152
+											151 button See all new features
+											152 heading DevTools for agents
+												153 link DevTools for agents Description: https://developer.chrome.com/blog/new-in-devtools-152/#devtools-for-agents
+											154 text DevTools for agents 1.7 improves memory profiling with the
+											155 text get_heapsnapshot_object_details
+											156 text tool and native V8 context filtering.
+											157 heading Soft navigation metrics in Live Metrics
+												158 link Soft navigation metrics in Live Metrics Description: https://developer.chrome.com/blog/new-in-devtools-152/#performance
+											159 text The Live Metrics view in the Performance panel now captures and reports metrics like LCP and INP for client-side soft navigations in single-page applications by default.
+											160 heading Nested CSS parent selector interactions
+												161 link Nested CSS parent selector interactions Description: https://developer.chrome.com/blog/new-in-devtools-152/#nested-selectors
+											162 text Hovering over parent selectors highlights matching elements on the page, nested rules respond to Styles tab filtering, and
+											163 text @nested-declarations
+											164 text include specificity tooltips.
+							49 alert
+								146 text Drawer shown
+							71 status
+
+Document text: ```
+Filter
+```

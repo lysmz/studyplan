@@ -1,0 +1,1511 @@
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 28275,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 3186
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 5358,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1557
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 46877,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 2114
+    }
+  }
+}
+[PowerSync]: Could not POST streaming to /sync/stream - 502 - Bad Gateway: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+ Error: HTTP Bad Gateway: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+    at NodeRemote.fetchStreamRaw (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:212:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async NodeRemote.fetchStream (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:261:36)
+    at async openInner (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:430:24)
+    at async Object.next (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:447:29) {
+  status: 502
+}
+[PowerSync]: Sync error Error: HTTP Bad Gateway: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+    at NodeRemote.fetchStreamRaw (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:212:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async NodeRemote.fetchStream (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:261:36)
+    at async openInner (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:430:24)
+    at async Object.next (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:447:29) {
+  status: 502
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 52816,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1432
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 61305,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1113
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 51865,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 3091
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Sync error [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND 6aaedd2b8453e7cf83386b72.powersync.journeyapps.com
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:123:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: '6aaedd2b8453e7cf83386b72.powersync.journeyapps.com'
+  }
+}
+[PowerSync]: Could not POST streaming to /sync/stream - 401 - Unauthorized: {"error":{"code":"PSYNC_S2103","status":401,"description":"JWT has expired","name":"AuthorizationError"}} Error: HTTP Unauthorized: {"error":{"code":"PSYNC_S2103","status":401,"description":"JWT has expired","name":"AuthorizationError"}}
+    at NodeRemote.fetchStreamRaw (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:212:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async NodeRemote.fetchStream (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:261:36)
+    at async openInner (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:430:24)
+    at async Object.next (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:447:29) {
+  status: 401
+}
+[PowerSync]: Sync error Error: HTTP Unauthorized: {"error":{"code":"PSYNC_S2103","status":401,"description":"JWT has expired","name":"AuthorizationError"}}
+    at NodeRemote.fetchStreamRaw (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:212:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async NodeRemote.fetchStream (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractRemote.js:261:36)
+    at async openInner (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:430:24)
+    at async Object.next (file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/dist/win-unpacked/resources/app.asar/node_modules/@powersync/shared-internals/lib/client/sync/stream/AbstractStreamingSyncImplementation.js:447:29) {
+  status: 401
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 4321,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1161
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 60018,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1948
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: SocketError: other side closed
+      at TLSSocket.onHttpSocketEnd (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:959:22)
+      at TLSSocket.emit (node:events:526:24)
+      at endReadableNT (node:internal/streams/readable:1764:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'UND_ERR_SOCKET',
+    socket: {
+      localAddress: '[REDACTED-IP]',
+      localPort: 9085,
+      remoteAddress: '[REDACTED-IP]',
+      remotePort: 443,
+      remoteFamily: 'IPv4',
+      timeout: undefined,
+      bytesWritten: 2050,
+      bytesRead: 1306
+    }
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+[PowerSync]: Sync error TypeError: terminated
+    at Fetch.onAborted (node:internal/deps/undici/undici:13877:53)
+    at Fetch.emit (node:events:514:28)
+    at Fetch.terminate (node:internal/deps/undici/undici:13007:14)
+    at Object.onError (node:internal/deps/undici/undici:14011:38)
+    at Request.onError (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\request.js:343:27)
+    at Object.errorRequest (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\core\util.js:815:13)
+    at TLSSocket.onHttpSocketClose (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\dist\win-unpacked\resources\app.asar\node_modules\undici\lib\dispatcher\client-h1.js:997:10)
+    at TLSSocket.emit (node:events:526:24)
+    at node:net:362:12
+    at TCP.done (node:internal/tls/wrap:770:7) {
+  [cause]: Error: read ECONNRESET
+      at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20) {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}

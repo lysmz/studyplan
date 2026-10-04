@@ -1,0 +1,98 @@
+[
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\package.json",
+    "Hash": "CC8676250D2E9F57BDE30BF32666ACAE73ECA678E63F7AE17A92D80CE1C35520"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\package-lock.json",
+    "Hash": "4B72DBDE620C10BF9FEB75C3CCF4D6906F4B534B5A28A10B2D9E9B2AC6A8272C"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\electron-builder.yml",
+    "Hash": "7C0E28C895BF3158580B4E3E50471EF9E8D4C675FB4B44CA26E87DC9FCACA074"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\index.ts",
+    "Hash": "06B61BA3915E61EC4706D419C27F8D3CB7E9DB9D63FDFEC3E27C493629B711C7"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\security\\network.ts",
+    "Hash": "9FF9A150EA22FC79F4678F7E61C28C7283666268F42AF1902D0CB2DC3F3BF2C9"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\security\\app-protocol.ts",
+    "Hash": "6BC92EDF5C8839EF352550D9D9EC675A5A99BA489CCCDB08497798D0DE83C107"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\security\\renderer-url.ts",
+    "Hash": "6CC2391E1796BB55C50C9FA2E9789818E09A3655C5752A4A3E8DEC26F0AE5E84"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\ipc\\sender-policy.ts",
+    "Hash": "C5F86F5E3B43D479CEC5BBDEB4C2A7739644AC227A2436F9AE1F18F03222D786"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\ipc\\api-dispatcher.ts",
+    "Hash": "60F518877337AF30D9FE1BF633AB0E0BEB3C5DFFC85FA07FAF013178A225B832"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\collaboration\\connector.ts",
+    "Hash": "7B73CB88CB98022B45CC3D7C4639D842E20C669800FCAB2D4685F9B8CDA23BC0"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\collaboration\\runtime.ts",
+    "Hash": "1D5F65613C0799117F713DA6BAE24BA20BC0FBF25256F46C81269179BA71B625"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\collaboration\\remote-config.ts",
+    "Hash": "313D085A32F76E24EF4F635FC4B1EFE3DB4397A6E180A13EC162ABF2BEF2F0C1"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\main\\services\\study-programs.service.ts",
+    "Hash": "4B24D5C075C8E2AEC41F224D001FD71A18D57BBDFBBE17450F68711AB3C30EB4"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\renderer\\src\\pages\\noten.tsx",
+    "Hash": "CFB0A88BD8220E068F797F51118BCCCE50EF40BFF38B97E1FCFFD5E15AD37619"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\src\\renderer\\src\\components\\ui\\form.tsx",
+    "Hash": "C9770DEC77DB5FFAEBDA8250C8F4EFA623366A5A5663B143701CF7B81D4932A1"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\scripts\\security\\security.test.ts",
+    "Hash": "71F9C717860A8474FFA840092F78FCE0D594A6B34BFC8F322D26D5D19556A586"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\scripts\\security\\check-native.cjs",
+    "Hash": "1BDB2D2FF40343E23878897666BD8D697D89919369FA84146E8D28FA683D2268"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\scripts\\security\\check-package.cjs",
+    "Hash": "542D1CDE568916E935B8C1D36409ECC0674ABD86BEC664672E103E63437A383E"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\out\\main\\index.js",
+    "Hash": "2AD378D2F1E08B29BDF0013519638C6F6781B1A2957934E1717441E2A1048BA9"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\out\\preload\\index.js",
+    "Hash": "986EA4D63D0FAB369046C3BF6E4116AAA12643F028C23245885CFBE8DD627130"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\out\\renderer\\index.html",
+    "Hash": "897E7455FB9358DD8D28AB1A7564BD6E613DB6C8CA52B999CA584B3B653E9F46"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\out\\renderer\\assets\\index-1Dd27aXk.js",
+    "Hash": "B9A2A2B0E7ACFDCD9167844CAC1FEFCD7EBD7932073BBCB30A51B321C0E2AF08"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\dist\\win-unpacked\\studyplan.exe",
+    "Hash": "932CAF08ED449D89272643B555A6592BD0D9442234CE630FDA69D0EF9AC65413"
+  },
+  {
+    "Path": "C:\\Users\\Joshua\\Desktop\\Desktop App prototype\\studyplan\\dist\\win-unpacked\\resources\\app.asar",
+    "Hash": "B85301A64AE50EC446C767088657D48D4032866ED97946D8CD7C5404FFEF0ECB"
+  }
+]

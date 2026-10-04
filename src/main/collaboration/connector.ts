@@ -2,6 +2,7 @@ import type { PowerSyncBackendConnector, PowerSyncDatabase } from '@powersync/no
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { uploadTaskTransaction, type UploadFailureStore } from './upload'
 import { LocalUploadFailureStore } from './upload-failures'
+import { httpsFetch, requireHttpsUrl } from '../security/network'
 
 export interface CollaborationRemoteConfig {
   powerSyncEndpoint: string
@@ -24,7 +25,10 @@ export class SupabaseCollaborationConnector implements PowerSyncBackendConnector
   ) {}
 
   static async signIn(config: CollaborationRemoteConfig): Promise<CollaborationConnection> {
-    const supabase = createClient(config.supabaseUrl, config.supabasePublishableKey, {
+    const supabaseUrl = requireHttpsUrl(config.supabaseUrl, 'SUPABASE_URL')
+    const powerSyncEndpoint = requireHttpsUrl(config.powerSyncEndpoint, 'POWERSYNC_SPIKE_ENDPOINT')
+    const supabase = createClient(supabaseUrl, config.supabasePublishableKey, {
+      global: { fetch: httpsFetch },
       auth: {
         autoRefreshToken: true,
         persistSession: false,
@@ -38,7 +42,7 @@ export class SupabaseCollaborationConnector implements PowerSyncBackendConnector
     if (error || !data.user)
       throw new Error(`Supabase collaboration sign-in failed: ${error?.message ?? 'no user'}`)
     return {
-      connector: new SupabaseCollaborationConnector(config.powerSyncEndpoint, supabase, {
+      connector: new SupabaseCollaborationConnector(powerSyncEndpoint, supabase, {
         userId: data.user.id
       }),
       supabase

@@ -1,0 +1,72 @@
+Window: "Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html", App: electron.exe.
+	0 window Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html
+			3 region
+				4 region
+					5 region
+						6 document DevTools Value: devtools://devtools/bundled/devtools_app.html?remoteBase=https://chrome-devtools-frontend.appspot.com/serve_file/@e3d696c7194e4e8a49acf22932d5803d66ee7a20/&can_dock=true&toolbarColor=rgba(223,223,223,1)&textColor=rgba(0,0,0,1)&experiments=true ID: RootWebArea
+							7 group
+								8 navigation Main toolbar
+									9 tool bar
+										48 group Select an element in the page to inspect it
+											49 toggle button Select an element in the page to inspect it - Ctrl + Shift + C Description: Select an element in the page to inspect it - Ctrl + Shift + C
+										50 group Toggle device toolbar
+											51 toggle button Toggle device toolbar - Ctrl + Shift + M Description: Toggle device toolbar - Ctrl + Shift + M
+									10 tab Panels
+										11 tab item (selectable) Elements ID: tab-elements
+										12 tab item (selectable) Console ID: tab-console
+										13 tab item (selectable) Sources ID: tab-sources
+										14 tab item (selectable) Network ID: tab-network
+										15 tab item (selectable) Performance ID: tab-timeline
+										16 tab item (selectable) Memory ID: tab-heap-profiler
+										17 tab item (selectable) Application ID: tab-resources
+										18 tab item (selectable) Security ID: tab-security
+									20 button More tabs Description: More tabs
+									52 tool bar
+										53 group Open Console to view Description: Open Console to view
+											54 button Open Console to view
+										63 group Open Issues to view 1 issue: 1 page error Description: Open Issues to view 1 issue: 1 page error
+											64 button Open Issues to view 1 issue: 1 page error
+										55 group Settings
+											56 button Settings - F1 - Shift + ? Description: Settings - F1 - Shift + ?
+										57 button Customize and control DevTools
+											58 button Customize and control DevTools Description: Customize and control DevTools
+								21 tab panel Console panel
+									22 group console
+										23 tool bar
+											24 group Show console sidebar
+												25 button Show console sidebar Description: Show console sidebar
+											26 group Clear console
+												27 button Clear console - Ctrl + L Description: Clear console - Ctrl + L
+											28 button JavaScript context: top Description: JavaScript context: top
+											29 group Create live expression
+												30 button Create live expression Description: Create live expression
+											31 group Description: e.g. /eventd/ -cdn url:a.com
+												32 edit (settable, string) Filter Description: Filter Value: Filter
+													66 text Filter
+											34 button Log level: Default levels Description: Log level: Default levels
+												35 text Default levels
+											36 group Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 1 page error Description: Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 1 page error ID: console-issues-counter
+												60 button Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 1 page error
+											37 group Console settings
+												38 toggle button Console settings Description: Console settings
+											39 group 0 messages in console
+										40 group ID: console-messages
+											41 group
+												67 log Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting.
+													68 group Warning
+													69 group Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting. Stack table collapsed
+														70 group
+															71 text Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting.
+											42 group
+											43 group
+												44 edit (settable, string) Console prompt Value: 
+													45 text 
+							46 alert
+								61 text DevTools is undocked
+							62 status
+
+Document text: ```
+Filter
+```

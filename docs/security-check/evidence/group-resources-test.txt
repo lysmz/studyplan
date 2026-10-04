@@ -1,0 +1,19 @@
+
+> studyplan@2.0.0 group-resources:test
+> tsx --test scripts/groups/group-resources.test.ts
+
+✔ child resources require authentication and group membership (14.8249ms)
+✔ event mutations enrich responses, record activity, and delete comments with the event (22.0486ms)
+✔ tasks validate assignees, expose names, and record completion (8.0949ms)
+✔ notes preserve ordering and member edits while rejecting cross-group IDs (8.1849ms)
+✔ only a comment author or group owner can delete a comment (5.4293ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5433.608
+
+Exitcode: 0

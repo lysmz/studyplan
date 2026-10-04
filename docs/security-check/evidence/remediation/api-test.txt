@@ -1,0 +1,22 @@
+
+> studyplan@2.0.0 api:test
+> tsx --test scripts/openapi-ipc/generator.test.ts
+
+✔ every OpenAPI operationId is represented exactly once (201.2437ms)
+✔ generation is deterministic and checked-in files are current (2132.9975ms)
+✔ every operation has its React Query compatibility exports (87.7123ms)
+✔ renderer output contains no HTTP transport artifacts (3.5549ms)
+✔ React Query adapters normalize query, path, and body inputs (1.0942ms)
+✔ IPC query keys are deterministic and use normalized inputs (0.3654ms)
+✔ representative path, query, and body inputs validate (17.182ms)
+✔ no-content output is undefined (0.2942ms)
+✔ malformed IPC input is rejected at runtime (2.2318ms)
+✔ declared operation errors are validated and serialized (2.3039ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8131.991

@@ -1,0 +1,31 @@
+{
+  "result": "pass",
+  "checks": [
+    {
+      "name": "offline restart durability",
+      "status": "pass",
+      "evidence": {
+        "taskId": "bd814d0b-1304-4ee4-9e02-a46198a2fa4a",
+        "queuedBeforeRestart": 1,
+        "queuedAfterRestart": 1
+      }
+    },
+    {
+      "name": "client schema v1 to v2",
+      "status": "pass",
+      "evidence": {
+        "taskId": "fbc3a90f-e577-443e-bb49-0255b404b5e5",
+        "priority": "high"
+      }
+    },
+    {
+      "name": "bounded repository CRUD",
+      "status": "pass",
+      "evidence": {
+        "taskId": "5f4672c7-f33a-47f2-8e4e-ef1d982ca2c2",
+        "finalStatus": "done",
+        "deleted": true
+      }
+    }
+  ]
+}

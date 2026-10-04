@@ -1,0 +1,12 @@
+
+> studyplan@2.0.0 postinstall
+> node scripts/security/check-native.cjs
+
+{
+  "electron": "44.5.1",
+  "node": "24.21.0",
+  "napi": "10",
+  "betterSqlite3": "13.0.3",
+  "sqliteReadWrite": "pass",
+  "libSqlRead": "pass"
+}

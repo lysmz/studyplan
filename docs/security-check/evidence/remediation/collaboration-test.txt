@@ -1,0 +1,25 @@
+✔ R5: the same queue sequence on different replicas represents different operations (22.7695ms)
+✔ Z3/Z4: ordinary updates and absent deletes complete without failure records (2.0165ms)
+✔ Q2: temporary failure retains intent until recovery (1.1738ms)
+✔ Q3: auth, unknown or malformed outcomes preserve the queue (0.6285ms)
+✔ Q3: auth, unknown or malformed outcomes preserve the queue (0.574ms)
+✔ Q3: auth, unknown or malformed outcomes preserve the queue (0.6421ms)
+✔ Q3: auth, unknown or malformed outcomes preserve the queue (1.0111ms)
+✔ Q4/Q5: journal and acknowledgement failures recover without duplicate records (2.5991ms)
+✔ Q6: dependent changes are preserved after a rejected creation (1.0643ms)
+✔ Q8: forbidden table write is surfaced without contacting the backend (0.608ms)
+✔ R4: lost DELETE response is safely replayed (4.2914ms)
+✔ R6: changed operation payload and colliding task identities are rejected (1.2712ms)
+✔ Z1: a zero-row PATCH preserves the intended edit before retirement (0.529ms)
+✔ Q1: permanent rejection preserves A and allows unrelated B to upload (0.5885ms)
+✔ R1: replay after a later failure preserves another member edit (1.0081ms)
+✔ R2/R3: a lost PUT response cannot overwrite a subsequent edit (0.7371ms)
+✔ R2/R3: a lost PATCH response cannot overwrite a subsequent edit (0.5474ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 506.8597

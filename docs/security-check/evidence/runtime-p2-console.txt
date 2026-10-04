@@ -1,0 +1,489 @@
+Window: "Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html", App: electron.exe.
+	0 window Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html Secondary Actions: Raise
+		1 pane (disabled)
+		2 region Developer Tools - file:///C:/Users/Joshua/Desktop/Desktop%20App%20prototype/studyplan/out/renderer/index.html
+			3 region
+				4 region
+					5 region
+						6 document DevTools Value: devtools://devtools/bundled/devtools_app.html?remoteBase=https://chrome-devtools-frontend.appspot.com/serve_file/@e3d696c7194e4e8a49acf22932d5803d66ee7a20/&can_dock=true&toolbarColor=rgba(223,223,223,1)&textColor=rgba(0,0,0,1)&experiments=true ID: RootWebArea
+							7 group
+								8 navigation Main toolbar
+									9 tool bar
+										48 group Select an element in the page to inspect it
+											49 toggle button Select an element in the page to inspect it - Ctrl + Shift + C Description: Select an element in the page to inspect it - Ctrl + Shift + C
+										50 group Toggle device toolbar
+											51 toggle button Toggle device toolbar - Ctrl + Shift + M Description: Toggle device toolbar - Ctrl + Shift + M
+									10 tab Panels
+										11 tab item (selectable) Elements ID: tab-elements
+										12 tab item (selectable) Console ID: tab-console
+										13 tab item (selectable) Sources ID: tab-sources
+										14 tab item (selectable) Network ID: tab-network
+										15 tab item (selectable) Performance ID: tab-timeline
+										16 tab item (selectable) Memory ID: tab-heap-profiler
+										17 tab item (selectable) Application ID: tab-resources
+										18 tab item (selectable) Security ID: tab-security
+									20 button More tabs Description: More tabs
+									52 tool bar
+										53 group Open Console to view 1 error Description: Open Console to view 1 error
+											54 button Open Console to view 1 error
+										63 group Open Issues to view 2 issues: 2 page errors Description: Open Issues to view 2 issues: 2 page errors
+											64 button Open Issues to view 2 issues: 2 page errors
+										55 group Settings
+											56 button Settings - F1 - Shift + ? Description: Settings - F1 - Shift + ?
+										57 button Customize and control DevTools
+											58 button Customize and control DevTools Description: Customize and control DevTools
+								21 tab panel Console panel
+									22 group console
+										23 tool bar
+											24 group Show console sidebar
+												25 button Show console sidebar Description: Show console sidebar
+											26 group Clear console
+												27 button Clear console - Ctrl + L Description: Clear console - Ctrl + L
+											28 button JavaScript context: top Description: JavaScript context: top
+											29 group Create live expression
+												30 button Create live expression Description: Create live expression
+											31 group Description: e.g. /eventd/ -cdn url:a.com
+												32 edit (settable, string) Filter Description: Filter Value: Filter
+													289 text Filter
+											34 button Log level: Default levels Description: Log level: Default levels
+												35 text Default levels
+											36 group Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 2 page errors Description: Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 2 page errors ID: console-issues-counter
+												60 button Some problems no longer generate console messages, but are surfaced in the issues tab. Click to view 2 page errors
+											37 group Console settings
+												38 toggle button Console settings Description: Console settings
+											39 group 24 messages in console
+										40 group ID: console-messages
+											41 group
+												74 group
+													75 text 1
+													76 text +
+													77 text 1
+												78 group
+													79 group 2 Stack table collapsed
+														80 group
+															81 text 2
+												82 log Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting.
+													83 group Warning
+													84 group Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting. Stack table collapsed
+														85 group
+															86 text Warning: Don’t paste code into the DevTools Console that you don’t understand or haven’t reviewed yourself. This could allow attackers to steal your identity or take control of your computer. Please type ‘allow pasting’ below and press Enter to allow pasting.
+												89 group allow pasting
+													90 group allow pasting Stack table collapsed
+														91 group
+															92 text allow pasting
+												126 group
+													127 text console
+													128 text .
+													129 text log
+													130 text (
+													131 text 'BA-P1-API'
+													132 text ,
+													133 text JSON
+													134 text .
+													135 text stringify
+													136 text (
+													137 text await
+													138 text 
+													139 text window
+													140 text .
+													141 text apiTransport
+													142 text .
+													143 text invoke
+													144 text (
+													145 text 'getEvent'
+													146 text , {
+													147 text path
+													148 text :{
+													149 text id
+													150 text :
+													151 text 'not-a-number'
+													152 text }})))
+												153 group BA-P1-API
+													154 group BA-P1-API {"ok":false,"error":{"code":"VALIDATION_ERROR","message":"Invalid input for getEvent.","details":[{"code":"invalid_type","path":["path","id"],"message":"Invalid input: expected number, received string"}],"requestId":"68569bf0-4402-4c33-b1f9-236ab3e583df"}} Stack table collapsed
+														155 group
+															156 link VM69:1 Description: debugger:///VM69:1
+															157 text 
+															158 text BA-P1-API
+															159 text 
+															160 text {"ok":false,"error":{"code":"VALIDATION_ERROR","message":"Invalid input for getEvent.","details":[{"code":"invalid_type","path":["path","id"],"message":"Invalid input: expected number, received string"}],"requestId":"68569bf0-4402-4c33-b1f9-236ab3e583df"}}
+												161 group
+													162 group undefined Stack table collapsed
+														163 group
+															164 text undefined
+												195 group
+													196 text console
+													197 text .
+													198 text log
+													199 text (
+													200 text 'BA-P1-COLLAB'
+													201 text ,
+													202 text JSON
+													203 text .
+													204 text stringify
+													205 text (
+													206 text await
+													207 text 
+													208 text window
+													209 text .
+													210 text collaborationTransport
+													211 text .
+													212 text invoke
+													213 text (
+													214 text 'createTask'
+													215 text , {
+													216 text groupId
+													217 text :
+													218 text 'not-a-uuid'
+													219 text ,
+													220 text title
+													221 text :
+													222 text 'BA-Sicherheitsprüfung P1'
+													223 text })))
+												224 group BA-P1-COLLAB
+													225 group BA-P1-COLLAB {"ok":false,"error":{"code":"INVALID","message":"Invalid collaboration input."}} Stack table collapsed
+														226 group
+															227 link VM73:1 Description: debugger:///VM73:1
+															228 text 
+															229 text BA-P1-COLLAB
+															230 text 
+															231 text {"ok":false,"error":{"code":"INVALID","message":"Invalid collaboration input."}}
+												232 group
+													233 group undefined Stack table collapsed
+														234 group
+															235 text undefined
+												290 group
+													291 text var
+													292 text 
+													293 text baCspListener
+													294 text = (
+													295 text event
+													296 text ) => {
+													297 text console
+													298 text .
+													299 text log
+													300 text (
+													301 text 'BA-P3-CSP'
+													302 text ,
+													303 text event
+													304 text .
+													305 text effectiveDirective
+													306 text ,
+													307 text event
+													308 text .
+													309 text blockedURI
+													310 text ) };
+													311 text document
+													312 text .
+													313 text addEventListener
+													314 text (
+													315 text 'securitypolicyviolation'
+													316 text ,
+													317 text baCspListener
+													318 text );
+													319 text var
+													320 text 
+													321 text baCspScript
+													322 text =
+													323 text document
+													324 text .
+													325 text createElement
+													326 text (
+													327 text 'script'
+													328 text );
+													329 text baCspScript
+													330 text .
+													331 text src
+													332 text =
+													333 text 'https://ba-security.invalid/marker.js'
+													334 text ;
+													335 text document
+													336 text .
+													337 text head
+													338 text .
+													339 text appendChild
+													340 text (
+													341 text baCspScript
+													342 text )
+												343 log Loading the script 'https://ba-security.invalid/marker.js' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+													344 group Error
+													345 group Loading the script 'https://ba-security.invalid/marker.js' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked. Stack table collapsed
+														346 group
+															347 link VM77:1 Description: debugger:///VM77:1
+															348 text 
+															349 text Loading the script '
+															350 link https://ba-security.invalid/marker.js
+															351 text ' violates the following Content Security Policy directive: "script-src 'self'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.
+												352 group
+													353 group Stack table collapsed
+														354 group
+															355 tree Page DOM
+																356 tree item (selectable) <script src=​"https:​/​/​ba-security.invalid/​marker.js"> ​ </script> ​
+																	357 group <script src=​"https:​/​/​ba-security.invalid/​marker.js">
+																		358 link https:​/​/​ba-security.invalid/​marker.js Description: https://ba-security.invalid/marker.js
+																	359 group </script>
+												360 group BA-P3-CSP
+													361 group BA-P3-CSP script-src-elem https://ba-security.invalid/marker.js Stack table collapsed
+														362 group
+															363 link VM77:1 Description: debugger:///VM77:1
+															364 text 
+															365 text BA-P3-CSP
+															366 text 
+															367 text script-src-elem
+															368 text 
+															369 link https://ba-security.invalid/marker.js
+												433 group
+													434 text baCspScript
+													435 text .
+													436 text remove
+													437 text ();
+													438 text document
+													439 text .
+													440 text removeEventListener
+													441 text (
+													442 text 'securitypolicyviolation'
+													443 text ,
+													444 text baCspListener
+													445 text );
+													446 text baCspScript
+													447 text =
+													448 text undefined
+													449 text ;
+													450 text baCspListener
+													451 text =
+													452 text undefined
+													453 text ;
+													454 text delete
+													455 text 
+													456 text document
+													457 text .
+													458 text documentElement
+													459 text .
+													460 text dataset
+													461 text .
+													462 text baSecurityMarker
+													463 text ;
+													464 text console
+													465 text .
+													466 text log
+													467 text (
+													468 text 'BA-P2-BASELINE'
+													469 text ,
+													470 text JSON
+													471 text .
+													472 text stringify
+													473 text ({
+													474 text marker
+													475 text :
+													476 text document
+													477 text .
+													478 text documentElement
+													479 text .
+													480 text dataset
+													481 text .
+													482 text baSecurityMarker
+													483 text ??
+													484 text null
+													485 text ,
+													486 text cspTestScripts
+													487 text :
+													488 text document
+													489 text .
+													490 text querySelectorAll
+													491 text (
+													492 text 'script[src="https://ba-security.invalid/marker.js"]'
+													493 text ).
+													494 text length
+													495 text }))
+												497 group BA-P2-BASELINE
+													498 group BA-P2-BASELINE {"marker":null,"cspTestScripts":0} Stack table collapsed
+														499 group
+															500 link VM81:1 Description: debugger:///VM81:1
+															501 text 
+															502 text BA-P2-BASELINE
+															503 text 
+															504 text {"marker":null,"cspTestScripts":0}
+												505 group
+													506 group undefined Stack table collapsed
+														507 group
+															508 text undefined
+												621 group
+													622 text var
+													623 text 
+													624 text baP2Inspect
+													625 text = () => {
+													626 text var
+													627 text 
+													628 text title
+													629 text =
+													630 text `<svg onload="document.documentElement.dataset.baSecurityMarker='executed'">BA-P2</svg>`
+													631 text ;
+													632 text var
+													633 text 
+													634 text nodes
+													635 text = [...
+													636 text document
+													637 text .
+													638 text querySelectorAll
+													639 text (
+													640 text '[role="tabpanel"] p'
+													641 text )].
+													642 text filter
+													643 text (
+													644 text node
+													645 text =>
+													646 text node
+													647 text .
+													648 text textContent
+													649 text ===
+													650 text title
+													651 text );
+													652 text return
+													653 text {
+													654 text matches
+													655 text :
+													656 text nodes
+													657 text .
+													658 text length
+													659 text ,
+													660 text titleText
+													661 text :
+													662 text nodes
+													663 text [
+													664 text 0
+													665 text ]?.
+													666 text textContent
+													667 text ,
+													668 text titleTag
+													669 text :
+													670 text nodes
+													671 text [
+													672 text 0
+													673 text ]?.
+													674 text tagName
+													675 text ,
+													676 text childNodeTypes
+													677 text :
+													678 text nodes
+													679 text [
+													680 text 0
+													681 text ] ? [...
+													682 text nodes
+													683 text [
+													684 text 0
+													685 text ].
+													686 text childNodes
+													687 text ].
+													688 text map
+													689 text (
+													690 text node
+													691 text =>
+													692 text node
+													693 text .
+													694 text nodeType
+													695 text ) : [],
+													696 text svgInTitle
+													697 text :
+													698 text nodes
+													699 text [
+													700 text 0
+													701 text ]?.
+													702 text querySelectorAll
+													703 text (
+													704 text 'svg'
+													705 text ).
+													706 text length
+													707 text ,
+													708 text markerIsUndefined
+													709 text :
+													710 text document
+													711 text .
+													712 text documentElement
+													713 text .
+													714 text dataset
+													715 text .
+													716 text baSecurityMarker
+													717 text ===
+													718 text undefined
+													719 text } };
+													720 text console
+													721 text .
+													722 text log
+													723 text (
+													724 text 'BA-P2-INITIAL'
+													725 text ,
+													726 text JSON
+													727 text .
+													728 text stringify
+													729 text (
+													730 text baP2Inspect
+													731 text ()))
+												732 group BA-P2-INITIAL
+													733 group BA-P2-INITIAL {"matches":1,"titleText":"<svg onload=\"document.documentElement.dataset.baSecurityMarker='executed'\">BA-P2</svg>","titleTag":"P","childNodeTypes":[3],"svgInTitle":0,"markerIsUndefined":true} Stack table collapsed
+														734 group
+															735 link VM143:1 Description: debugger:///VM143:1
+															736 text 
+															737 text BA-P2-INITIAL
+															738 text 
+															739 text {"matches":1,"titleText":"<svg onload=\"document.documentElement.dataset.baSecurityMarker='executed'\">BA-P2</svg>","titleTag":"P","childNodeTypes":[3],"svgInTitle":0,"markerIsUndefined":true}
+												740 group
+													741 group undefined Stack table collapsed
+														742 group
+															743 text undefined
+												770 group
+													771 text console
+													772 text .
+													773 text log
+													774 text (
+													775 text 'BA-P2-REOPENED'
+													776 text ,
+													777 text JSON
+													778 text .
+													779 text stringify
+													780 text (
+													781 text baP2Inspect
+													782 text ()));
+													783 text console
+													784 text .
+													785 text log
+													786 text (
+													787 text 'BA-P2-MARKER'
+													788 text ,
+													789 text document
+													790 text .
+													791 text documentElement
+													792 text .
+													793 text dataset
+													794 text .
+													795 text baSecurityMarker
+													796 text )
+												797 group BA-P2-REOPENED
+													798 group BA-P2-REOPENED {"matches":1,"titleText":"<svg onload=\"document.documentElement.dataset.baSecurityMarker='executed'\">BA-P2</svg>","titleTag":"P","childNodeTypes":[3],"svgInTitle":0,"markerIsUndefined":true} Stack table collapsed
+														799 group
+															800 link VM153:1 Description: debugger:///VM153:1
+															801 text 
+															802 text BA-P2-REOPENED
+															803 text 
+															804 text {"matches":1,"titleText":"<svg onload=\"document.documentElement.dataset.baSecurityMarker='executed'\">BA-P2</svg>","titleTag":"P","childNodeTypes":[3],"svgInTitle":0,"markerIsUndefined":true}
+												805 group BA-P2-MARKER
+													806 group BA-P2-MARKER undefined Stack table collapsed
+														807 group
+															808 link VM153:1 Description: debugger:///VM153:1
+															809 text 
+															810 text BA-P2-MARKER
+															811 text 
+															812 text undefined
+												813 group
+													814 group undefined Stack table collapsed
+														815 group
+															816 text undefined
+											42 group
+											43 group
+												44 edit (settable, string) Console prompt Value: 
+													817 text 
+							46 alert
+								61 text DevTools is undocked
+							62 status
+
+Document text: ```
+Filter
+```

@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { createServer } from 'node:http'
 import test from 'node:test'
 import { createClient, type Client } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
@@ -148,20 +147,16 @@ test('rejects malformed and extra IPC input before invoking a handler', async ()
   }
 })
 
-test('fetches JSON over HTTP, imports three programs, and updates without duplicates', async () => {
+test('fetches a HTTPS catalog without redirects, imports programs, and updates without duplicates', async () => {
   const catalog = structuredClone(sampleCatalog)
   let requests = 0
-  const server = createServer((request, response) => {
-    assert.equal(request.url, '/catalog.json')
-    assert.equal(request.headers.authorization, undefined)
+  const context = await createTestContext(async (input, init) => {
+    assert.equal(input, 'https://catalog.example.test/catalog.json')
+    assert.equal(init?.redirect, 'error')
+    assert.equal(new Headers(init?.headers).has('Authorization'), false)
     requests += 1
-    response.writeHead(200, { 'Content-Type': 'application/json' })
-    response.end(JSON.stringify(catalog))
+    return Response.json(catalog)
   })
-  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
-  const address = server.address()
-  assert.ok(address && typeof address !== 'string')
-  const context = await createTestContext(fetch, `http://127.0.0.1:${address.port}/catalog.json`)
 
   try {
     // Downloading the public catalog does not require a Supabase or local account.
@@ -196,10 +191,29 @@ test('fetches JSON over HTTP, imports three programs, and updates without duplic
     assert.equal(requests, 3)
   } finally {
     context.client.close()
-    server.closeAllConnections()
-    await new Promise<void>((resolve, reject) => {
-      server.close((error) => (error ? reject(error) : resolve()))
-    })
+  }
+})
+
+test('unsafe catalog URLs are rejected before fetching or changing local data', async () => {
+  for (const url of [
+    'http://example.test/catalog',
+    'file:///secret',
+    'invalid',
+    'https://user:secret@example.test'
+  ]) {
+    let requests = 0
+    const context = await createTestContext(async () => {
+      requests += 1
+      return Response.json(sampleCatalog)
+    }, url)
+    try {
+      const before = await context.api.studyPrograms.listStudyPrograms()
+      await assert.rejects(() => context.api.studyPrograms.refreshStudyCatalog(), ApiClientError)
+      assert.equal(requests, 0)
+      assert.deepEqual(await context.api.studyPrograms.listStudyPrograms(), before)
+    } finally {
+      context.client.close()
+    }
   }
 })
 

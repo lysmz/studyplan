@@ -1,6 +1,6 @@
 # Vorschlag: Sicherheitsüberprüfung der Electron-Migration im BA-Umfang
 
-Stand: 3. Oktober 2026. Status: Vorschlag zur Scope-Anpassung, keine bereits beschlossene oder durchgeführte Prüfung.
+Stand: 3. Oktober 2026. Status: Der vorgeschlagene reduzierte Scope wurde im Chat akzeptiert. Die konkrete Durchführung steht im [Umsetzungsplan](electron-security-implementation-plan.md); der [Ergebnisbericht](electron-security-check-results.md) dokumentiert den Richtlinienabgleich, vorhandene Tests und die bestandenen Laufzeitfälle P1–P3 einschließlich verbleibender Abweichungen. Dieses Dokument hält die Begründung der Scope-Anpassung fest.
 
 Grundlage sind der bestehende `electron-security-audit-plan.md`, die im Betreuungsgespräch vereinbarten Grenzen und die im Chat festgelegte Bedeutung von „sicher“ und „gehärtet“. Die Migration und ihr Leitfaden bleiben das Hauptthema; Sicherheit ist ein Anforderungsnachweis innerhalb der Evaluation.
 

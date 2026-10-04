@@ -1,0 +1,3 @@
+SyntaxError: Unexpected token ''', " 'self' dat"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at main (C:\Users\Joshua\Desktop\Desktop App prototype\studyplan\scripts\security\check-package.cjs:33:25)

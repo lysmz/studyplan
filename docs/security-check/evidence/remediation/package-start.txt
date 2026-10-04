@@ -1,0 +1,2 @@
+
+[DB] Ready at: C:\Users\Joshua\AppData\Roaming\studyplan\data\studyplan.db

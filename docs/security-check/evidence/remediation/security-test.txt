@@ -1,0 +1,25 @@
+
+> studyplan@2.0.0 security:test
+> tsx --test scripts/security/security.test.ts
+
+✔ registered main frame with a hash route is accepted (0.8916ms)
+✔ unregistered window is rejected (0.1281ms)
+✔ subframe is rejected even with the correct URL (0.0899ms)
+✔ missing sender frame is rejected without throwing (0.0906ms)
+✔ main frame at a foreign URL is rejected (0.1059ms)
+✔ destroyed window is removed from the registry (0.1091ms)
+✔ bundle assets, ports, credentials, file and remote documents receive no IPC permission (0.8383ms)
+✔ resolver stays inside the renderer root and rejects encoded path tricks (0.4739ms)
+✔ bundle handler serves GET/HEAD with MIME, rejects methods and escaping symlinks (41.2835ms)
+✔ HTTPS configuration rejects unsafe inputs without leaking their values (0.7043ms)
+✔ remote configuration rejects either insecure endpoint before use and reports unconfigured (0.3126ms)
+✔ HTTPS fetch blocks insecure requests before transport and overrides redirect options (0.4512ms)
+✔ actual Node fetch rejects a redirect without requesting the target (test-only HTTP transport) (25.5763ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 284.9438

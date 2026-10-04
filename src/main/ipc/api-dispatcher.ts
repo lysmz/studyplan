@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import type { IpcMainInvokeEvent, WebContents } from 'electron'
+import type { IpcMainInvokeEvent } from 'electron'
 import { ipcMain } from 'electron'
 import { ZodError } from 'zod'
+export { createWindowSenderPolicy, type MutableApiSenderPolicy } from './sender-policy'
 import {
   API_INVOKE_CHANNEL,
   operationContracts,
@@ -190,26 +191,4 @@ export function createApiDispatcher(options: ApiDispatcherOptions) {
 export function registerApiDispatcher(options: ApiDispatcherOptions): () => void {
   ipcMain.handle(API_INVOKE_CHANNEL, createApiDispatcher(options))
   return () => ipcMain.removeHandler(API_INVOKE_CHANNEL)
-}
-
-export interface MutableApiSenderPolicy {
-  allow(webContents: WebContents, isUrlAllowed: (url: string) => boolean): void
-  isAllowed: ApiSenderPolicy
-}
-
-export function createWindowSenderPolicy(): MutableApiSenderPolicy {
-  const allowedWindows = new Map<number, (url: string) => boolean>()
-  return {
-    allow(webContents, isUrlAllowed) {
-      allowedWindows.set(webContents.id, isUrlAllowed)
-      webContents.once('destroyed', () => allowedWindows.delete(webContents.id))
-    },
-    isAllowed(event) {
-      const isUrlAllowed = allowedWindows.get(event.sender.id)
-      return (
-        event.senderFrame === event.sender.mainFrame &&
-        Boolean(isUrlAllowed?.(event.senderFrame.url))
-      )
-    }
-  }
 }

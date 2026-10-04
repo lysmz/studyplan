@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { CourseSchema, StudyProgramSchema, type StudyCatalogImportResult } from '../../shared/api'
 import type { Course, StudyProgram } from '../db/schema'
 import { StudyProgramsRepository } from '../repositories/study-programs.repository'
+import { requireHttpsUrl } from '../security/network'
 
 export const DEFAULT_STUDY_CATALOG_URL =
   'https://repsgcypslupjhdbtcjm.supabase.co/functions/v1/study-catalog'
@@ -29,9 +30,11 @@ export class StudyProgramsService {
   }
 
   private async fetchAndImportCatalog(): Promise<StudyCatalogImportResult> {
-    const response = await this.fetchCatalog(this.catalogUrl, {
+    const url = requireHttpsUrl(this.catalogUrl, 'STUDY_CATALOG_URL')
+    const response = await this.fetchCatalog(url, {
       signal: AbortSignal.timeout(10_000),
-      cache: 'no-store'
+      cache: 'no-store',
+      redirect: 'error'
     })
     if (!response.ok) throw new Error(`Catalog download failed: HTTP ${response.status}`)
 
