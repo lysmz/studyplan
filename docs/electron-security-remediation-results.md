@@ -2,6 +2,8 @@
 
 Stand: 4. Oktober 2026, Europe/Berlin. Bezug: [freigegebener Nachbesserungsplan](electron-security-remediation-plan.md) und [ursprünglicher Prüfstand vom 3. Oktober](electron-security-check-results.md). Die früheren Belege und die ausdrücklich zu behaltende BA-P2-Aufgabe bleiben erhalten. Dies ist die Nachprüfung ausgewählter Änderungen am Demonstrator, kein weiterer Migrations-/Reproduktionsdurchlauf.
 
+Aktuelle BA-Bewertung vom 6. Oktober: [konsolidierte Ergebnismatrix](electron-security-matrix.md). Der Nutzer hat den Nachweis für Punkt 1 auf die geprüfte HTTPS-Konfiguration und das an Katalog/Supabase belegte Absicherungsmuster begrenzt und für den BA-Prüfumfang als ausreichend bewertet. Die nachstehende technische Nachweisgrenze für PowerSync bleibt bestehen; daraus wird keine zusätzlich ausgeführte SDK-Redirectprüfung abgeleitet. Die damaligen Bewertungen vom 4. Oktober bleiben als Verlauf erhalten.
+
 ## Änderungen und neuer Prüfstand
 
 | Punkt | Umsetzung | Nachweis und derzeitige Grenze |

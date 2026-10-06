@@ -2,6 +2,8 @@
 
 Prüfdatum: 3. Oktober 2026 (Europe/Berlin). Grundlage: [akzeptierter Umsetzungsplan](electron-security-implementation-plan.md).
 
+Aktuelle BA-Bewertung vom 6. Oktober: [konsolidierte Ergebnismatrix](electron-security-matrix.md) mit allen 20 Empfehlungen, Nachbesserungen und ausdrücklich begrenzter Nachweisbewertung für PowerSync. Dieser Bericht bewahrt den historischen Prüfstand vom 3. Oktober.
+
 Nachbesserung am 4. Oktober 2026: [Umsetzungsstand und neue Belege](electron-security-remediation-results.md) zum [Nachbesserungsplan für 15, 16, 18 und 1 einschließlich 17/19](electron-security-remediation-plan.md). Der nachstehende Bericht einschließlich Matrix und P1–P3 bewahrt ausdrücklich den ursprünglichen Prüfstand vom 3. Oktober; neue Ergebnisse stehen im verlinkten Nachbesserungsbericht.
 
 **Ergebnis:** Der Abgleich aller 20 Empfehlungen, zwei vorhandene Testläufe sowie Build und Start sind dokumentiert. Die drei ergänzenden Laufzeitfälle **P1–P3 wurden durchgeführt und bestanden**: Beide IPC-Bridges weisen die gewählten ungültigen Eingaben zurück; der HTML-artige Aufgabentitel bleibt auch nach Wiederöffnung Text; die CSP blockiert die fremde Skriptquelle. Eine vollständige Einhaltung der vereinbarten Sicherheitsanforderung ist weiterhin nicht nachgewiesen. Insbesondere `file://` und die verwendete Electron-Version weichen von der Referenz ab; externes Öffnen und Fuse-Buildentscheidungen bleiben teilweise erfüllt.
